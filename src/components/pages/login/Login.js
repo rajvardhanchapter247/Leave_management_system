@@ -36,7 +36,7 @@ const Login = () => {
       });
       console.log(response);
       setUserSession(response.data.token, response.data.user);
-      history.push('/dashboard');
+      history.push('/Users');
     } catch (error) {
       // Handle Error Here
       setError("Something went wrong Please try again !");
