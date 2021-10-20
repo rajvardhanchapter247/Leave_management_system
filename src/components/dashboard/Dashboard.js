@@ -1,4 +1,5 @@
 import React, { lazy } from 'react'
+import { useHistory } from 'react-router'
 import { CCard, CCardBody, CCardHeader } from '@coreui/react'
 import { CChartPie } from '@coreui/react-chartjs'
 import { removeUserSession } from '../storage/LocalStorage'
@@ -7,20 +8,21 @@ import { removeUserSession } from '../storage/LocalStorage'
 const Widgets = lazy(() => import('../widgets/Widgets'))
 
 const Dashboard = () => {
+
+  const history = useHistory();
+
   const Logout = () => {
     removeUserSession();
+    history.push("/login");
   }
-  return (
+  return (  
     <>
       {/* Dashboard Admin Header Part */}
       <h1>Welcome Admin!</h1>
       <h3 className="my-3">Dashboard</h3>
-
       <button className="btn btn-primary" onClick={Logout}>Logout</button>
-
       {/* Dashboard Admin Leaves section */}
       <Widgets />
-
       {/* Dashboard Admin Leaves Chart Status */}
       <CCard>
         <CCardHeader>

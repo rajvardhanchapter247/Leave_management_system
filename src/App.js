@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://e691-2401-4900-16d7-7433-70eb-252a-8e5e-494c.ngrok.io';
+axios.defaults.baseURL = 'http://35f1-2401-4900-55a3-f24b-491b-aaee-c68-6000.ngrok.io';
 
 const loading = (
   <div className="pt-3 text-center">
@@ -16,9 +16,9 @@ const TheLayout = React.lazy(() => import('./containers/TheLayout'));
 
 // Pages
 const Login = React.lazy(() => import('./components/pages/login/Login'));
-const Register = React.lazy(() => import('./components/pages/register/Register'));
-const Page404 = React.lazy(() => import('./components/pages/page404/Page404'));
-const Page500 = React.lazy(() => import('./components/pages/page500/Page500'));
+// const Register = React.lazy(() => import('./components/pages/register/Register'));
+// const Page404 = React.lazy(() => import('./components/pages/page404/Page404'));
+// const Page500 = React.lazy(() => import('./components/pages/page500/Page500'));
 
 class App extends Component {
 
@@ -28,10 +28,10 @@ class App extends Component {
         <React.Suspense fallback={loading}>
           <Switch>
             <Route exact path="/login" name="Login Page" render={props => <Login {...props} />} />
-            <Route exact path="/register" name="Register Page" render={props => <Register {...props} />} />
             <Route path="/" name="Home" render={props => <TheLayout {...props} />} />
-            <Route exact path="/404" name="Page 404" render={props => <Page404 {...props} />} />
-            <Route exact path="/500" name="Page 500" render={props => <Page500 {...props} />} />
+            {/* <Route exact path="/register" name="Register Page" render={props => <Register {...props} />} /> */}
+            {/* <Route exact path="/404" name="Page 404" render={props => <Page404 {...props} />} />
+            <Route exact path="/500" name="Page 500" render={props => <Page500 {...props} />} /> */}
           </Switch>
         </React.Suspense>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CBadge,
   CCard,
@@ -9,9 +9,9 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-
-
-import usersData from '../users/UsersData'
+// import usersData from '../users/UsersData'
+import axios from 'axios'
+import { getToken } from '../storage/LocalStorage'
 
 const getBadge = status => {
   switch (status) {
@@ -22,9 +22,28 @@ const getBadge = status => {
     default: return 'primary'
   }
 }
-const fields = ['id', 'name', 'email', 'role', 'status', 'actions']
+const fields = ['id', 'name', 'department', 'email', 'role', 'status', 'actions']
 
 const Tables = () => {
+
+  const [usersList, setUsersList] = useState([]);
+  const token = getToken();
+
+  //! fetch users list from api
+  const fetchUsers = async () => {
+    const response = await axios.get('/api/auth/user-list', {
+      headers: {
+        'authorization': token
+      }
+    });
+    console.log(response.data.data);
+    setUsersList(response.data.data)
+  }
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <>
       <h1>Welcome Admin!</h1>
@@ -37,12 +56,24 @@ const Tables = () => {
             </CCardHeader>
             <CCardBody>
               <CDataTable
-                items={usersData}
+                items={usersList}
                 fields={fields}
                 bordered
                 itemsPerPage={5}
                 pagination
                 scopedSlots={{
+                  'id':
+                    (item, index) => (
+                      <td>
+                        {index}
+                      </td>
+                    ),
+                  'name':
+                    (item) => (
+                      <td className="text-capitalize">
+                        {item.fullName}
+                      </td>
+                    ),
                   'actions':
                     (item) => (
                       <td>
@@ -61,7 +92,7 @@ const Tables = () => {
                           {item.status}
                         </CBadge>
                       </td>
-                    )
+                    ),
                 }
 
                 }

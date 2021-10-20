@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Formik, Form } from 'formik';
 import { TextField } from './TextField';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios'
-import { setUserSession } from '../../storage/LocalStorage';
+import { setUserSession, getToken } from '../../storage/LocalStorage';
 import * as Yup from 'yup';
 import {
   CCard,
@@ -15,15 +15,24 @@ import {
 } from '@coreui/react'
 
 const Login = () => {
-  const [error, setError] = useState(null);
   const history = useHistory();
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const token = getToken();
+    if (token === null) {
+      history.push("/login")
+    } else {
+      history.push("/dashboard")
+    }
+  }, [])
 
   const validate = Yup.object({
     email: Yup.string().trim()
       .email('Email is invalid')
       .required('Email is required'),
     password: Yup.string().trim()
-      .min(6, 'Password must be at least 6 charaters')
+      .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
   })
 
@@ -35,16 +44,15 @@ const Login = () => {
         password: data.password
       });
       console.log(response);
-      setUserSession(response.data.token, response.data.user);
+      setUserSession(response.data.token, response.data.data.role);
       history.push('/dashboard');
     } catch (error) {
       // Handle Error Here
       setError("Something went wrong Please try again !");
-      console.log("error ==>" + error);
     }
   };
 
-  const SubmitEvent = (values) => {
+  const onSubmitEvent = (values) => {
     console.log("submit data", values);
     sendGetRequest(values);
     document.getElementById("form").reset();
@@ -67,8 +75,7 @@ const Login = () => {
                         password: '',
                       }}
                       validationSchema={validate}
-                      onSubmit={SubmitEvent}
-
+                      onSubmit={onSubmitEvent}
                     >
                       {formik => (
                         <Form id="form">
@@ -86,8 +93,10 @@ const Login = () => {
           </CRow>
         </CContainer>
       </div>
+
     </>
   )
 }
 
 export default Login
+
