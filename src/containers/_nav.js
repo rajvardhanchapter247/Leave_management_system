@@ -47,6 +47,13 @@ const _nav = [
     to: '/users',
     icon: <CIcon name="cil-contact" customClasses="c-sidebar-nav-icon" />,
   },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Users_dashboard',
+    to: '/User_dashboard',
+    icon: <CIcon name="cil-contact" customClasses="c-sidebar-nav-icon" />,
+  },
+
 
   // // ! Department sidebar
   // {
