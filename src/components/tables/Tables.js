@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CBadge,
   CCard,
@@ -6,12 +6,21 @@ import {
   CCardHeader,
   CCol,
   CDataTable,
-  CRow
+  CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 // import usersData from '../users/UsersData'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
+import { setUserSession } from '../storage/LocalStorage';
+import { Formik, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { TextField } from '../pages/login/TextField'
+import Select from 'react-select';
+import AddUser from '../adduser/AddUser'
+
+
+// import usersData from '../users/UsersData'
 
 const getBadge = status => {
   switch (status) {
@@ -25,9 +34,13 @@ const getBadge = status => {
 const fields = ['id', 'name', 'department', 'email', 'role', 'status', 'actions']
 
 const Tables = () => {
-
+  const [toggle, setToggle] = useState(false)
   const [usersList, setUsersList] = useState([]);
   const token = getToken();
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   //! fetch users list from api
   const fetchUsers = async () => {
@@ -36,18 +49,29 @@ const Tables = () => {
         'authorization': token
       }
     });
-    console.log(response.data.data);
+    // console.log(response.data.data);
     setUsersList(response.data.data)
   }
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const changeState = () => {
+    setToggle(!toggle);
+  }
 
   return (
     <>
-      <h1>Welcome Admin!</h1>
-      <h3 className="my-3">Users</h3>
+      <CRow>
+        <CCol md="12">
+          <CCard>
+            <CCardBody>
+              <CRow className="d-flex justify-content-between align-items-center">
+                <CCol md="2">Users</CCol>
+                <CCol md="2"><button className="btn btn-primary" onClick={changeState} type="submit">Add user</button></CCol>
+              </CRow>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+
       <CRow>
         <CCol xs="12">
           <CCard>
@@ -88,21 +112,30 @@ const Tables = () => {
                   'status':
                     (item) => (
                       <td>
-                        <CBadge color={getBadge(item.status)}>
-                          {item.status}
-                        </CBadge>
+                        {
+                          item.status === "Active" ?
+                            <button className="btn btn-success btn-sm">
+                              {item.status}
+                            </button> :
+                            <button className="btn btn-primary btn-sm">
+                              {item.status}
+                            </button>
+                        }
                       </td>
                     ),
                 }
-
                 }
               />
             </CCardBody>
           </CCard>
         </CCol>
       </CRow>
+
+      <AddUser toggleModel={toggle} />
     </>
   )
 }
 
 export default Tables
+
+
