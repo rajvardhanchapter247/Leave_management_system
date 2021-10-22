@@ -3,11 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './scss/style.scss';
 import axios from 'axios'
 
-<<<<<<< HEAD
-axios.defaults.baseURL = 'http://35f1-2401-4900-55a3-f24b-491b-aaee-c68-6000.ngrok.io';
-=======
-axios.defaults.baseURL = 'http://cb21-2401-4900-55a5-ff78-1020-c1f8-10b3-84e.ngrok.io/';
->>>>>>> 9391d05ce4705db1d38298f4f5a4de5bdd59d1e9
+axios.defaults.baseURL = 'http://localhost:8000/';
 
 const loading = (
   <div className="pt-3 text-center">
