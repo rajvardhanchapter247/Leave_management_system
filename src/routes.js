@@ -8,7 +8,7 @@ const Users = React.lazy(() => import('./components/tables/Tables'));
 const routes = [
   { path: '/user_dashboard', exact: true , name: 'User_dashboard', component: User_dashboard },
   { path: '/dashboard', exact: true , name: 'Dashboard', component: Dashboard },
-  { path: '/employees/holidays', exact: true , name: 'Holidays', component: Holidays },
+  { path: '/holidays', exact: true , name: 'Holidays', component: Holidays },
   { path: '/users', exact: true , name: 'Users', component: Users },
 ];
 

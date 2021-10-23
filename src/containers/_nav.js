@@ -14,7 +14,7 @@ const _nav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Holidays',
-    to: '/employees/holidays',
+    to: '/holidays',
     icon: <CIcon name="cil-object-group" customClasses="c-sidebar-nav-icon" />,
   },
 
