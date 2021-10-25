@@ -42,7 +42,7 @@ const DeleteUser = (props) => {
                     <CModalTitle>Delete user</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                    <h4 className="text-center font-weight-bold">You want to delete this user?</h4>
+                    <h5 className="text-center">You want to delete this user?</h5>
                 </CModalBody>
                 <CModalFooter>
                     <button className="btn btn-danger" onClick={deleteUser}>Yes</button>
