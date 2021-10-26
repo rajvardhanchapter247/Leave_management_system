@@ -213,14 +213,15 @@ const forgotPassword = async (req, res) => {
  * @param { req, res }
  * @returns JsonResponse
  */
-const userList = async (req, res, next) => {
+const userList = async (req, res) => {
   try {
     const { query } = req;
 
     const limit = query.limit ? parseInt(query.limit, 10) : 10;
     const page = query.page ? parseInt(query.page, 10) : 1;
     const skip = (page - 1) * limit;
-    const { search, gender, status, fromDate, toDate } = query;
+    const { search, gender, status, fromDate, toDate, role, department } =
+      query;
 
     let dateCondition = {};
     if (fromDate != null && toDate != null) {
@@ -272,6 +273,18 @@ const userList = async (req, res, next) => {
       condition = {
         ...condition,
         gender,
+      };
+    }
+    if (role) {
+      condition = {
+        ...condition,
+        role,
+      };
+    }
+    if (department) {
+      condition = {
+        ...condition,
+        department,
       };
     }
     if (status) {
