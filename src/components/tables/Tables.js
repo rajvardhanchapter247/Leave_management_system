@@ -70,8 +70,9 @@ const Tables = () => {
   const [pageCount, setPageCount] = useState(0);
   let limit = 10;
 
+
   useEffect(() => {
-    const getComments = async () => {
+    const fetchUserListWithLimit = async () => {
       const response = await axios.get(`/api/auth/user-list?page=1&limit=${limit}`, {
         headers: {
           'authorization': token
@@ -82,10 +83,10 @@ const Tables = () => {
       setPageCount(Math.ceil(total / limit));
       setItems(data);
     };
-    getComments();
+    fetchUserListWithLimit();
   }, [limit]);
 
-  const fetchUserList = async (currentPage) => {
+  const fetchUserListWithLimitCurrentPage = async (currentPage) => {
     const response = await axios.get(`/api/auth/user-list?page=${currentPage}&limit=${limit}`, {
       headers: {
         'authorization': token
@@ -97,17 +98,17 @@ const Tables = () => {
 
   const handlePageClick = async (data) => {
     let currentPage = data.selected + 1;
-    const userList = await fetchUserList(currentPage);
+    const userList = await fetchUserListWithLimitCurrentPage(currentPage);
     setItems(userList);
   };
 
 
   const [filterToggle, setFilterToggle] = useState(false);
-
   const [search, setSearch] = useState("");
   const [searchDepartment, setSearchDepartment] = useState("");
   const [searchRole, setSearchRole] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
+
   useEffect(() => {
     const getSearchApi = async () => {
       const response = await axios.get(`/api/auth/user-list?search=${search}&status=${searchStatus}&role=${searchRole}&department=${searchDepartment}`, {
@@ -119,8 +120,20 @@ const Tables = () => {
       setItems(data);
     };
 
+    const getSearchApiNormal = async () => {
+      const response = await axios.get(`/api/auth/user-list`, {
+        headers: {
+          'authorization': token
+        }
+      });
+      const data = response.data.data;
+      setItems(data);
+    };
+
     if (search !== "" || searchStatus !== "" || searchRole !== "" || searchDepartment !== "") {
       getSearchApi();
+    } else {
+      getSearchApiNormal();
     }
   }, [search, searchStatus, searchRole, searchDepartment]);
 
@@ -128,15 +141,20 @@ const Tables = () => {
 
   const departmentChange = (e) => {
     setSearchDepartment(e.target.value);
-    console.log(e.target.value)
   }
   const roleChange = (e) => {
     setSearchRole(e.target.value);
-    console.log(e.target.value)
   }
   const statusChange = (e) => {
     setSearchStatus(e.target.value);
-    console.log(e.target.value)
+  }
+
+  const clearFilter = () => {
+    setFilterToggle(!filterToggle);
+    setSearchDepartment("");
+    setSearchRole("");
+    setSearchStatus("");
+
   }
 
   return (
@@ -160,7 +178,7 @@ const Tables = () => {
                 <CCol md="4">
                   {
                     filterToggle === false ? <button className="btn btn-primary btn-block" onClick={() => setFilterToggle(!filterToggle)}>Add Filter</button> :
-                      <button className="btn btn-primary btn-block" onClick={() => setFilterToggle(!filterToggle)}>Clear Filter</button>
+                      <button className="btn btn-primary btn-block" onClick={clearFilter}>Clear Filter</button>
                   }
                 </CCol>
               </CRow>
@@ -198,8 +216,8 @@ const Tables = () => {
               <CDataTable
                 items={items}
                 fields={fields}
-                itemsPerPage={5}
-                pagination
+                // itemsPerPage={5}
+                // pagination
                 scopedSlots={{
                   'name':
                     (item) => (
