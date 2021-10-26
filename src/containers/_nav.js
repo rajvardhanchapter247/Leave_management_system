@@ -10,34 +10,12 @@ const _nav = [
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
   },
 
-  // ! Employees sidebar
+  // ! Holidays sidebar
   {
-    _tag: 'CSidebarNavDropdown',
-    name: 'Employees',
-    route: '/base',
-    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon" />,
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'All Employees',
-        to: '/employees/all',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Holidays',
-        to: '/employees/holidays',
-      },
-      // {
-      //   _tag: 'CSidebarNavItem',
-      //   name: 'Leaves (Admin)',
-      //   to: 'leaves-admin',
-      // },
-      // {
-      //   _tag: 'CSidebarNavItem',
-      //   name: 'Leaves (Employee)',
-      //   to: 'leave-employees',
-      // },
-    ]
+    _tag: 'CSidebarNavItem',
+    name: 'Holidays',
+    to: '/holidays',
+    icon: <CIcon name="cil-object-group" customClasses="c-sidebar-nav-icon" />,
   },
 
   // ! Users sidebar
@@ -45,7 +23,7 @@ const _nav = [
     _tag: 'CSidebarNavItem',
     name: 'Users',
     to: '/users',
-    icon: <CIcon name="cil-contact" customClasses="c-sidebar-nav-icon" />,
+    icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon" />,
   },
   {
     _tag: 'CSidebarNavItem',

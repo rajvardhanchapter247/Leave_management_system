@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { TextField } from './TextField';
+import { TextField } from "../../../components/textfield/TextField"
 import { useHistory } from 'react-router-dom';
 import axios from 'axios'
 import { setUserSession, getToken } from '../../storage/LocalStorage';
@@ -43,7 +43,6 @@ const Login = () => {
         email: data.email,
         password: data.password
       });
-      console.log(response);
       setUserSession(response.data.token, response.data.data.role);
       history.push('/dashboard');
     } catch (error) {

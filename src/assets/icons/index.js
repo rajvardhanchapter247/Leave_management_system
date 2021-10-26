@@ -137,7 +137,8 @@ import {
   cilGrain,
   cilMoodVeryGood,
   cilPen,
-  
+  cilBraille
+
 } from '@coreui/icons'
 
 export const icons = Object.assign({}, {
@@ -145,6 +146,7 @@ export const icons = Object.assign({}, {
   logo,
   logoNegative
 }, {
+  cilBraille,
   cilPen,
   cilMoodVeryGood,
   cilCheckAlt,

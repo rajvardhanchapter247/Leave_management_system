@@ -16,8 +16,6 @@ const TheLayout = () => {
     let token = getToken();
     if (token === null) {
       history.push("/login")
-    } else {
-      history.push("/dashboard")
     }
   }, [])
 

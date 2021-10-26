@@ -18,13 +18,51 @@ import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
 
-const AddUser = (props) => {
-    const [reportingPersons, setReportingPersons] = useState([]);
+const UpdateUser = (props) => {
     const token = getToken();
+    // const [singleUser, setSingleUser] = useState([]);
+    const [reportingPersons, setReportingPersons] = useState([]);
 
-    useEffect(() => {
-        ReportingPersons();
-    }, []);
+    // //! fetch users list from api
+    // const fetchUser = async () => {
+    //     try {
+    //         const response = await axios.get(`/api/auth/user-view/${props.updateId}`, {
+    //             headers: {
+    //                 'authorization': token
+    //             }
+    //         });
+    //         setSingleUser(response.data.data[0]);
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // if (props.showHide === true) {
+    //     fetchUser();
+    // }
+
+    // ! update user api
+    const updateUserApi = async (values) => {
+        try {
+            const response = await axios.put(`/api/auth/update-user/${props.updateId}`, {
+                firstName: values.fname,
+                middleName: values.mname,
+                lastName: values.lname,
+                email: values.email,
+                department: values.department,
+                role: values.role,
+                reportingPerson: values.reportingPerson,
+                gender: values.gender
+            }, {
+                headers: {
+                    'authorization': token
+                }
+            });
+            console.log("Update user Successfully", response);
+        } catch (error) {
+            console.log("Something went wrong!", error)
+        }
+    }
 
     const validate = Yup.object({
         email: Yup.string().trim()
@@ -33,7 +71,7 @@ const AddUser = (props) => {
         fname: Yup.string().trim()
             .max(15, 'Maximum 15 character allow.')
             .required('First Name is required'),
-        mname: Yup.string("").trim(),
+        mname: Yup.string().trim(),
         lname: Yup.string().trim()
             .max(15, 'Maximum 15 character allow.')
             .required('Last Name is required'),
@@ -41,6 +79,19 @@ const AddUser = (props) => {
             .required('Designation is required'),
         gender: Yup.string().required("Gender is require"),
     })
+
+    const onSubmitEvent = (values) => {
+        updateUserApi(values);
+        document.getElementById("form").reset();
+        props.toggleModel();
+    }
+
+    const [selectedOption, setSelectedOption] = useState(null)
+    const [selectedReportingPersons, setSelectedReportingPersons] = useState();
+    const handleChange = (selectedOptionByUser) => {
+        setSelectedOption(selectedOptionByUser);
+        setSelectedReportingPersons(Array.isArray(selectedOptionByUser) ? selectedOptionByUser.map(option => option.value) : []);
+    };
 
     //! fetch Reporting Persons from api
     const ReportingPersons = async () => {
@@ -52,46 +103,13 @@ const AddUser = (props) => {
         setReportingPersons(response.data.data);
     }
 
-    //! add user in api
-    const addUser = async (data) => {
-        try {
-            await axios.post('/api/auth/add-user', {
-                firstName: data.fname,
-                middleName: data.mname,
-                lastName: data.lname,
-                email: data.email,
-                designation: data.designation,
-                role: data.role,
-                department: data.department,
-                reportingPerson: selectedReportingPersons,
-                gender: data.gender,
-            }, {
-                headers: {
-                    'authorization': token
-                },
-            });
-        } catch (error) {
-            // Handle Error Here
-            console.log("Something went wrong Please try again !");
-            console.log("error ==>" + error);
-        }
-    };
-
-    const onSubmitEvent = (values) => {
-        props.toggleModel();
-        addUser(values);
-        document.getElementById("form").reset();
-    }
-
-    const [selectedOption, setSelectedOption] = useState(null)
-    const [selectedReportingPersons, setSelectedReportingPersons] = useState();
-    const handleChange = (selectedOptionByUser) => {
-        setSelectedOption(selectedOptionByUser);
-        setSelectedReportingPersons(Array.isArray(selectedOptionByUser) ? selectedOptionByUser.map(option => option.value) : []);
-    };
+    useEffect(() => {
+        ReportingPersons();
+    }, []);
 
     return (
         <>
+            {/* {singleUser.firstName ? */}
             <CModal
                 show={props.showHide}
                 onClose={props.toggleModel}
@@ -99,24 +117,23 @@ const AddUser = (props) => {
                 className="modal"
                 tabIndex="-1"
             >
-                {/* <CForm> */}
                 <CModalHeader closeButton>
-                    <CModalTitle>Create user</CModalTitle>
+                    <CModalTitle>Update user</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     <CRow>
                         <CCol md="12">
                             <Formik
                                 initialValues={{
-                                    fname: '',
-                                    mname: '',
-                                    lname: '',
-                                    email: '',
-                                    department: 'Engineering',
-                                    designation: '',
-                                    role: 'Admin',
+                                    fname: "",
+                                    mname: "",
+                                    lname: "",
+                                    email: "",
+                                    designation: "",
+                                    role: "Admin",
+                                    department: "Engineering",
                                     gender: '',
-
+                                    reportingPerson: "",
                                 }}
                                 validationSchema={validate}
                                 onSubmit={onSubmitEvent}
@@ -126,27 +143,27 @@ const AddUser = (props) => {
                                         <CRow>
                                             <CCol md="6">
                                                 <CFormGroup>
-                                                    <TextField label="First Name" placeholder="John" name="fname" type="text" />
+                                                    <TextField label="First Name" name="fname" type="text" />
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
-                                                    <TextField label="Middle Name" placeholder="Steve" name="mname" type="text" />
+                                                    <TextField label="Middle Name" name="mname" type="text" />
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
-                                                    <TextField label="Last Name" placeholder="Doe" name="lname" type="text" />
+                                                    <TextField label="Last Name" name="lname" type="text" />
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
-                                                    <TextField label="Email" placeholder="johndoe@gmail.com" name="email" type="email" />
+                                                    <TextField label="Email" name="email" type="email" />
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="12">
                                                 <CFormGroup>
-                                                    <TextField label="Designation" placeholder="Senior Developer" name="designation" type="text" />
+                                                    <TextField label="Designation" name="designation" type="text" />
                                                 </CFormGroup>
                                             </CCol>
 
@@ -199,16 +216,16 @@ const AddUser = (props) => {
                                                         <Field name="gender" render={({ field }) => {
                                                             return <>
                                                                 <CFormGroup variant="custom-radio" inline>
-                                                                    <CInputRadio {...field} custom id="male" name="gender" value="Male" />
-                                                                    <CLabel variant="custom-checkbox" htmlFor="male">Male</CLabel>
+                                                                    <CInputRadio {...field} custom id="update-male" name="gender" value="Male" />
+                                                                    <CLabel variant="custom-checkbox" htmlFor="update-male">Male</CLabel>
                                                                 </CFormGroup>
                                                                 <CFormGroup variant="custom-radio" inline>
-                                                                    <CInputRadio {...field} custom id="female" name="gender" value="Female" />
-                                                                    <CLabel variant="custom-checkbox" htmlFor="female">Female</CLabel>
+                                                                    <CInputRadio {...field} custom id="update-female" name="gender" value="Female" />
+                                                                    <CLabel variant="custom-checkbox" htmlFor="update-female">Female</CLabel>
                                                                 </CFormGroup>
                                                                 <CFormGroup variant="custom-radio" inline>
-                                                                    <CInputRadio {...field} custom id="others" name="gender" value="Other" />
-                                                                    <CLabel variant="custom-checkbox" htmlFor="others">Others</CLabel>
+                                                                    <CInputRadio {...field} custom id="update-others" name="gender" value="Other" />
+                                                                    <CLabel variant="custom-checkbox" htmlFor="update-others">Others</CLabel>
                                                                 </CFormGroup>
                                                             </>
                                                         }}></Field>
@@ -228,8 +245,10 @@ const AddUser = (props) => {
                     </CRow>
                 </CModalBody>
             </CModal>
+            {/* : null} */}
+
         </>
     )
 }
 
-export default AddUser
+export default UpdateUser

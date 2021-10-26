@@ -1,4 +1,5 @@
 import React from 'react'
+import { useHistory } from 'react-router'
 import {
   // CBadge,
   CDropdown,
@@ -8,8 +9,16 @@ import {
   CImg
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { removeUserSession } from '../components/storage/LocalStorage'
 
 const TheHeaderDropdown = () => {
+  const history = useHistory();
+
+  const Logout = () => {
+    removeUserSession();
+    history.push("/login");
+  }
+
   return (
     <CDropdown
       inNav
@@ -34,7 +43,7 @@ const TheHeaderDropdown = () => {
           Settings
         </CDropdownItem>
         <CDropdownItem divider />
-        <CDropdownItem>
+        <CDropdownItem onClick={Logout}>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Log Out
         </CDropdownItem>
