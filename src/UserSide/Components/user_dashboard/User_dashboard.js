@@ -1,18 +1,11 @@
-import { CCard, CRow, CCardBody, CCol, CCardHeader, CForm, CFormGroup, CLabel, CInput } from '@coreui/react'
+import { CCard, CRow, CCardBody, CCol, CContainer, CCardHeader, CForm, CFormGroup, CLabel, CInput } from '@coreui/react'
 import React from 'react'
 import Full_calander from '../full_calander/Full_calander.jsx'
 
 
 
 const User_dashboard = () => {
-    const captureDate =dateRange => console.log(dateRange);
-    const captureReason =dateReason => console.log(dateReason);
-
-    const dateRange = dateRange;
-    const dateReason = dateReason;
-
-    console.log(dateRange);
-    console.log(dateReason);
+    
 
     return (
         <>
@@ -30,7 +23,7 @@ const User_dashboard = () => {
                                             <CLabel>Select date</CLabel>
                                             <CRow>
                                                 <CCol md="12">
-                                                    <Full_calander captureDate={captureDate} captureReason={captureReason}/>
+                                                    <Full_calander/>
                                                 </CCol>
                                             </CRow>
                                         </CFormGroup>
