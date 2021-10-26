@@ -170,7 +170,7 @@ export default class DemoApp extends React.Component {
                   <CCol md="12">
                     <CFormGroup>
                       <CLabel>Leave start date - to end date</CLabel>
-                      <CInput id="" type="text" defaultValue={this.state.date} placeholder="" />
+                      <CInput id="" type="text" value={`${this.state.startdate} to ${this.state.enddate}`} placeholder="" disabled/>
                     </CFormGroup>
                   </CCol>
                 </CRow>

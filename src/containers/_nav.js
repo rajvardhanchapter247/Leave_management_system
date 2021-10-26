@@ -26,11 +26,95 @@ const _nav = [
     icon: <CIcon name="cil-people" customClasses="c-sidebar-nav-icon" />,
   },
   {
-    _tag: 'CSidebarNavItem',
-    name: 'Users_dashboard',
-    to: '/User_dashboard',
-    icon: <CIcon name="cil-contact" customClasses="c-sidebar-nav-icon" />,
+    _tag: 'CSidebarNavDropdown',
+    name: 'User_side',
+    route: '',
+    icon: 'cil-puzzle',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Users_dashboard',
+        to: '/User_dashboard',
+        icon: <CIcon name="cil-contact" customClasses="c-sidebar-nav-icon" />,
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'User profile',
+        to: '/User_profile',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Forgot_password',
+        to: '/Forgot_password',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Forgot_password',
+        to: '/Forgot_password',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Forms',
+        to: '/base/forms',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Jumbotron',
+        to: '/base/jumbotrons',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'List group',
+        to: '/base/list-groups',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Navs',
+        to: '/base/navs',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Navbars',
+        to: '/base/navbars',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Pagination',
+        to: '/base/paginations',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Popovers',
+        to: '/base/popovers',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Progress',
+        to: '/base/progress-bar',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Switches',
+        to: '/base/switches',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Tables',
+        to: '/base/tables',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Tabs',
+        to: '/base/tabs',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Tooltips',
+        to: '/base/tooltips',
+      },
+    ],
   },
+  
 
 
   // // ! Department sidebar
