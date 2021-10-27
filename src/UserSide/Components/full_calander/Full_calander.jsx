@@ -24,6 +24,7 @@ import axios from 'axios'
 import { getToken } from '..//../storage/Local_Storage';
 
 
+
 export default class DemoApp extends React.Component {
 
   state = {
@@ -112,6 +113,8 @@ export default class DemoApp extends React.Component {
 
 
   render() {
+
+    
 
     const { date, reason } = this.state
 
@@ -222,10 +225,18 @@ export default class DemoApp extends React.Component {
       })
     }
 
+    
+
+    
+
+    
+
     const start_date = selectInfo.startStr;
     const end_date = selectInfo.endStr;
     var date_arry = [start_date, end_date]
     // console.log('date_arry: ', date_arry);
+
+    
 
 
     this.setState(prevState => ({
