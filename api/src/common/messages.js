@@ -7,6 +7,7 @@ const message = {
   PasswordNotMatched: 'Password did not match',
   PasswordChanged: 'Password changed successfully',
   InvalidEmail: 'Please enter valid email address',
+  EmailSent: 'Email sent. Please check your inbox.',
   UnexpectedError: 'Unexpected error occur.',
   notPermitted: 'You are not permitted to change :item',
   InvalidNumber: ':item must be in numeric digit only',
@@ -30,7 +31,7 @@ const message = {
   Created: ':item has been created successfully.',
   Updated: ':item has been updated successfully.',
   Deleted: ':item has been deleted successfully.',
-  AlreadyExist: ':item Already Sent.',
+  AlreadyExist: ':item Already Exist.',
   NotExist: ':item does not exist.',
 };
 

@@ -14,6 +14,56 @@ import {
 } from '../../utils';
 import { Types } from 'mongoose';
 
+/**
+ -----------------------
+       USER LOGIN
+ -----------------------
+ */
+/**
+ * @api {post} auth/login  User Login
+ * @apiName User Login
+ * @apiGroup Auth
+ * @apiPermission none
+ * @apiDescription Login API for User
+ * @apiParam {String} email Email of the User.
+ * @apiParam {String} password Password of the User.
+ * @apiParamExample {Object} Request-Example:
+{
+    "email": "jon@mail.com",
+    "password": "123456"
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+ *   message: "Logged in Successfully"
+ *   responseCode: 200,
+ *   data: userCheck,
+ * token: token,
+ * }
+ * @apiErrorExample {json} List error
+ *  HTTP/1.1 422 Unprocessable Entity
+ * {
+ *  message: "Invalid request",
+ *   success: false
+ *}
+ * HTTP/1.1 404 NotFound
+ * {
+ *    message:'User not found'
+ *  responseCode: 404,
+ *  success: false
+ * }
+ * * HTTP/1.1 400 accountDeactivated
+ * {
+ *    message:"Your account is Deactivated Please contact to Admin",
+ *  success: false
+ * }
+ * * HTTP/1.1 400 PasswordNotMatch
+ * {
+ *    message:"Password did not match",
+ *  success: false
+ * }
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const login = async (req, res) => {
   const errors = CheckValidation(req);
   if (!errors.isEmpty()) {
@@ -77,11 +127,57 @@ const login = async (req, res) => {
     });
   }
 };
+
 /**
- * Create a record
- * @param { req, res }
- * @returns JsonResponse
+ -----------------------
+      ADD USER
+ -----------------------
  */
+/**
+ * @api {post} auth/add-user  Add User
+ * @apiName addUser
+ * @apiGroup Auth
+ * @apiPermission admin
+ * @apiDescription Add API for User
+ * @apiParam {String} firstName First name of User.
+ * @apiParam {String} lastName Last name of User.
+ * @apiParam {String} middleName Middle name of User.
+ * @apiParam {String} email email of User.
+ * @apiParam {String} role role of User.
+ * @apiParam {String} gender gender of User.
+ * @apiParam {String} designation designation of User.
+ * @apiParam {String} department department of User.
+ * @apiParam {Array} reportingPerson reportingPerson of User.
+ * @apiParam {String} reason reason  for leave.
+ * @apiParamExample {Object} Request-Example:
+{
+    
+      "firstName":"mohan",
+      "lastName":"thakur",
+      "email":"mohanroy1@mailinator.com",
+      "middleName":"singh",
+     "department":"Engineering",
+      "role":"Employee",
+      "reportingPerson":["616804ff21f032a210461e7d"],
+      "gender":"Male"
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+ *   responseCode: 200,
+      data: result,
+      message: 'User Added successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
+
+ *  HTTP/1.1 400 AlreadyExist
+ * {
+       message: "User Already Exist
+ * }
+ *    HTTP/1.1 500 Internal Server Error
+ */
+
 const addUser = async (req, res) => {
   try {
     const { body, currentUser } = req;
@@ -154,6 +250,41 @@ const addUser = async (req, res) => {
     });
   }
 };
+/**
+ ---------------------------
+       FORGOT PASSWORD
+ ---------------------------
+
+ * @api {get} auth/forgot-password   Forgot password
+ * @apiName forgotPassword
+ * @apiGroup Auth
+ * @apiDescription  To recover forgot password
+ * @apiPermission none
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+ * {
+ *   message: 'Email sent. Please check your inbox.',
+ *   data: updateToken,
+ *   success: true
+ * }
+ * @apiErrorExample {json}  error
+ *    HTTP/1.1 400 EmailNotFound
+ * {
+ *    message:'Email not found',
+      success: false,
+ * }
+ *    HTTP/1.1 500 Unknown Error
+ * {
+ *    message: "Unexpected error occurred"
+ *    success: false,
+ *    
+ * }
+ *  HTTP/1.1 422 Unprocessable Entity
+ * {
+ *  message: "Invalid request",
+ *   success: false
+ * }
+ */
 const forgotPassword = async (req, res) => {
   try {
     const { body } = req;
@@ -197,7 +328,7 @@ const forgotPassword = async (req, res) => {
     }
     return res.status(200).json({
       success: true,
-      message: 'A Mail send to you, Please check Your Email',
+      message: Message.EmailSent,
     });
   } catch (error) {
     return res.status(500).json({
@@ -207,12 +338,33 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
-
 /**
- * Get only single record
- * @param { req, res }
- * @returns JsonResponse
+ ---------------------------
+         USER LIST
+ ---------------------------
+
+ * @api {get} auth/user-list       Get user list  
+ * @apiName userList
+ * @apiGroup Auth
+ * @apiDescription To get User List 
+ * @apiPermission Admin
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+ * {
+ *   message: 'User list fetched Successfully',
+ *   data: data,
+ *   totalRecords,
+ *   success: true
+ * }
+ * @apiErrorExample {json}  error
+ *    HTTP/1.1 500 Unknown Error
+ * {
+ *    message: "Unexpected error occurred"
+ *    success: false,
+ *    
+ * }
  */
+
 const userList = async (req, res) => {
   try {
     const { query } = req;
@@ -364,7 +516,31 @@ const userList = async (req, res) => {
     });
   }
 };
+/**
+ ---------------------------
+         USER VIEW
+ ---------------------------
 
+ * @api {get} auth/user-view/:id       Get a user Details  
+ * @apiName userView
+ * @apiGroup Auth
+ * @apiDescription Api To get User Details 
+ * @apiPermission Admin
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+ * {
+ *   message: 'User Details fetched Successfully',
+ *   data: data,
+ *   success: true
+ * }
+ * @apiErrorExample {json}  error
+ *    HTTP/1.1 500 Unknown Error
+ * {
+ *    message: "Unexpected error occurred"
+ *    success: false,
+ *    
+ * }
+ */
 const userView = async (req, res, next) => {
   try {
     const { params } = req;
@@ -404,7 +580,32 @@ const userView = async (req, res, next) => {
     });
   }
 };
+/**
+ ---------------------------
+    REPORTING PERSON LIST
+ ---------------------------
 
+ * @api {get} auth/reporting-person-list      Get Reporting Person list  
+ * @apiName reportingPerson
+ * @apiGroup Auth
+ * @apiDescription Api To get Reporting Person List 
+ * @apiPermission Admin/Employee
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+ * {
+ *   message: 'Reporting Person list fetched Successfully',
+ *   data: data,
+ *   totalRecords,
+ *   success: true
+ * }
+ * @apiErrorExample {json}  error
+ *    HTTP/1.1 500 Unknown Error
+ * {
+ *    message: "Unexpected error occurred"
+ *    success: false,
+ *    
+ * }
+ */
 const reportingPerson = async (req, res) => {
   try {
     let condition = { isDeleted: false, status: 'Active' };
@@ -449,9 +650,52 @@ const reportingPerson = async (req, res) => {
   }
 };
 /**
- * update a record
- * @param { req, res }
- * @returns JsonResponse
+ -----------------------
+      UPDATE USER
+ -----------------------
+ */
+/**
+ * @api {put} auth/update-user/:id  Update User
+ * @apiName updateUser
+ * @apiGroup Auth
+ * @apiPermission admin
+ * @apiDescription Update API for User
+ * @apiParam {String} firstName First name of User.
+ * @apiParam {String} lastName Last name of User.
+ * @apiParam {String} middleName Middle name of User.
+ * @apiParam {String} email email of User.
+ * @apiParam {String} role role of User.
+ * @apiParam {String} gender gender of User.
+ * @apiParam {String} designation designation of User.
+ * @apiParam {String} department department of User.
+ * @apiParam {Array} reportingPerson reportingPerson of User.
+ * @apiParam {String} reason reason  for leave.
+ * @apiParamExample {Object} Request-Example:
+{
+    
+      "firstName":"mohan",
+      "lastName":"thakur",
+      "email":"mohanroy1@mailinator.com",
+      "middleName":"singh",
+     "department":"Engineering",
+      "role":"Employee",
+      "reportingPerson":["616804ff21f032a210461e8d"],
+      "gender":"Male"
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+ *   responseCode: 200,
+      data: result,
+      message: 'User Updated successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
+ *  HTTP/1.1 404 NotFound
+ * {
+       message: "User Not Found."
+ * }
+ *    HTTP/1.1 500 Internal Server Error
  */
 const updateUser = async (req, res) => {
   try {
@@ -468,6 +712,7 @@ const updateUser = async (req, res) => {
       department,
       reportingPerson,
       gender,
+      designation,
     } = body;
     let { removeReportingPerson = [] } = body;
     removeReportingPerson = removeReportingPerson.filter(
@@ -485,6 +730,7 @@ const updateUser = async (req, res) => {
       firstName,
       lastName,
       middleName,
+      designation,
       role,
       gender,
       department,
@@ -520,6 +766,54 @@ const updateUser = async (req, res) => {
     });
   }
 };
+/**
+ -----------------------
+   UPDATE USER PROFILE
+ -----------------------
+ */
+/**
+ * @api {put} auth/update-profile  Update User Profile
+ * @apiName updateProfile
+ * @apiGroup Auth
+ * @apiPermission admin/Employee
+ * @apiDescription Update API for User Profile
+ * @apiParam {String} firstName First name of User.
+ * @apiParam {String} lastName Last name of User.
+ * @apiParam {String} middleName Middle name of User.
+ * @apiParam {String} email email of User.
+ * @apiParam {String} role role of User.
+ * @apiParam {String} gender gender of User.
+ * @apiParam {String} designation designation of User.
+ * @apiParam {String} department department of User.
+ * @apiParam {Array} reportingPerson reportingPerson of User.
+ * @apiParam {String} reason reason  for leave.
+ * @apiParamExample {Object} Request-Example:
+{
+    
+      "firstName":"mohan",
+      "lastName":"thakur",
+      "email":"mohanroy1@mailinator.com",
+      "middleName":"singh",
+     "department":"Engineering",
+      "role":"Employee",
+      "reportingPerson":["616804ff21f032a210461e8d"],
+      "gender":"Male"
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+ *   responseCode: 200,
+      data: result,
+      message: 'Profile Updated successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
+ *  HTTP/1.1 404 NotFound
+ * {
+       message: "User Not Found."
+ * }
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const updateProfile = async (req, res) => {
   try {
     const { body, currentUser } = req;
@@ -530,6 +824,7 @@ const updateProfile = async (req, res) => {
       role,
       department,
       reportingPerson,
+      designation,
       gender,
     } = body;
     const user = await UserModel.findOne(
@@ -547,7 +842,7 @@ const updateProfile = async (req, res) => {
       lastName,
       middleName,
       role,
-
+      designation,
       gender,
       department,
       modifiedBy: currentUser.userId,
@@ -577,6 +872,37 @@ const updateProfile = async (req, res) => {
   }
 };
 
+/**
+ ---------------------------
+    CURRENT USER VIEW
+ ---------------------------
+
+ * @api {get} auth/me      Get a current user Details  
+ * @apiName me
+ * @apiGroup Auth
+ * @apiDescription Api To get current User Details 
+ * @apiPermission Admin
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+ * {
+ *   message: 'Profile Details fetched Successfully',
+ *   data: data,
+ *   success: true
+ * }
+ * @apiErrorExample {json}  error
+ *    HTTP/1.1 404 Unknown Error
+ * {
+ *    message: "User Not Found."
+ *    success: false,
+ *    
+ * }
+ *    HTTP/1.1 500 Unknown Error
+ * {
+ *    message: "Unexpected error occurred"
+ *    success: false,
+ *    
+ * }
+ */
 const me = async (req, res) => {
   try {
     const { currentUser } = req;
@@ -585,6 +911,7 @@ const me = async (req, res) => {
     if (!data) {
       return res.status(404).json({
         message: Message.NotFound.replace(':item', 'User'),
+        success: false,
       });
     }
 
@@ -601,7 +928,39 @@ const me = async (req, res) => {
     });
   }
 };
-
+/**
+ -----------------------
+   UPDATE USER STATUS
+ -----------------------
+ */
+/**
+ * @api {patch} auth/update-status/:id  Update Status of User
+ * @apiName updateUserStatus
+ * @apiGroup Auth
+ * @apiPermission admin
+ * @apiDescription  API for Update Status of User
+ * @apiParam {String} status status of User.
+ * @apiParamExample {Object} Request-Example:
+{
+    
+      "status":"Inactive",
+    
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+      data: data,
+      message: 'User status updated successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
+ *  HTTP/1.1 404 not Found
+ * {
+       message: "User Not Found"
+       success: false
+ * }
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const updateUserStatus = async (req, res) => {
   try {
     const {
@@ -614,6 +973,7 @@ const updateUserStatus = async (req, res) => {
     if (!userData) {
       return res.status(404).json({
         message: Message.NotFound.replace(':item', 'User'),
+        success: false,
       });
     }
     const data = await UserModel.updateOne(
@@ -641,6 +1001,41 @@ const updateUserStatus = async (req, res) => {
     });
   }
 };
+/**
+ -----------------------
+   UPDATE USER PROFILE
+ -----------------------
+ */
+/**
+ * @api {put} auth/change-password  Change Password
+ * @apiName changePassword
+ * @apiGroup Auth
+ * @apiPermission admin/Employee
+ * @apiDescription  API for Change Password
+ * @apiParam {String} oldPassword Old Password of User.
+ * @apiParam {String} newPassword New Password of User.
+ * @apiParamExample {Object} Request-Example:
+{
+    
+      "oldPassword":"123456",
+      "newPassword":"654321",
+    
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+ *   responseCode: 200,
+      data: result,
+      message: 'Password Changed successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
+ *  HTTP/1.1 400 PasswordNotMatched
+ * {
+       message: "Password did not Matched"
+ * }
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const changePassword = async (req, res) => {
   try {
     const {
@@ -683,7 +1078,27 @@ const changePassword = async (req, res) => {
     });
   }
 };
-
+/**
+ -----------------------
+      DELETE USER 
+ -----------------------
+ */
+/**
+ * @api {delete} auth/delete-user/:id  Delete User
+ * @apiName userDelete
+ * @apiGroup Auth
+ * @apiPermission admin
+ * @apiDescription  API for Delete User
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+      data: result,
+      message: 'User Changed successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const userDelete = async (req, res) => {
   try {
     const {
@@ -717,9 +1132,6 @@ const userDelete = async (req, res) => {
   }
 };
 
-/**
- * Export as a single common js module
- */
 export default {
   login,
   me,
