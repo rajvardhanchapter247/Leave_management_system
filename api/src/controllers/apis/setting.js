@@ -1,7 +1,7 @@
 import { SettingModel, UserModel } from '../../models';
 
 import { Message } from '../../common';
-
+import { CheckValidation, ValidationFormatter } from '../../utils';
 import { Types } from 'mongoose';
 
 /**
@@ -97,6 +97,13 @@ const settingView = async (req, res) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 const updateSetting = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const {
       params: { id },
