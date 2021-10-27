@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   CCard,
   CCardBody,
@@ -7,21 +7,23 @@ import {
   CDataTable,
   CRow,
   CBadge
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import axios from 'axios'
-import { getToken } from '../storage/LocalStorage'
-import AddUser from '../adduser/AddUser'
-import StatusModel from '../statusmodel/StatusModel'
-import UpdateUser from '../updateuser/UpdateUser'
-import DeleteUser from '../deleteuser/DeleteUser'
-import UserDetails from '../userdetails/UserDetails'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import axios from 'axios';
+import moment from 'moment'
+import dateformat from 'dateformat'
+import { getToken } from '../../storage/Local_Storage'
 
-const fields = ['name', 'department', 'email', 'role', 'status', 'actions']
 
-const Tables = () => {
+
+const fields = ['fullName', 'datesToRequest', 'reason', 'status']
+
+
+
+const Leave_list = () => {
   const [toggle, setToggle] = useState(false)
   const [usersList, setUsersList] = useState([]);
+  const [newdatesList,setNewdatesList] = useState()
   const token = getToken();
 
   useEffect(() => {
@@ -30,13 +32,31 @@ const Tables = () => {
 
   //! fetch users list from api
   const fetchUsers = async () => {
-    const response = await axios.get(`/api/auth/user-list?limit=30`, {
+    const response = await axios.get(`/api/leave-request/list`, {
       headers: {
         'authorization': token
       }
     });
-    // console.log(response.data.data);
-    setUsersList(response.data.data)
+
+    setUsersList(response.data.data);
+    console.log(response.data.data);
+    // var dateToRes = [];
+    // await Promise.all((response.data.data).map((val,key)=>{
+    
+    //   val.datesToRequest.map((ree, obj)=>{
+      
+    //   var dateNew = moment(ree).format('YYYY-MM-DD')
+    //   console.log(`===> ${ree}`);
+    //   response.data.data.push({datesToRequest: dateNew});
+    //   console.log('dateNew: ', dateNew);
+
+    //   })
+    // }))
+    // // console.log('dateToRes: ', dateToRes);
+    // console.log('esponse.data.data: ', response.data.data);
+    // setNewdatesList(response.data.data)
+
+
   }
 
   // ! change model add use state
@@ -45,13 +65,15 @@ const Tables = () => {
   }
 
   // ! status model
-  const [statusModelToggle, setStatusModelToggle] = useState(false);
-  const [statusId, setStatusId] = useState(null);
+  
+  const getDateTime = (data) => {
+    return moment(data).format("YYYY-MM-DD  ");
+  };
+  
   const [status, setStatus] = useState(null);
   // ! change model status state
   const changeModelState = (statusId, buttonStatus) => {
-    setStatusId(statusId);
-    setStatusModelToggle(!statusModelToggle);
+    
     setStatus(buttonStatus);
   }
 
@@ -85,15 +107,12 @@ const Tables = () => {
           <CCard>
             <CCardHeader>
               Users List
-              <div className="card-header-actions">
-                <button className="btn btn-primary btn-sm ml-5" onClick={changeState} type="submit">Add user</button>
-              </div>
             </CCardHeader>
             <CCardBody>
               <CDataTable
                 items={usersList}
                 fields={fields}
-                itemsPerPage={10}
+                itemsPerPage={5}
                 pagination
                 scopedSlots={{
                   'name':
@@ -102,20 +121,13 @@ const Tables = () => {
                         {item.fullName}
                       </td>
                     ),
-                  'actions':
+                    'datesToRequest':
                     (item) => (
-                      <td>
-                        <CBadge color="primary" className="pointer">
-                          <CIcon name="cil-pen" onClick={() => updateUser(item._id)} />
-                        </CBadge>
-                        <CBadge color="success" className="pointer mx-1">
-                          <CIcon name="cil-braille" onClick={() => userDetails(item._id)} />
-                        </CBadge>
-                        <CBadge color="danger" className="pointer">
-                          <CIcon name="cil-trash" onClick={() => deleteUser(item._id)} />
-                        </CBadge>
+                      <td className="text-capitalize">
+                        {item.datesToRequest.map(date => getDateTime(date))}
                       </td>
                     ),
+                    
                   'status':
                     (item) => (
                       <td>
@@ -138,15 +150,12 @@ const Tables = () => {
         </CCol>
       </CRow>
 
-      <AddUser toggleModel={changeState} showHide={toggle} />
-      <StatusModel toggleModel={changeModelState} showHide={statusModelToggle} statusId={statusId} status={status} />
-      <UpdateUser toggleModel={updateUser} showHide={updateUserModelToggle} updateId={updateId} />
-      <DeleteUser toggleModel={deleteUser} showHide={deleteUserModelToggle} deleteId={deleteId} />
-      <UserDetails toggleModel={userDetails} showHide={userDetailsModelToggle} userDetailsId={userDetailsId}/>
+      
+
     </>
   )
 }
 
-export default Tables
+export default Leave_list;
 
 

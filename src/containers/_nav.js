@@ -44,8 +44,8 @@ const _nav = [
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Forgot_password',
-        to: '/Forgot_password',
+        name: 'Leave_list',
+        to: '/Leave_list',
       },
       {
         _tag: 'CSidebarNavItem',
