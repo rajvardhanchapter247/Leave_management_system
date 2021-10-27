@@ -424,7 +424,7 @@ const updateLeaveStatus = async (req, res) => {
 
     if (currentUser.role === 'Employee') {
       return res.status(400).json({
-        message: 'You are not permitted to change leave status',
+        message: Message.notPermitted.replace(':item', 'Leave Status'),
         success: false,
       });
     }

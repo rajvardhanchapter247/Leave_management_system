@@ -32,6 +32,12 @@ const updateSetting = async (req, res) => {
     } = req;
     const { websiteUrl, youtubeUrl, linkedinUrl, twitterUrl, orgName, email } =
       body;
+    if (currentUser.role !== 'Admin') {
+      return res.status(400).json({
+        message: Message.notPermitted.replace(':item', 'Setting'),
+        success: false,
+      });
+    }
     const setting = await SettingModel.findOne({ _id: id }, { _id: 1 });
     if (!setting) {
       return res.status(404).json({
