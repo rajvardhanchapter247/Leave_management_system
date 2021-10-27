@@ -17,8 +17,11 @@ import {
   CModalHeader,
   CModalTitle,
   CRow,
-  CContainer
+  CContainer,
+  CTextarea
 } from '@coreui/react'
+import axios from 'axios'
+import { getToken } from '..//../storage/Local_Storage';
 
 
 export default class DemoApp extends React.Component {
@@ -26,22 +29,96 @@ export default class DemoApp extends React.Component {
   state = {
     weekendsVisible: true,
     currentEvents: [],
-    primary: false,
-    date: "",
-    reason : ""
+    primary: false
   }
-  setCalenderState = () => {
-    this.setState(
-      {
-        ...this.state,
-        primary: !this.state.primary
-      }
-    )
+  constructor(props) {
+    super(props);
+    this.state = {
+      startdate: "",
+      enddate: "",
+      reason: ""
+    };
+    this.onInputchange = this.onInputchange.bind(this);
+    this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
+  onInputchange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+
+
+  onSubmitForm(e) {
+
+    e.preventDefault();
+
+
+    var start = new Date(this.state.startdate);
+    var end = new Date(this.state.enddate);
+
+    var dateArry = [];
+    // loop for every day
+    for (var day = start; day <= end; day.setDate(day.getDate() + 1)) {
+
+      // console.log(day);
+      var todayDate = new Date(day).toISOString().slice(0, 10);
+      console.log(todayDate);
+
+      dateArry.push(todayDate);
+
+
+
+    }
+    console.log(dateArry);
+
+
+
+    const token = getToken();
+    axios
+      .post('/api/leave-request/add', {
+        datesToRequest: dateArry,
+        reason: this.state.reason
+      }, {
+        headers: {
+          'authorization': token,
+        }
+      })
+      .then(response => {
+        console.log(response);
+        alert("Submit leave request")
+      })
+      .catch(error => {
+        console.log(error);
+      })
+
+
+    this.setState(prevState => ({
+      primary: !prevState.primary
+    }))
+
+  }
+
+
+  setCalenderState = () => {
+    this.setState(prevState => ({
+      primary: !prevState.primary
+    }))
+  }
+
+
+
+
+
   render() {
+
+    const { date, reason } = this.state
+
     return (
       <>
+
+        {/* Full calander start here */}
 
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -62,13 +139,22 @@ export default class DemoApp extends React.Component {
           eventClick={this.handleEventClick}
           eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
         />
+
+
+        {/* Full calander end here */}
+
+
+
+
+        {/* modal start here */}
+
         <CContainer>
           <CModal
             show={this.state.primary}
-            onClick={this.setCalenderState}
+            onClose={this.setCalenderState}
             color="primary"
           >
-            <CForm>
+            <CForm >
               <CModalHeader closeButton>
                 <CModalTitle>Modal title</CModalTitle>
               </CModalHeader>
@@ -77,13 +163,14 @@ export default class DemoApp extends React.Component {
                   <CCol md="12">
                     <CFormGroup>
                       <CLabel>Leave reason</CLabel>
-                      <CInput id="leave" type="text"  placeholder="" required/>
+                      <CTextarea id="leave" type="text" name="reason" value={reason}
+                        onChange={this.onInputchange} placeholder="" required />
                     </CFormGroup>
                   </CCol>
                   <CCol md="12">
                     <CFormGroup>
                       <CLabel>Leave start date - to end date</CLabel>
-                      <CInput id="" type="text" defaultValue={this.state.date} placeholder="" required/>
+                      <CInput id="" type="text" value={`${this.state.startdate} to ${this.state.enddate}`} placeholder="" disabled/>
                     </CFormGroup>
                   </CCol>
                 </CRow>
@@ -95,7 +182,7 @@ export default class DemoApp extends React.Component {
                   </CButton>
                 </CFormGroup>
                 <CFormGroup>
-                  <CButton color="primary" onClick={this.setCalenderState}>
+                  <CButton color="primary" onClick={this.onSubmitForm}>
                     Submit
                   </CButton>
                 </CFormGroup>
@@ -103,6 +190,8 @@ export default class DemoApp extends React.Component {
             </CForm>
           </CModal>
         </CContainer>
+
+        {/* modal end here */}
 
       </>
     )
@@ -112,12 +201,13 @@ export default class DemoApp extends React.Component {
 
   handleDateSelect = (selectInfo) => {
     this.setState(
-      {
-        ...this.state,
-        primary: true
-      }
+      this.setState(prevState => ({
+        primary: !prevState.true
+      }))
     )
-    let title = ""
+
+    let title = this.state.reason
+
     let calendarApi = selectInfo.view.calendar
 
     calendarApi.unselect() // clear date selection
@@ -131,17 +221,17 @@ export default class DemoApp extends React.Component {
         allDay: selectInfo.allDay
       })
     }
-    
+
     const start_date = selectInfo.startStr;
     const end_date = selectInfo.endStr;
     var date_arry = [start_date, end_date]
-    this.props.captureDate(date_arry);
-    this.props.captureReason(title);
-   
-    this.setState({
-      ...this.state,
-      date :`${start_date} to ${end_date}`
-    })
+    // console.log('date_arry: ', date_arry);
+
+
+    this.setState(prevState => ({
+      startdate: `${start_date}`,
+      enddate: `${end_date}`
+    }))
 
   }
 
@@ -163,4 +253,3 @@ function renderEventContent(eventInfo) {
     </>
   )
 }
-

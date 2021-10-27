@@ -77,10 +77,10 @@ const AddUser = (props) => {
         }
     };
 
-    const onSubmitEvent = (values) => {
+    const onSubmitEvent = (values, onSubmitProps) => {
         props.toggleModel();
         addUser(values);
-        document.getElementById("form").reset();
+        onSubmitProps.resetForm();
     }
 
     const [selectedOption, setSelectedOption] = useState(null)
@@ -99,7 +99,6 @@ const AddUser = (props) => {
                 className="modal"
                 tabIndex="-1"
             >
-                {/* <CForm> */}
                 <CModalHeader closeButton>
                     <CModalTitle>Create user</CModalTitle>
                 </CModalHeader>
@@ -112,11 +111,11 @@ const AddUser = (props) => {
                                     mname: '',
                                     lname: '',
                                     email: '',
-                                    department: 'Engineering',
                                     designation: '',
+                                    department: 'Engineering',
                                     role: 'Admin',
-                                    gender: '',
-
+                                    gender: 'Other',
+                                    reportingPerson: []
                                 }}
                                 validationSchema={validate}
                                 onSubmit={onSubmitEvent}
@@ -171,10 +170,10 @@ const AddUser = (props) => {
                                                     return <>
                                                         <CFormGroup>
                                                             <CLabel htmlFor="role">Role</CLabel>
-                                                            <CSelect {...field} custom name="role" id="role">
-                                                                <option value="Admin">Admin</option>
-                                                                <option value="Employee">Employee</option>
-                                                            </CSelect>
+                                                                <CSelect {...field} custom name="role" id="role">
+                                                                    <option value="Admin">Admin</option>
+                                                                    <option value="Employee">Employee</option>
+                                                                </CSelect>
                                                         </CFormGroup>
                                                     </>
                                                 }}></Field>

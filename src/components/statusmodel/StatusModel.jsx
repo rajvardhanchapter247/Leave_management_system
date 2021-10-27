@@ -47,8 +47,8 @@ const StatusModel = (props) => {
                 </CModalBody>
 
                 <CModalFooter>
-                    <button className="btn btn-success" onClick={updateStatus} >Ok</button>
-                    <button className="btn btn-primary" onClick={props.toggleModel}>Cancel</button>
+                    <button className="btn btn-success" onClick={updateStatus} >Yes</button>
+                    <button className="btn btn-primary" onClick={props.toggleModel}>No</button>
                 </CModalFooter>
             </CModal>
         </>
