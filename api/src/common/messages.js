@@ -8,6 +8,7 @@ const message = {
   PasswordChanged: 'Password changed successfully',
   InvalidEmail: 'Please enter valid email address',
   UnexpectedError: 'Unexpected error occur.',
+  notPermitted: 'You are not permitted to change :item',
   InvalidNumber: ':item must be in numeric digit only',
   AccountDeactivated: 'Your account is Deactivated Please contact to Admin',
   NumberLengthError: ':item must be between :min to :max numbers',

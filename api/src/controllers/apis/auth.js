@@ -469,6 +469,11 @@ const updateUser = async (req, res) => {
       reportingPerson,
       gender,
     } = body;
+    let { removeReportingPerson = [] } = body;
+    removeReportingPerson = removeReportingPerson.filter(
+      (item) => !reportingPerson.includes(item)
+    );
+
     const user = await UserModel.findOne({ _id: id }, { _id: 1 });
     if (!user) {
       return res.status(404).json({
@@ -495,8 +500,13 @@ const updateUser = async (req, res) => {
       },
       { runValidators: true } // For run enum mongoose validation.
     );
-    // const userData = new UserModel(data);
-    // const result = await userData.updateOne({ _id: id });
+    const removeReportingPersonData = await UserModel.updateOne(
+      { _id: id },
+      {
+        $pull: { reportingPerson: { $in: removeReportingPerson } },
+      }
+    );
+
     return res.status(200).json({
       success: true,
       message: Message.UpdateSuccess.replace(':item', 'User'),

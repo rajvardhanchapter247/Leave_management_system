@@ -1,17 +1,7 @@
-import jwt from 'jsonwebtoken';
-import { UserModel, LeaveRequestModel } from '../../models';
+import { UserModel, LeaveRequestModel, SettingModel } from '../../models';
 
 import { Message, Constant } from '../../common';
-import {
-  generatePassword,
-  generateSalt,
-  encryptPassword,
-  comparePassword,
-  Email,
-  AvailableTemplates,
-  ValidationFormatter,
-  CheckValidation,
-} from '../../utils';
+import { Email, AvailableTemplates } from '../../utils';
 import { Types } from 'mongoose';
 
 /**
@@ -59,6 +49,10 @@ const addLeaveRequest = async (req, res) => {
       for (const iterator of reportingPerson) {
         await reportingPersonEmail.push(iterator.email.toString());
       }
+
+      const setting = await SettingModel.find({});
+      let hrEmail = setting[0].email;
+      console.log('hrEmail', hrEmail);
       const emailSend = new Email();
       await emailSend.setCC(reportingPersonEmail);
       await emailSend.setTemplate(AvailableTemplates.LEAVE_REQUEST, {
@@ -66,7 +60,7 @@ const addLeaveRequest = async (req, res) => {
         reason,
         datesToRequest,
       });
-      await emailSend.sendEmail(Constant.hrEmail);
+      await emailSend.sendEmail(hrEmail);
     } catch (error) {
       return res.status(201).json({
         message: error.message,
@@ -428,7 +422,7 @@ const updateLeaveStatus = async (req, res) => {
 
     if (currentUser.role === 'Employee') {
       return res.status(400).json({
-        message: 'You are not permitted to change leave status',
+        message: Message.notPermitted.replace(':item', 'Leave Status'),
         success: false,
       });
     }
@@ -460,6 +454,7 @@ const updateLeaveStatus = async (req, res) => {
       for (const iterator of reportingPerson) {
         await reportingPersonEmail.push(iterator.email.toString());
       }
+
       const emailSend = new Email();
       await emailSend.setCC(reportingPersonEmail);
 
