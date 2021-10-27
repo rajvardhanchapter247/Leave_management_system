@@ -1,7 +1,12 @@
 import { UserModel, LeaveRequestModel, SettingModel } from '../../models';
 
 import { Message, Constant } from '../../common';
-import { Email, AvailableTemplates } from '../../utils';
+import {
+  Email,
+  AvailableTemplates,
+  CheckValidation,
+  ValidationFormatter,
+} from '../../utils';
 import { Types } from 'mongoose';
 
 /**
@@ -41,6 +46,13 @@ import { Types } from 'mongoose';
  *    HTTP/1.1 500 Internal Server Error
  */
 const addLeaveRequest = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const { body, currentUser } = req;
     const { datesToRequest, reason, leaveType } = body;
@@ -564,6 +576,13 @@ const myLeaveRequest = async (req, res) => {
  */
 
 const updateLeaveStatus = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const {
       params: { id },

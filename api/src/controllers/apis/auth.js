@@ -179,6 +179,13 @@ const login = async (req, res) => {
  */
 
 const addUser = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const { body, currentUser } = req;
     const {
@@ -286,6 +293,13 @@ const addUser = async (req, res) => {
  * }
  */
 const forgotPassword = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const { body } = req;
     const { email } = body;
@@ -698,6 +712,13 @@ const reportingPerson = async (req, res) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 const updateUser = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const {
       params: { id },
@@ -962,6 +983,13 @@ const me = async (req, res) => {
  *    HTTP/1.1 500 Internal Server Error
  */
 const updateUserStatus = async (req, res) => {
+  const errors = CheckValidation(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({
+      message: ValidationFormatter(errors.mapped()),
+      success: false,
+    });
+  }
   try {
     const {
       params: { id },

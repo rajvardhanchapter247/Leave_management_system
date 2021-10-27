@@ -4,7 +4,13 @@ import { verifyToken } from '../utils';
 import { AddLeaveRequestValidation, updateLeaveStatus } from '../validations';
 const router = express.Router();
 
-router.post('/add', verifyToken, LeaveRequestController.addLeaveRequest);
+import { AddLeaveRequestValidation, UpdateLeaveStatus } from '../validations';
+router.post(
+  '/add',
+  verifyToken,
+  AddLeaveRequestValidation,
+  LeaveRequestController.addLeaveRequest
+);
 router.get('/list', verifyToken, LeaveRequestController.leaveRequestList);
 router.get('/me', verifyToken, LeaveRequestController.myLeaveRequest);
 router.get('/view/:id', verifyToken, LeaveRequestController.leaveRequestView);
@@ -16,6 +22,7 @@ router.get(
 router.patch(
   '/update-status/:id',
   verifyToken,
+  UpdateLeaveStatus,
   LeaveRequestController.updateLeaveStatus
 );
 
