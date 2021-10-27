@@ -1,17 +1,7 @@
-import jwt from 'jsonwebtoken';
-import { UserModel, LeaveRequestModel } from '../../models';
+import { UserModel, LeaveRequestModel, SettingModel } from '../../models';
 
 import { Message, Constant } from '../../common';
-import {
-  generatePassword,
-  generateSalt,
-  encryptPassword,
-  comparePassword,
-  Email,
-  AvailableTemplates,
-  ValidationFormatter,
-  CheckValidation,
-} from '../../utils';
+import { Email, AvailableTemplates } from '../../utils';
 import { Types } from 'mongoose';
 
 /**
@@ -59,6 +49,12 @@ const addLeaveRequest = async (req, res) => {
       for (const iterator of reportingPerson) {
         await reportingPersonEmail.push(iterator.email.toString());
       }
+      let hrEmail = [];
+      const setting = await SettingModel.find({});
+      for (const iterator of hrEmail) {
+        await hrEmail.push(iterator.email.toString());
+      }
+      console.log('hrEmail', hrEmail);
       const emailSend = new Email();
       await emailSend.setCC(reportingPersonEmail);
       await emailSend.setTemplate(AvailableTemplates.LEAVE_REQUEST, {
@@ -66,7 +62,7 @@ const addLeaveRequest = async (req, res) => {
         reason,
         datesToRequest,
       });
-      await emailSend.sendEmail(Constant.hrEmail);
+      await emailSend.sendEmail(hrEmail);
     } catch (error) {
       return res.status(201).json({
         message: error.message,
@@ -460,6 +456,7 @@ const updateLeaveStatus = async (req, res) => {
       for (const iterator of reportingPerson) {
         await reportingPersonEmail.push(iterator.email.toString());
       }
+
       const emailSend = new Email();
       await emailSend.setCC(reportingPersonEmail);
 

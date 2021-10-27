@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { connect } from 'mongoose';
 import router from './routes';
-import { AdminSeeder } from './seeder';
+import { AdminSeeder, SettingSeeder } from './seeder';
 dotenv.config();
 const app = express();
 
@@ -16,6 +16,7 @@ try {
     () => {
       console.log('connected');
       AdminSeeder.addAdmin();
+      SettingSeeder.addSetting();
     }
   );
 } catch (error) {
