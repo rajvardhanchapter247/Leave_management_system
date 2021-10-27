@@ -1,10 +1,33 @@
-import jwt from 'jsonwebtoken';
 import { SettingModel, UserModel } from '../../models';
 
 import { Message } from '../../common';
 
 import { Types } from 'mongoose';
 
+/**
+ ---------------------------
+      VIEW SETTING DETAILS
+ ---------------------------
+ */
+
+/**
+ * @api {get} setting/  Setting details
+ * @apiName settingView
+ * @apiGroup Setting
+ * @apiPermission admin
+ * @apiDescription To fetch a Setting details
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+ * {
+ *    message:"Setting details fetched successfully",
+ *    responseCode: 200
+ *    data: result
+ *    success: true
+ * }
+ * @apiErrorExample {json} List error
+
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const settingView = async (req, res) => {
   try {
     const result = await SettingModel.find({});
@@ -22,7 +45,57 @@ const settingView = async (req, res) => {
     });
   }
 };
+/**
+ -----------------------
+    UPDATE SETTING 
+ -----------------------
+ */
+/**
+ * @api {put} setting/:id  Update Setting Details
+ * @apiName updateSetting
+ * @apiGroup Setting
+ * @apiPermission admin
+ * @apiDescription Update API for Setting Details
+ * @apiParam {String} websiteUrl url of the org.
+ * @apiParam {String} youtubeUrl url of the org youtube chanel.
+ * @apiParam {String} linkedinUrl url of the org linkedin account.
+ * @apiParam {String} twitterUrl url of the org twitterUrl account.
+ * @apiParam {String} orgName name of organization.
+ * @apiParam {Array} email emails of org.
+ * @apiParam {Array} removeEmail emails to remove of org.
+ * @apiParamExample {Object} Request-Example:
+{
+     websiteUrl:"www.chapter247.com",
+      youtubeUrl:"www.youtube.com/chapter247",
+      linkedinUrl:"www.linkedin.com/chapter247",
+      twitterUrl:"www.twitter.com/chapter247",
+      orgName:"chapter247",
+      email:["hr@chapter247.com"] ,
+}
+ * @apiSuccessExample {json} Success
+ * HTTP/1.1 200 OK
+* {
+ *   responseCode: 200,
+      data: result,
+      message: 'Setting details updated successfully.',
+      success: true,
+ * }
+ * @apiErrorExample {json} List error
 
+ *  HTTP/1.1 400 notPermitted
+ * {
+ *     code: 400,
+       message: "You are not permitted to update Setting",
+      success: false,
+ * }
+ *  HTTP/1.1 404 notFound
+ * {
+ * 
+       message: "Data not found",
+      success: false,
+ * }
+ *    HTTP/1.1 500 Internal Server Error
+ */
 const updateSetting = async (req, res) => {
   try {
     const {
@@ -93,6 +166,5 @@ const updateSetting = async (req, res) => {
 };
 export default {
   settingView,
-
   updateSetting,
 };
