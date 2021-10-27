@@ -8,10 +8,8 @@ import {
   CRow,
   CBadge
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import moment from 'moment'
-import dateformat from 'dateformat'
 import { getToken } from '../../storage/Local_Storage'
 
 
@@ -23,7 +21,6 @@ const fields = ['fullName', 'datesToRequest', 'reason', 'status']
 const Leave_list = () => {
   const [toggle, setToggle] = useState(false)
   const [usersList, setUsersList] = useState([]);
-  const [newdatesList,setNewdatesList] = useState()
   const token = getToken();
 
   useEffect(() => {
@@ -39,67 +36,17 @@ const Leave_list = () => {
     });
 
     setUsersList(response.data.data);
-    console.log(response.data.data);
-    // var dateToRes = [];
-    // await Promise.all((response.data.data).map((val,key)=>{
-    
-    //   val.datesToRequest.map((ree, obj)=>{
-      
-    //   var dateNew = moment(ree).format('YYYY-MM-DD')
-    //   console.log(`===> ${ree}`);
-    //   response.data.data.push({datesToRequest: dateNew});
-    //   console.log('dateNew: ', dateNew);
-
-    //   })
-    // }))
-    // // console.log('dateToRes: ', dateToRes);
-    // console.log('esponse.data.data: ', response.data.data);
-    // setNewdatesList(response.data.data)
-
-
   }
 
-  // ! change model add use state
-  const changeState = () => {
-    setToggle(!toggle);
-  }
-
-  // ! status model
   
   const getDateTime = (data) => {
-    return moment(data).format("YYYY-MM-DD  ");
+    return moment(data).format("YYYY-MM-DD , ");
   };
   
-  const [status, setStatus] = useState(null);
-  // ! change model status state
-  const changeModelState = (statusId, buttonStatus) => {
-    
-    setStatus(buttonStatus);
-  }
+  
+  
 
-  // ! update user model
-  const [updateUserModelToggle, setUpdateUserModelToggle] = useState(false);
-  const [updateId, setUpdateId] = useState(null);
-  const updateUser = (updateId) => {
-    setUpdateUserModelToggle(!updateUserModelToggle);
-    setUpdateId(updateId);
-  }
-
-  // ! delete user model
-  const [deleteUserModelToggle, setDeleteUserModelToggle] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-  const deleteUser = (deleteId) => {
-    setDeleteUserModelToggle(!deleteUserModelToggle);
-    setDeleteId(deleteId);
-  }
-
-  // ! user details model
-  const [userDetailsModelToggle, setUserDetailsModelToggle] = useState(false);
-  const [userDetailsId, setUserDetailsId] = useState(null);
-  const userDetails = (userDetailsId) => {
-    setUserDetailsModelToggle(!userDetailsModelToggle);
-    setUserDetailsId(userDetailsId);
-  }
+  
   return (
     <>
       <CRow>
@@ -133,10 +80,10 @@ const Leave_list = () => {
                       <td>
                         {
                           item.status === "Active" ?
-                            <CBadge color="success" className="pointer" onClick={() => changeModelState(item._id, item.status)}>
+                            <CBadge color="success" className="pointer">
                               {item.status}
                             </CBadge> :
-                            <CBadge color="primary" className="pointer" onClick={() => changeModelState(item._id, item.status)}>
+                            <CBadge color="primary" className="pointer">
                               {item.status}
                             </CBadge>
                         }
