@@ -30,8 +30,16 @@ const updateSetting = async (req, res) => {
       body,
       currentUser,
     } = req;
-    const { websiteUrl, youtubeUrl, linkedinUrl, twitterUrl, orgName, email } =
-      body;
+    const {
+      websiteUrl,
+      youtubeUrl,
+      linkedinUrl,
+      twitterUrl,
+      orgName,
+      email = [],
+    } = body;
+    let { removeEmail = [] } = body;
+    removeEmail = removeEmail.filter((item) => !email.includes(item));
     if (currentUser.role !== 'Admin') {
       return res.status(400).json({
         message: Message.notPermitted.replace(':item', 'Setting'),
@@ -64,7 +72,12 @@ const updateSetting = async (req, res) => {
       },
       { runValidators: true } // For run enum mongoose validation.
     );
-
+    const removeEmailData = await SettingModel.updateOne(
+      { _id: id },
+      {
+        $pull: { email: { $in: removeEmail } },
+      }
+    );
     return res.status(200).json({
       success: true,
       message: Message.UpdateSuccess.replace(':item', 'Setting'),
