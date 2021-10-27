@@ -13,19 +13,43 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
+import App1 from './test';
 
 const AddUser = (props) => {
-    const [reportingPersons, setReportingPersons] = useState([]);
+    const [reportingPersonsList, setReportingPersonsList] = useState([]);
     const token = getToken();
 
     useEffect(() => {
+        //! fetch Reporting Persons from api
+        const ReportingPersons = async () => {
+            const response = await axios.get('/api/auth/reporting-person-list', {
+                headers: {
+                    'authorization': token
+                }
+            })
+            setReportingPersonsList(response.data.data);
+        }
         ReportingPersons();
     }, []);
 
+    // ! form inital values
+    const initialValues = {
+        fname: '',
+        mname: '',
+        lname: '',
+        email: '',
+        designation: '',
+        department: 'Engineering',
+        role: 'Admin',
+        gender: '',
+        reportingPerson: []
+    }
+
+    // ! yup validation
     const validate = Yup.object({
         email: Yup.string().trim()
             .email('Email is invalid')
@@ -41,16 +65,6 @@ const AddUser = (props) => {
             .required('Designation is required'),
         gender: Yup.string().required("Gender is require"),
     })
-
-    //! fetch Reporting Persons from api
-    const ReportingPersons = async () => {
-        const response = await axios.get('/api/auth/reporting-person-list', {
-            headers: {
-                'authorization': token
-            }
-        })
-        setReportingPersons(response.data.data);
-    }
 
     //! add user in api
     const addUser = async (data) => {
@@ -83,11 +97,14 @@ const AddUser = (props) => {
         onSubmitProps.resetForm();
     }
 
-    const [selectedOption, setSelectedOption] = useState(null)
+    const [selectedOption, setSelectedOption] = useState()
     const [selectedReportingPersons, setSelectedReportingPersons] = useState();
     const handleChange = (selectedOptionByUser) => {
         setSelectedOption(selectedOptionByUser);
         setSelectedReportingPersons(Array.isArray(selectedOptionByUser) ? selectedOptionByUser.map(option => option.value) : []);
+        if (selectedReportingPersons === []) {
+
+        }
     };
 
     return (
@@ -105,21 +122,7 @@ const AddUser = (props) => {
                 <CModalBody>
                     <CRow>
                         <CCol md="12">
-                            <Formik
-                                initialValues={{
-                                    fname: '',
-                                    mname: '',
-                                    lname: '',
-                                    email: '',
-                                    designation: '',
-                                    department: 'Engineering',
-                                    role: 'Admin',
-                                    gender: 'Other',
-                                    reportingPerson: []
-                                }}
-                                validationSchema={validate}
-                                onSubmit={onSubmitEvent}
-                            >
+                            <Formik initialValues={initialValues} validationSchema={validate} onSubmit={onSubmitEvent} >
                                 {formik => (
                                     <Form id="form">
                                         <CRow>
@@ -170,10 +173,10 @@ const AddUser = (props) => {
                                                     return <>
                                                         <CFormGroup>
                                                             <CLabel htmlFor="role">Role</CLabel>
-                                                                <CSelect {...field} custom name="role" id="role">
-                                                                    <option value="Admin">Admin</option>
-                                                                    <option value="Employee">Employee</option>
-                                                                </CSelect>
+                                                            <CSelect {...field} custom name="role" id="role">
+                                                                <option value="Admin">Admin</option>
+                                                                <option value="Employee">Employee</option>
+                                                            </CSelect>
                                                         </CFormGroup>
                                                     </>
                                                 }}></Field>
@@ -182,12 +185,21 @@ const AddUser = (props) => {
                                             <CCol md="12">
                                                 <CLabel>Reporting Person</CLabel>
                                                 <Select
+                                                    name="reporting"
                                                     isMulti
+                                                    isSearchable={true}
                                                     value={selectedOption}
                                                     onChange={handleChange}
-                                                    options={reportingPersons}
+                                                    options={reportingPersonsList}
                                                 />
                                             </CCol>
+
+
+                                            {/* <FieldArray name="friends" render={({ field }) => (
+                                                    return
+                                                    <>  </>
+                                                )}
+                                            /> */}
 
                                             <CCol md="12" className="mt-2">
                                                 <CFormGroup row>
@@ -226,6 +238,8 @@ const AddUser = (props) => {
                         </CCol>
                     </CRow>
                 </CModalBody>
+
+                {/* <App1 /> */}
             </CModal>
         </>
     )
