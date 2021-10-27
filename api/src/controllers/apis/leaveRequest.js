@@ -49,11 +49,9 @@ const addLeaveRequest = async (req, res) => {
       for (const iterator of reportingPerson) {
         await reportingPersonEmail.push(iterator.email.toString());
       }
-      let hrEmail = [];
+
       const setting = await SettingModel.find({});
-      for (const iterator of hrEmail) {
-        await hrEmail.push(iterator.email.toString());
-      }
+      let hrEmail = setting[0].email;
       console.log('hrEmail', hrEmail);
       const emailSend = new Email();
       await emailSend.setCC(reportingPersonEmail);

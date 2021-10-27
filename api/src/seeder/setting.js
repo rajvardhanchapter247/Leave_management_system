@@ -3,6 +3,7 @@ import { generatePassword, generateSalt, encryptPassword } from '../utils';
 
 const addSetting = async () => {
   const result = await SettingModel.find();
+
   if (result.length <= 0) {
     await SettingModel.create({
       websiteUrl: 'www.chapter247.com',
