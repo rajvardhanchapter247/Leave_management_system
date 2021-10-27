@@ -70,24 +70,24 @@ const Tables = () => {
   const [pageCount, setPageCount] = useState(0);
   let limit = 10;
 
+  const fetchUserListWithLimit = async () => {
+    const response = await axios.get(`/api/auth/user-list?search=${search}&page=1&limit=${limit}`, {
+      headers: {
+        'authorization': token
+      }
+    });
+    const total = response.data.totalRecords;
+    const data = response.data.data;
+    setPageCount(Math.ceil(total / limit));
+    setItems(data);
+  };
 
   useEffect(() => {
-    const fetchUserListWithLimit = async () => {
-      const response = await axios.get(`/api/auth/user-list?page=1&limit=${limit}`, {
-        headers: {
-          'authorization': token
-        }
-      });
-      const total = response.data.totalRecords;
-      const data = response.data.data;
-      setPageCount(Math.ceil(total / limit));
-      setItems(data);
-    };
     fetchUserListWithLimit();
-  }, [limit]);
+  }, []);
 
   const fetchUserListWithLimitCurrentPage = async (currentPage) => {
-    const response = await axios.get(`/api/auth/user-list?page=${currentPage}&limit=${limit}`, {
+    const response = await axios.get(`/api/auth/user-list?search=${search}&page=${currentPage}&limit=${limit}`, {
       headers: {
         'authorization': token
       }
@@ -120,25 +120,16 @@ const Tables = () => {
       setItems(data);
     };
 
-    const getSearchApiNormal = async () => {
-      const response = await axios.get(`/api/auth/user-list`, {
-        headers: {
-          'authorization': token
-        }
-      });
-      const data = response.data.data;
-      setItems(data);
-    };
-
     if (search !== "" || searchStatus !== "" || searchRole !== "" || searchDepartment !== "") {
       getSearchApi();
     } else {
-      getSearchApiNormal();
+      fetchUserListWithLimit();
     }
   }, [search, searchStatus, searchRole, searchDepartment]);
 
 
 
+  // ! user select option by searching
   const departmentChange = (e) => {
     setSearchDepartment(e.target.value);
   }
@@ -149,6 +140,7 @@ const Tables = () => {
     setSearchStatus(e.target.value);
   }
 
+  // ! For clearing all filters
   const clearFilter = () => {
     setFilterToggle(!filterToggle);
     setSearchDepartment("");
@@ -272,25 +264,27 @@ const Tables = () => {
                 }
                 }
               />
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                breakLabel={"..."}
-                pageCount={pageCount}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
-                onPageChange={handlePageClick}
-                containerClassName={"pagination justify-content-start"}
-                pageClassName={"page-item"}
-                pageLinkClassName={"page-link"}
-                previousClassName={"page-item"}
-                previousLinkClassName={"page-link"}
-                nextClassName={"page-item"}
-                nextLinkClassName={"page-link"}
-                breakClassName={"page-item"}
-                breakLinkClassName={"page-link"}
-                activeClassName={"active"}
-              />
+              {items.length >= 10 ?
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
+                  pageCount={pageCount}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={3}
+                  onPageChange={handlePageClick}
+                  containerClassName={"pagination justify-content-start"}
+                  pageClassName={"page-item"}
+                  pageLinkClassName={"page-link"}
+                  previousClassName={"page-item"}
+                  previousLinkClassName={"page-link"}
+                  nextClassName={"page-item"}
+                  nextLinkClassName={"page-link"}
+                  breakClassName={"page-item"}
+                  breakLinkClassName={"page-link"}
+                  activeClassName={"active"}
+                />
+                : null}
             </CCardBody>
           </CCard>
 
