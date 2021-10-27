@@ -38,6 +38,7 @@
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.0",
     "axios": "^0.23.0",
     "core-js": "^3.9.1",
+    "dateformat": "^5.0.2",
     "formik": "^2.2.9",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",

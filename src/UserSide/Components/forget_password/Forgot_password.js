@@ -14,23 +14,21 @@ import {
   CRow
 } from '@coreui/react'
 
-const Forgot_password = () => {
-//   const history = useHistory();
+const Login = () => {
+  // const history = useHistory();
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const token = getToken();
     if (token === null) {
-    //   history.push("/login")
+      // history.push("/login")
     } else {
-    //   history.push("/dashboard")
+      // history.push("/dashboard")
     }
   }, [])
 
   const validate = Yup.object({
-    password: Yup.string().trim()
-      .min(6, 'Password must be at least 6 characters')
-      .required('Password is required'),
+    
     password: Yup.string().trim()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
@@ -40,11 +38,11 @@ const Forgot_password = () => {
     setError(null);
     try {
       const response = await axios.post("/api/auth/login", {
-        newPassword: data.password,
-        oldPassword: data.password
+        email: data.email,
+        password: data.password
       });
       setUserSession(response.data.token, response.data.data.role);
-    //   history.push('/dashboard');
+      // history.push('/dashboard');
     } catch (error) {
       // Handle Error Here
       setError("Something went wrong Please try again !");
@@ -59,17 +57,17 @@ const Forgot_password = () => {
 
   return (
     <>
-      <div className="c-app c-default-layout flex-row align-items-center">
+      <div className="flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
-            <CCol md="10">
+            <CCol md="12">
               <CCardGroup>
                 <CCard className="p-4">
                   <CCardBody>
-                    <p className="text-muted">Change your password</p>
+                    <p className="text-muted">Change password</p>
                     <Formik
                       initialValues={{
-                        password: '',
+                        email: '',
                         password: '',
                       }}
                       validationSchema={validate}
@@ -77,10 +75,11 @@ const Forgot_password = () => {
                     >
                       {formik => (
                         <Form id="form">
-                          <TextField label="New Password" name="newpassword" type="password" />
-                          <TextField label="Old password" name="oldpassword" type="password" />
+                          <TextField label="Old password" name="password" type="email" />
+                          <TextField label="New password" name="password" type="email" />
+                          <TextField label="Confirm password" name="password" type="password" />
                           {error && <div className="error-1">{error}</div>}
-                          <button className="btn btn-primary mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>Submit</button>
+                          <button className="btn btn-primary mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>Login</button>
                         </Form>
                       )}
                     </Formik>
@@ -96,4 +95,5 @@ const Forgot_password = () => {
   )
 }
 
-export default Forgot_password
+export default Login
+

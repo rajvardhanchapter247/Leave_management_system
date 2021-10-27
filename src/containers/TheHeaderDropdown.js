@@ -19,6 +19,10 @@ const TheHeaderDropdown = () => {
     history.push("/login");
   }
 
+  const User_profile = () => {
+    history.push("/User_profile");
+  }
+
   return (
     <CDropdown
       inNav
@@ -35,7 +39,7 @@ const TheHeaderDropdown = () => {
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem >
+        <CDropdownItem onClick={User_profile} >
           <CIcon name="cil-user" className="mfe-2" />Profile
         </CDropdownItem>
         <CDropdownItem>
