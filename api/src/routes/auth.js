@@ -24,12 +24,7 @@ router.put(
   AuthController.updateUser
 );
 
-router.put(
-  '/update-profile',
-  verifyToken,
-  // EditUserValidation,
-  AuthController.updateProfile
-);
+router.put('/update-profile', verifyToken, AuthController.updateProfile);
 router.put('/change-password', verifyToken, AuthController.changePassword);
 router.delete('/delete-user/:id', verifyToken, AuthController.userDelete);
 router.patch(

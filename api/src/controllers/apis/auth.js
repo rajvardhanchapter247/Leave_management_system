@@ -842,11 +842,11 @@ const updateProfile = async (req, res) => {
       firstName,
       lastName,
       middleName,
-      role,
-      department,
-      reportingPerson,
-      designation,
-      gender,
+      // role,
+      // department,
+      // reportingPerson,
+      // designation,
+      // gender,
     } = body;
     const user = await UserModel.findOne(
       { _id: currentUser.userId },
@@ -862,10 +862,10 @@ const updateProfile = async (req, res) => {
       firstName,
       lastName,
       middleName,
-      role,
-      designation,
-      gender,
-      department,
+      // role,
+      // designation,
+      // gender,
+      // department,
       modifiedBy: currentUser.userId,
     };
     const result = await UserModel.updateOne(
@@ -1031,7 +1031,7 @@ const updateUserStatus = async (req, res) => {
 };
 /**
  -----------------------
-   UPDATE USER PROFILE
+   CHANGE USER PASSWORD
  -----------------------
  */
 /**
