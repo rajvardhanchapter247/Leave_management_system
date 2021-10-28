@@ -10,7 +10,6 @@ import {
   CFormGroup,
   CInput,
   CSelect,
-  CSpinner
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import axios from 'axios'
@@ -22,7 +21,6 @@ import DeleteUser from '../deleteuser/DeleteUser'
 import { useHistory } from 'react-router'
 import ReactPaginate from "react-paginate";
 import { getDateTime } from '../../common/constant'
-// import Loader from "../../containers/Loader/Loader"
 
 const fields = ['name', 'department', 'email', 'createdAt', 'role', 'status', 'actions']
 
@@ -157,7 +155,7 @@ const Tables = () => {
     <>
       <CCard>
         <CCardHeader>
-          Users List <CSpinner grow color="primary"/>
+          Users List
           <div className="card-header-actions">
             <button className="btn btn-primary" onClick={changeState} type="submit">Add user</button>
           </div>

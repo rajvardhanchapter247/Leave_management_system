@@ -54,7 +54,6 @@ const StatusModel = (props) => {
                                     : <h5 className="text-center ">Are you sure you want to change status
                                         <span className={`font-weight-bold ${status ? "text-success" : "text-primary"}`}>{status ? " Active" : " Inactive"}</span> to <span className={`font-weight-bold ${status ? "text-primary" : "text-success"}`}>{status ? " Inactive" : " Active"}</span> ?</h5>
                             }
-
                         </CCol>
                     </CRow>
                 </CModalBody>

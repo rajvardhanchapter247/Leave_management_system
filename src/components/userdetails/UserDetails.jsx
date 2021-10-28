@@ -15,6 +15,7 @@ import {
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
 import Loader from '../../containers/Loader/Loader'
+import { titleCase } from '../../common/constant';
 
 const UserDetails = (props) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -71,13 +72,6 @@ const UserDetails = (props) => {
         }
     }
 
-    const titleCase = (str) => {
-        var splitStr = str.toLowerCase().split(' ');
-        for (var i = 0; i < splitStr.length; i++) {
-            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-        }
-        return splitStr.join(' ');
-    }
 
     return (
         <>
@@ -90,62 +84,62 @@ const UserDetails = (props) => {
                             </CCardHeader>
                             <CCardBody>
                                 <CForm>
-                                    <fieldset disabled>
+                                    <fieldset>
                                         <CRow>
                                             <CCol md="6">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="fname">Name</CLabel>
-                                                    <CInput defaultValue={singleUser.firstName} />
+                                                    <CInput defaultValue={singleUser.firstName} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="mname">Middle Name</CLabel>
-                                                    <CInput defaultValue={singleUser.middleName} />
+                                                    <CInput defaultValue={singleUser.middleName} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="lname">Last Name</CLabel>
-                                                    <CInput defaultValue={singleUser.lastName} />
+                                                    <CInput defaultValue={singleUser.lastName} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="email">Email</CLabel>
-                                                    <CInput defaultValue={singleUser.email} />
+                                                    <CInput defaultValue={singleUser.email} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="12">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="designation">Designation</CLabel>
-                                                    <CInput defaultValue={singleUser.designation} />
+                                                    <CInput defaultValue={singleUser.designation} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="department">Department</CLabel>
-                                                    <CInput defaultValue={singleUser.department} />
+                                                    <CInput defaultValue={singleUser.department} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="role">Role</CLabel>
-                                                    <CInput defaultValue={singleUser.role} />
+                                                    <CInput defaultValue={singleUser.role} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="12">
                                                 <CFormGroup>
                                                     <CLabel htmlFor="reportingPerson">Reporting Person</CLabel>
-                                                    <CInput defaultValue={setReportingPersonNames.map(person => titleCase(person))} />
+                                                    <CInput defaultValue={setReportingPersonNames.map(person => titleCase(person))} readOnly/>
                                                 </CFormGroup>
                                             </CCol>
 
-                                            <CCol md="1">
+                                            {/* <CCol md="1">
                                                 <CLabel>Gender</CLabel>
                                             </CCol>
                                             <CCol md="11">
-                                                <CFormGroup variant="custom-radio" inline>
+                                                <CFormGroup variant="custom-radio" inline >
                                                     {singleUser.gender === "Male" ?
                                                         <>
                                                             <CInputRadio custom id="male" name="gender" value="Male" checked />
@@ -184,7 +178,7 @@ const UserDetails = (props) => {
                                                         </>
                                                     }
                                                 </CFormGroup>
-                                            </CCol>
+                                            </CCol> */}
                                         </CRow>
                                     </fieldset>
                                 </CForm>
