@@ -34,7 +34,9 @@ const Forgot_password = () => {
     newPassword: Yup.string()
       .trim()
       .min(6, 'Password must be at least 6 characters')
-      .required('Password is required')
+      .required('Password is required'),
+      passwordConfirmation: Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
   })
 
   const sendGetRequest = async data => {
@@ -96,6 +98,11 @@ const Forgot_password = () => {
                           <TextField
                             label='New Password'
                             name='newPassword'
+                            type='password'
+                          />
+                          <TextField
+                            label='Confirm Password'
+                            name='passwordConfirmation'
                             type='password'
                           />
                           {error && <div className='error-1'>{error}</div>}
