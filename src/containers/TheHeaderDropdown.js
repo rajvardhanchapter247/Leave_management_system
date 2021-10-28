@@ -23,6 +23,10 @@ const TheHeaderDropdown = () => {
     history.push("/User_profile");
   }
 
+  const Settings = () => {
+    history.push("/settings");
+  }
+
   return (
     <CDropdown
       inNav
@@ -42,10 +46,12 @@ const TheHeaderDropdown = () => {
         <CDropdownItem onClick={User_profile} >
           <CIcon name="cil-user" className="mfe-2" />Profile
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-settings" className="mfe-2" />
-          Settings
-        </CDropdownItem>
+        {
+          localStorage.getItem("role") === "Admin" ? <CDropdownItem onClick={Settings}>
+            <CIcon name="cil-settings" className="mfe-2" />
+            Settings
+          </CDropdownItem> : null
+        }
         <CDropdownItem divider />
         <CDropdownItem onClick={Logout}>
           <CIcon name="cil-lock-locked" className="mfe-2" />

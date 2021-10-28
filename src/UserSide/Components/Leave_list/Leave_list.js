@@ -11,7 +11,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import moment from 'moment'
-import dateformat from 'dateformat'
+// import dateformat from 'dateformat'
 import { getToken } from '../../storage/Local_Storage'
 
 
@@ -42,9 +42,9 @@ const Leave_list = () => {
     console.log(response.data.data);
     // var dateToRes = [];
     // await Promise.all((response.data.data).map((val,key)=>{
-    
+
     //   val.datesToRequest.map((ree, obj)=>{
-      
+
     //   var dateNew = moment(ree).format('YYYY-MM-DD')
     //   console.log(`===> ${ree}`);
     //   response.data.data.push({datesToRequest: dateNew});
@@ -65,15 +65,15 @@ const Leave_list = () => {
   }
 
   // ! status model
-  
+
   const getDateTime = (data) => {
     return moment(data).format("YYYY-MM-DD  ");
   };
-  
+
   const [status, setStatus] = useState(null);
   // ! change model status state
   const changeModelState = (statusId, buttonStatus) => {
-    
+
     setStatus(buttonStatus);
   }
 
@@ -127,7 +127,7 @@ const Leave_list = () => {
                         {item.datesToRequest.map(date => getDateTime(date))}
                       </td>
                     ),
-                    
+
                   'status':
                     (item) => (
                       <td>
@@ -150,7 +150,7 @@ const Leave_list = () => {
         </CCol>
       </CRow>
 
-      
+
 
     </>
   )
