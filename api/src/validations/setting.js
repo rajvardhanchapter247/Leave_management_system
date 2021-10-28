@@ -25,17 +25,5 @@ const UpdateSettingValidation = [
     .not()
     .isEmpty()
     .withMessage(Message.Required.replace(':item', 'Name')),
-
-  body('lastName')
-    .not()
-    .isEmpty()
-    .withMessage(Message.Required.replace(':item', 'LastName'))
-    .isLength({ min: Constant.FieldsMinLengths.lastName })
-    .withMessage(
-      Message.MinLengthError.replace(':item', 'LastName').replace(
-        ':length',
-        Constant.FieldsMinLengths.lastName
-      )
-    ),
 ];
 export { UpdateSettingValidation };
