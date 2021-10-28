@@ -137,7 +137,7 @@ import {
   cilGrain,
   cilMoodVeryGood,
   cilPen,
-  cilBraille
+  cilBraille,
 
 } from '@coreui/icons'
 
