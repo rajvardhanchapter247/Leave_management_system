@@ -233,7 +233,7 @@ const Tables = () => {
                         <CIcon name="cil-pen" onClick={() => updateUser(item._id)} />
                       </CBadge>
                       <CBadge color="success" className="pointer mx-1">
-                        <CIcon name="cil-braille" onClick={() => userDetails(item._id)} />
+                        <CIcon name="cil-mood-very-good" onClick={() => userDetails(item._id)} />
                       </CBadge>
                       {
                         localStorage.getItem('role') === "Admin" ?
