@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { TextField } from "../text_field/TextField"
-import { useHistory } from 'react-router-dom';
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+import { TextField } from '../../Components/text_field/TextField'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import { setUserSession, getToken } from '../../storage/Local_Storage';
+import { setUserSession, getToken } from '../../storage/Local_Storage'
 import {
   CCard,
   CCardBody,
@@ -14,72 +14,98 @@ import {
   CRow
 } from '@coreui/react'
 
-const Login = () => {
+const Forgot_password = () => {
   // const history = useHistory();
-  const [error, setError] = useState(null);
-
+  const [error, setError] = useState(null)
+  const token = getToken()
   useEffect(() => {
-    const token = getToken();
-    if (token === null) {
-      // history.push("/login")
-    } else {
-      // history.push("/dashboard")
-    }
+    // if (token === null) {
+    //   history.push("/login")
+    // } else {
+    //   history.push("/dashboard")
+    // }
   }, [])
 
   const validate = Yup.object({
-    
-    password: Yup.string().trim()
+    oldPassword: Yup.string()
+      .trim()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
+    newPassword: Yup.string()
+      .trim()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required')
   })
 
-  const sendGetRequest = async (data) => {
-    setError(null);
+  const sendGetRequest = async data => {
+    // setError(null)
     try {
-      const response = await axios.post("/api/auth/login", {
-        email: data.email,
-        password: data.password
-      });
-      setUserSession(response.data.token, response.data.data.role);
+      const response = await axios.put(
+        '/api/auth/change-password',
+        {
+          oldPassword: data.oldPassword,
+          newPassword: data.newPassword
+        },
+        {
+          headers: {
+            authorization: token
+          }
+        }
+      )
+      alert(response.data.message)
+      setUserSession(response.data.token, response.data.data.role)
       // history.push('/dashboard');
     } catch (error) {
       // Handle Error Here
-      setError("Something went wrong Please try again !");
+      setError('Something went wrong Please try again !')
+      // alert(error)
     }
-  };
+  }
 
-  const onSubmitEvent = (values) => {
-    console.log("submit data", values);
-    sendGetRequest(values);
-    document.getElementById("form").reset();
+  const onSubmitEvent = values => {
+    console.log('submit data', values)
+    sendGetRequest(values)
+    document.getElementById('form').reset()
   }
 
   return (
     <>
-      <div className="flex-row align-items-center">
+      <div className='flex-row align-items-center'>
         <CContainer>
-          <CRow className="justify-content-center">
-            <CCol md="12">
+          <CRow className='justify-content-center'>
+            <CCol md='12'>
               <CCardGroup>
-                <CCard className="p-4">
+                <CCard>
                   <CCardBody>
-                    <p className="text-muted">Change password</p>
+                    <p className='text-muted'>Change your password</p>
                     <Formik
                       initialValues={{
-                        email: '',
-                        password: '',
+                        oldPassword: '',
+                        newPassword: ''
                       }}
                       validationSchema={validate}
                       onSubmit={onSubmitEvent}
                     >
                       {formik => (
-                        <Form id="form">
-                          <TextField label="Old password" name="password" type="email" />
-                          <TextField label="New password" name="password" type="email" />
-                          <TextField label="Confirm password" name="password" type="password" />
-                          {error && <div className="error-1">{error}</div>}
-                          <button className="btn btn-primary mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>Login</button>
+                        <Form id='form'>
+                          <TextField
+                            label='Old Password'
+                            name='oldPassword'
+                            type='password'
+                          />
+                          <TextField
+                            label='New Password'
+                            name='newPassword'
+                            type='password'
+                          />
+                          {error && <div className='error-1'>{error}</div>}
+                          <button
+                            className='btn btn-primary mt-3'
+                            type='submit'
+                            disabled={!(formik.isValid && formik.dirty)}
+                          >
+                            Login
+                          </button>
                         </Form>
                       )}
                     </Formik>
@@ -90,10 +116,8 @@ const Login = () => {
           </CRow>
         </CContainer>
       </div>
-
     </>
   )
 }
 
-export default Login
-
+export default Forgot_password

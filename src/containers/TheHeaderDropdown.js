@@ -22,6 +22,9 @@ const TheHeaderDropdown = () => {
   const User_profile = () => {
     history.push("/User_profile");
   }
+  const Forgot_password = () => {
+    history.push("/Forgot_password");
+  }
 
   const Settings = () => {
     history.push("/settings");
@@ -52,6 +55,10 @@ const TheHeaderDropdown = () => {
             Settings
           </CDropdownItem> : null
         }
+        <CDropdownItem onClick={Forgot_password}>
+          <CIcon name="cil-settings" className="mfe-2"/>
+          Change password
+        </CDropdownItem>
         <CDropdownItem divider />
         <CDropdownItem onClick={Logout}>
           <CIcon name="cil-lock-locked" className="mfe-2" />

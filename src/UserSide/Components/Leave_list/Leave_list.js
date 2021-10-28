@@ -8,10 +8,12 @@ import {
   CRow,
   CBadge
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import moment from 'moment'
+<<<<<<< HEAD
 // import dateformat from 'dateformat'
+=======
+>>>>>>> 510f24e0edd3aaa61d73faccfab528e5d29900e7
 import { getToken } from '../../storage/Local_Storage'
 
 
@@ -23,7 +25,6 @@ const fields = ['fullName', 'datesToRequest', 'reason', 'status']
 const Leave_list = () => {
   const [toggle, setToggle] = useState(false)
   const [usersList, setUsersList] = useState([]);
-  const [newdatesList,setNewdatesList] = useState()
   const token = getToken();
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const Leave_list = () => {
     });
 
     setUsersList(response.data.data);
+<<<<<<< HEAD
     console.log(response.data.data);
     // var dateToRes = [];
     // await Promise.all((response.data.data).map((val,key)=>{
@@ -66,9 +68,15 @@ const Leave_list = () => {
 
   // ! status model
 
+=======
+  }
+
+  
+>>>>>>> 510f24e0edd3aaa61d73faccfab528e5d29900e7
   const getDateTime = (data) => {
-    return moment(data).format("YYYY-MM-DD  ");
+    return moment(data).format("YYYY-MM-DD , ");
   };
+<<<<<<< HEAD
 
   const [status, setStatus] = useState(null);
   // ! change model status state
@@ -92,14 +100,13 @@ const Leave_list = () => {
     setDeleteUserModelToggle(!deleteUserModelToggle);
     setDeleteId(deleteId);
   }
+=======
+  
+  
+  
+>>>>>>> 510f24e0edd3aaa61d73faccfab528e5d29900e7
 
-  // ! user details model
-  const [userDetailsModelToggle, setUserDetailsModelToggle] = useState(false);
-  const [userDetailsId, setUserDetailsId] = useState(null);
-  const userDetails = (userDetailsId) => {
-    setUserDetailsModelToggle(!userDetailsModelToggle);
-    setUserDetailsId(userDetailsId);
-  }
+  
   return (
     <>
       <CRow>
@@ -133,10 +140,10 @@ const Leave_list = () => {
                       <td>
                         {
                           item.status === "Active" ?
-                            <CBadge color="success" className="pointer" onClick={() => changeModelState(item._id, item.status)}>
+                            <CBadge color="success" className="pointer">
                               {item.status}
                             </CBadge> :
-                            <CBadge color="primary" className="pointer" onClick={() => changeModelState(item._id, item.status)}>
+                            <CBadge color="primary" className="pointer">
                               {item.status}
                             </CBadge>
                         }
