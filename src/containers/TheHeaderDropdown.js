@@ -11,7 +11,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { removeUserSession } from '../components/storage/LocalStorage'
 
-const TheHeaderDropdown = () => { 
+const TheHeaderDropdown = () => {
   const history = useHistory();
 
   const Logout = () => {
@@ -24,6 +24,10 @@ const TheHeaderDropdown = () => {
   }
   const Forgot_password = () => {
     history.push("/Forgot_password");
+  }
+
+  const Settings = () => {
+    history.push("/settings");
   }
 
   return (
@@ -45,6 +49,12 @@ const TheHeaderDropdown = () => {
         <CDropdownItem onClick={User_profile} >
           <CIcon name="cil-user" className="mfe-2" />Profile
         </CDropdownItem>
+        {
+          localStorage.getItem("role") === "Admin" ? <CDropdownItem onClick={Settings}>
+            <CIcon name="cil-settings" className="mfe-2" />
+            Settings
+          </CDropdownItem> : null
+        }
         <CDropdownItem onClick={Forgot_password}>
           <CIcon name="cil-settings" className="mfe-2"/>
           Change password

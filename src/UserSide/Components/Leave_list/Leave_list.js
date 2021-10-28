@@ -10,6 +10,10 @@ import {
 } from '@coreui/react';
 import axios from 'axios';
 import moment from 'moment'
+<<<<<<< HEAD
+// import dateformat from 'dateformat'
+=======
+>>>>>>> 510f24e0edd3aaa61d73faccfab528e5d29900e7
 import { getToken } from '../../storage/Local_Storage'
 
 
@@ -36,15 +40,71 @@ const Leave_list = () => {
     });
 
     setUsersList(response.data.data);
+<<<<<<< HEAD
+    console.log(response.data.data);
+    // var dateToRes = [];
+    // await Promise.all((response.data.data).map((val,key)=>{
+
+    //   val.datesToRequest.map((ree, obj)=>{
+
+    //   var dateNew = moment(ree).format('YYYY-MM-DD')
+    //   console.log(`===> ${ree}`);
+    //   response.data.data.push({datesToRequest: dateNew});
+    //   console.log('dateNew: ', dateNew);
+
+    //   })
+    // }))
+    // // console.log('dateToRes: ', dateToRes);
+    // console.log('esponse.data.data: ', response.data.data);
+    // setNewdatesList(response.data.data)
+
+
+  }
+
+  // ! change model add use state
+  const changeState = () => {
+    setToggle(!toggle);
+  }
+
+  // ! status model
+
+=======
   }
 
   
+>>>>>>> 510f24e0edd3aaa61d73faccfab528e5d29900e7
   const getDateTime = (data) => {
     return moment(data).format("YYYY-MM-DD , ");
   };
+<<<<<<< HEAD
+
+  const [status, setStatus] = useState(null);
+  // ! change model status state
+  const changeModelState = (statusId, buttonStatus) => {
+
+    setStatus(buttonStatus);
+  }
+
+  // ! update user model
+  const [updateUserModelToggle, setUpdateUserModelToggle] = useState(false);
+  const [updateId, setUpdateId] = useState(null);
+  const updateUser = (updateId) => {
+    setUpdateUserModelToggle(!updateUserModelToggle);
+    setUpdateId(updateId);
+  }
+
+  // ! delete user model
+  const [deleteUserModelToggle, setDeleteUserModelToggle] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const deleteUser = (deleteId) => {
+    setDeleteUserModelToggle(!deleteUserModelToggle);
+    setDeleteId(deleteId);
+  }
+=======
   
   
   
+>>>>>>> 510f24e0edd3aaa61d73faccfab528e5d29900e7
 
   
   return (
@@ -74,7 +134,7 @@ const Leave_list = () => {
                         {item.datesToRequest.map(date => getDateTime(date))}
                       </td>
                     ),
-                    
+
                   'status':
                     (item) => (
                       <td>
@@ -97,7 +157,7 @@ const Leave_list = () => {
         </CCol>
       </CRow>
 
-      
+
 
     </>
   )

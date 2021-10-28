@@ -17,7 +17,6 @@ import { Formik, Form, Field, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
-import App1 from './test';
 
 const AddUser = (props) => {
     const [reportingPersonsList, setReportingPersonsList] = useState([]);
@@ -102,9 +101,6 @@ const AddUser = (props) => {
     const handleChange = (selectedOptionByUser) => {
         setSelectedOption(selectedOptionByUser);
         setSelectedReportingPersons(Array.isArray(selectedOptionByUser) ? selectedOptionByUser.map(option => option.value) : []);
-        if (selectedReportingPersons === []) {
-
-        }
     };
 
     return (
