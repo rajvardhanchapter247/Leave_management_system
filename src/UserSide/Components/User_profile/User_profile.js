@@ -16,10 +16,11 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { TextField } from '../text_field/TextField'
 import Select from 'react-select'
+import { useHistory } from 'react-router-dom'
 
 const User_profile = props => {
   const token = getToken()
-
+  const history = useHistory();
   const [reportingPersons, setReportingPersons] = useState([])
 
   const updateUserApi = async values => {
@@ -30,11 +31,11 @@ const User_profile = props => {
           firstName: values.fname,
           middleName: values.mname,
           lastName: values.lname,
-          email: values.email,
-          department: values.department,
-          role: values.role,
-          reportingPerson: values.reportingPerson,
-          gender: values.gender
+          email: values.email
+          // department: values.department,
+          // role: values.role,
+          // reportingPerson: values.reportingPerson,
+          // gender: values.gender
         },
         {
           headers: {
@@ -62,10 +63,10 @@ const User_profile = props => {
       .trim()
       .max(15, 'Maximum 15 character allow.')
       .required('Last Name is required'),
-    designation: Yup.string()
-      .trim()
-      .required('Designation is required'),
-    gender: Yup.string().required('Gender is require')
+    // designation: Yup.string()
+    //   .trim()
+    //   .required('Designation is required'),
+    // gender: Yup.string().required('Gender is require')
   })
 
   const onSubmitEvent = values => {
@@ -99,12 +100,27 @@ const User_profile = props => {
     ReportingPersons()
   }, [])
 
+  const changePassword=()=>{
+    history.push("/Forgot_password")
+  }
+
   return (
     <>
       <CRow>
-        <CCol xs='12'>
+        <CCol md='12'>
           <CCard>
-            <CCardHeader>User Profile</CCardHeader>
+            <CCardHeader>
+              Update Profile
+              <div className='card-header-actions'>
+                <button
+                  className='btn btn-primary'
+                  onClick={changePassword}
+                  type='submit'
+                >
+                  Change Password
+                </button>
+              </div>
+            </CCardHeader>
 
             <CCardBody>
               <CRow>
@@ -115,11 +131,11 @@ const User_profile = props => {
                       mname: '',
                       lname: '',
                       email: '',
-                      designation: '',
-                      role: 'Admin',
-                      department: 'Engineering',
-                      gender: '',
-                      reportingPerson: ''
+                      // designation: '',
+                      // role: 'Admin',
+                      // department: 'Engineering',
+                      // gender: '',
+                      // reportingPerson: ''
                     }}
                     validationSchema={validate}
                     onSubmit={onSubmitEvent}

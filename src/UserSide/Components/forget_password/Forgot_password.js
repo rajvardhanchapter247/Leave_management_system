@@ -15,7 +15,7 @@ import {
 } from '@coreui/react'
 
 const Forgot_password = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const [error, setError] = useState(null)
   const token = getToken()
   useEffect(() => {
@@ -36,7 +36,7 @@ const Forgot_password = () => {
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
       passwordConfirmation: Yup.string()
-     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+     .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
   })
 
   const sendGetRequest = async data => {
@@ -55,8 +55,8 @@ const Forgot_password = () => {
         }
       )
       alert(response.data.message)
-      setUserSession(response.data.token, response.data.data.role)
-      // history.push('/dashboard');
+      // setUserSession(response.data.token, response.data.data.role)
+      history.push('/User_profile');
     } catch (error) {
       // Handle Error Here
       setError('Something went wrong Please try again !')
@@ -111,7 +111,7 @@ const Forgot_password = () => {
                             type='submit'
                             disabled={!(formik.isValid && formik.dirty)}
                           >
-                            Login
+                            Change Password
                           </button>
                         </Form>
                       )}
