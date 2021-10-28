@@ -4,6 +4,7 @@ const Dashboard = React.lazy(() => import('./components/dashboard/Dashboard'));
 const User_dashboard = React.lazy(() => import('./UserSide/Components/user_dashboard/User_dashboard'));
 const Holidays = React.lazy(() => import('./components/holidays/Holidays'));
 const Users = React.lazy(() => import('./components/tables/Tables'));
+const Settings = React.lazy(() => import('./components/settings/Settings'))
 const UserDetails = React.lazy(() => import("./components/userdetails/UserDetails"))
 const User_profile = React.lazy(() => import('./UserSide/Components/User_profile/User_profile'))
 const Forgot_password = React.lazy(() => import('./UserSide/Components/forget_password/Forgot_password'))
@@ -11,10 +12,11 @@ const Leave_list = React.lazy(() => import('./UserSide/Components/Leave_list/Lea
 
 const routes = [
 
-  { path: '/Leave_list', exact: true , name: 'Leave_list', component: Leave_list },
+  { path: '/Leave_list', exact: true, name: 'Leave_list', component: Leave_list },
   { path: '/user_dashboard', exact: true, name: 'User_dashboard', component: User_dashboard },
   { path: '/User_profile', exact: true, name: 'User_profile', component: User_profile },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
+  { path: '/settings', exact: true, name: 'Settings', component: Settings },
   { path: '/holidays', exact: true, name: 'Holidays', component: Holidays },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/user-details/:UserId', name: 'UserDetails', component: UserDetails },
