@@ -20,13 +20,17 @@ import { useHistory } from 'react-router-dom'
 
 const User_profile = props => {
   const token = getToken()
-  const history = useHistory();
+  const history = useHistory()
   const [reportingPersons, setReportingPersons] = useState([])
+
+  const [id, setId] = useState()
+
+  
 
   const updateUserApi = async values => {
     try {
       const response = await axios.put(
-        `/api/auth/update-user/${props.updateId}`,
+        `/api/auth/update-user/${id}`,
         {
           firstName: values.fname,
           middleName: values.mname,
@@ -37,6 +41,7 @@ const User_profile = props => {
           // reportingPerson: values.reportingPerson,
           // gender: values.gender
         },
+
         {
           headers: {
             authorization: token
@@ -44,6 +49,7 @@ const User_profile = props => {
         }
       )
       console.log('Update user Successfully', response)
+      alert('Update user Successfully')
     } catch (error) {
       console.log('Something went wrong!', error)
     }
@@ -58,11 +64,10 @@ const User_profile = props => {
       .trim()
       .max(15, 'Maximum 15 character allow.')
       .required('First Name is required'),
-    mname: Yup.string().trim(),
     lname: Yup.string()
       .trim()
       .max(15, 'Maximum 15 character allow.')
-      .required('Last Name is required'),
+      .required('Last Name is required')
     // designation: Yup.string()
     //   .trim()
     //   .required('Designation is required'),
@@ -96,12 +101,24 @@ const User_profile = props => {
     setReportingPersons(response.data.data)
   }
 
+  const Get_id = async () => {
+    const idResponse = await axios.get('/api/auth/me', {
+      headers: {
+        authorization: token
+      }
+    })
+    
+    setId(idResponse.data.data._id);
+    
+  }
+
   useEffect(() => {
     ReportingPersons()
+    Get_id()
   }, [])
 
-  const changePassword=()=>{
-    history.push("/Forgot_password")
+  const changePassword = () => {
+    history.push('/Forgot_password')
   }
 
   return (
@@ -130,7 +147,7 @@ const User_profile = props => {
                       fname: '',
                       mname: '',
                       lname: '',
-                      email: '',
+                      email: ''
                       // designation: '',
                       // role: 'Admin',
                       // department: 'Engineering',
@@ -161,7 +178,7 @@ const User_profile = props => {
                               />
                             </CFormGroup>
                           </CCol>
-                          <CCol md='6'>
+                          <CCol md='12'>
                             <CFormGroup>
                               <TextField
                                 label='Last Name'
@@ -170,7 +187,7 @@ const User_profile = props => {
                               />
                             </CFormGroup>
                           </CCol>
-                          <CCol md='6'>
+                          <CCol md='12'>
                             <CFormGroup>
                               <TextField
                                 label='Email'
@@ -179,7 +196,7 @@ const User_profile = props => {
                               />
                             </CFormGroup>
                           </CCol>
-                          <CCol md='12'>
+                          {/* <CCol md='12'>
                             <CFormGroup>
                               <TextField
                                 label='Designation'
@@ -228,7 +245,8 @@ const User_profile = props => {
                                   <>
                                     <CFormGroup>
                                       <CLabel htmlFor='role'>Role</CLabel>
-                                      <CSelect
+                                      <CSelect                      <CLabel>Gender</CLabel>
+           
                                         {...field}
                                         custom
                                         name='role'
@@ -254,7 +272,8 @@ const User_profile = props => {
                               onChange={handleChange}
                               options={reportingPersons}
                             />
-                          </CCol>
+                          </CCol>                      <CLabel>Gender</CLabel>
+           
 
                           <CCol md='12' className='mt-2'>
                             <CFormGroup row>
@@ -265,9 +284,7 @@ const User_profile = props => {
                                 <Field
                                   name='gender'
                                   render={({ field }) => {
-                                    return (
-                                      <>
-                                        <CFormGroup
+           /api/auth/user-list                             <CFormGroup
                                           variant='custom-radio'
                                           inline
                                         >
@@ -327,7 +344,7 @@ const User_profile = props => {
                                 ></Field>
                               </CCol>
                             </CFormGroup>
-                          </CCol>
+                          </CCol> */}
 
                           <CCol md='12'>
                             <button
@@ -336,7 +353,7 @@ const User_profile = props => {
                               disabled={!(formik.isValid && formik.dirty)}
                             >
                               {' '}
-                              Submit
+                              Update Profile
                             </button>
                           </CCol>
                         </CRow>

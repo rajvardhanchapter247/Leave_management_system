@@ -9,7 +9,7 @@ import {
   CBadge
 } from '@coreui/react'
 import axios from 'axios'
-import moment from 'moment'
+import {getDateTime} from '../../../common/constant';
 // import dateformat from 'dateformat'
 import { getToken } from '../../storage/Local_Storage'
 
@@ -42,9 +42,9 @@ const Leave_list = () => {
 
   // ! status model
 
-  const getDateTime = data => {
-    return moment(data).format('YYYY-MM-DD , ')
-  }
+  // const getDateTime = data => {
+  //   return moment(data).format('YYYY-MM-DD , ')
+  // }
 
   const [status, setStatus] = useState(null)
   // ! change model status state

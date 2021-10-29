@@ -1,6 +1,6 @@
 import moment from 'moment'
 
 export const getDateTime = (data) => {
-    return moment(data).format("DD-MM-YYYY");
+    return moment(data).format("DD-MM-YYYY ");
   };
 
