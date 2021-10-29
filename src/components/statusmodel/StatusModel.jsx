@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     CCol,
     CRow,
@@ -6,16 +6,20 @@ import {
     CModalBody,
     CModalHeader,
     CModalTitle,
-    CModalFooter
+    CModalFooter,
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
+import Loader from '../../containers/Loader/Loader'
 
 const StatusModel = (props) => {
+    const status = props.status === "Active";
+    const [isLoading, setIsLoading] = useState(false);
     const token = getToken();
     const updateStatus = async () => {
+        setIsLoading(true);
         try {
-            await axios.patch(`/api/auth/update-status/${props.statusId}`, { status: props.status === "Active" ? "Inactive" : "Active" }, {
+            await axios.patch(`/api/auth/update-status/${props.statusId}`, { status: status ? "Inactive" : "Active" }, {
                 headers: {
                     'authorization': token
                 },
@@ -24,6 +28,7 @@ const StatusModel = (props) => {
             console.log(error);
         }
         props.toggleModel();
+        setIsLoading(false);
     }
 
     return (
@@ -41,15 +46,25 @@ const StatusModel = (props) => {
                 <CModalBody>
                     <CRow>
                         <CCol>
-                            <h5 className="text-center ">Are you sure you want to change status <span className={`font-weight-bold ${props.status === "Active" ? "text-success" : "text-primary"}`}>{props.status === "Active" ? "Active" : "Inactive"}</span> to <span className={`font-weight-bold ${props.status === "Active" ? "text-primary" : "text-success"}`}>{props.status === "Active" ? "Inactive" : "Active"}</span> ?</h5>
+                            {
+                                isLoading ?
+                                    <div style={{ height: "20vh" }}>
+                                        <Loader />
+                                    </div>
+                                    : <h5 className="text-center ">Are you sure you want to change status
+                                        <span className={`font-weight-bold ${status ? "text-success" : "text-primary"}`}>{status ? " Active" : " Inactive"}</span> to <span className={`font-weight-bold ${status ? "text-primary" : "text-success"}`}>{status ? " Inactive" : " Active"}</span> ?</h5>
+                            }
                         </CCol>
                     </CRow>
                 </CModalBody>
 
-                <CModalFooter>
-                    <button className="btn btn-success" onClick={updateStatus} >Yes</button>
-                    <button className="btn btn-primary" onClick={props.toggleModel}>No</button>
-                </CModalFooter>
+                {
+                    !isLoading &&
+                    <CModalFooter>
+                        <button className="btn btn-success" onClick={updateStatus} disabled={(isLoading ? true : false)} > Yes</button>
+                        <button className="btn btn-primary" onClick={props.toggleModel} disabled={(isLoading ? true : false)}> No</button>
+                    </CModalFooter>
+                }
             </CModal>
         </>
     )

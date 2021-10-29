@@ -40,7 +40,7 @@ const _nav = [
       {
         _tag: 'CSidebarNavItem',
         name: 'Leave_list',
-        to: '/Leave_list'
+        to: '/leave-requests'
       }
     ]
   }

@@ -141,6 +141,7 @@ export default class DemoApp extends React.Component {
           eventContent={renderEventContent} // custom render function
           eventClick={this.handleEventClick}
           eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+          
         />
 
 
@@ -199,6 +200,8 @@ export default class DemoApp extends React.Component {
       </>
     )
   }
+  
+  
 
 
 
@@ -225,11 +228,9 @@ export default class DemoApp extends React.Component {
       })
     }
 
-    
 
     
 
-    
 
     const start_date = selectInfo.startStr;
     const end_date = selectInfo.endStr;
