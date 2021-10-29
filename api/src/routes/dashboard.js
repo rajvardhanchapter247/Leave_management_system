@@ -4,6 +4,10 @@ import { verifyToken } from '../utils';
 
 const router = express.Router();
 
-router.get('/', verifyToken, DashboardController.userAndLeaveCount);
+router.get(
+  '/user-leave-count',
+  verifyToken,
+  DashboardController.userAndLeaveCount
+);
 
 export default router;
