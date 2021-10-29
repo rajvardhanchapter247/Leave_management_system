@@ -1,4 +1,5 @@
 const hrEmail = 'mohit.b@chapter247.com';
+const paidLeaves = '12';
 
 const FieldsMaxLengths = {
   firstName: 15,
@@ -12,4 +13,4 @@ const FieldsMinLengths = {
   password: 6,
 };
 
-export default { hrEmail, FieldsMaxLengths, FieldsMinLengths };
+export default { hrEmail, FieldsMaxLengths, FieldsMinLengths, paidLeaves };
