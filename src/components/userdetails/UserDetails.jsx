@@ -14,9 +14,11 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
+import Loader from '../../containers/Loader/Loader'
+import { titleCase } from '../../common/constant';
 
 const UserDetails = (props) => {
-
+    const [isLoading, setIsLoading] = useState(false)
     const { UserId } = useParams();
     const token = getToken();
     const [singleUser, setSingleUser] = useState([]);
@@ -30,6 +32,7 @@ const UserDetails = (props) => {
 
     //! fetch users list from api
     const fetchUser = async () => {
+        setIsLoading(true);
         try {
             const response = await axios.get(`/api/auth/user-view/${UserId}`, {
                 headers: {
@@ -42,6 +45,7 @@ const UserDetails = (props) => {
         } catch (error) {
             console.log("Something went wrong!", error)
         }
+        setIsLoading(false);
     }
 
     // ! fetch reporting persons data
@@ -68,126 +72,121 @@ const UserDetails = (props) => {
         }
     }
 
-    const titleCase = (str) => {
-        var splitStr = str.toLowerCase().split(' ');
-        for (var i = 0; i < splitStr.length; i++) {
-            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
-        }
-        return splitStr.join(' ');
-    }
 
     return (
         <>
-            <CRow>
-                <CCol xs="12">
-                    <CCard>
-                        <CCardHeader>
-                            User Details
-                        </CCardHeader>
-                        <CCardBody>
-                            <CForm>
-                                <fieldset disabled>
-                                    <CRow>
-                                        <CCol md="6">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="fname">Name</CLabel>
-                                                <CInput defaultValue={singleUser.firstName} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="6">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="mname">Middle Name</CLabel>
-                                                <CInput defaultValue={singleUser.middleName} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="6">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="lname">Last Name</CLabel>
-                                                <CInput defaultValue={singleUser.lastName} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="6">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="email">Email</CLabel>
-                                                <CInput defaultValue={singleUser.email} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="12">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="designation">Designation</CLabel>
-                                                <CInput defaultValue={singleUser.designation} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="6">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="department">Department</CLabel>
-                                                <CInput defaultValue={singleUser.department} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="6">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="role">Role</CLabel>
-                                                <CInput defaultValue={singleUser.role} />
-                                            </CFormGroup>
-                                        </CCol>
-                                        <CCol md="12">
-                                            <CFormGroup>
-                                                <CLabel htmlFor="reportingPerson">Reporting Person</CLabel>
-                                                <CInput defaultValue={setReportingPersonNames.map(person => titleCase(person))} />
-                                            </CFormGroup>
-                                        </CCol>
+            {
+                isLoading ? <Loader /> : <CRow>
+                    <CCol xs="12">
+                        <CCard>
+                            <CCardHeader>
+                                User Details
+                            </CCardHeader>
+                            <CCardBody>
+                                <CForm>
+                                    <fieldset>
+                                        <CRow>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="fname">Name</CLabel>
+                                                    <CInput defaultValue={singleUser.firstName} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="mname">Middle Name</CLabel>
+                                                    <CInput defaultValue={singleUser.middleName} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="lname">Last Name</CLabel>
+                                                    <CInput defaultValue={singleUser.lastName} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="email">Email</CLabel>
+                                                    <CInput defaultValue={singleUser.email} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="12">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="designation">Designation</CLabel>
+                                                    <CInput defaultValue={singleUser.designation} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="department">Department</CLabel>
+                                                    <CInput defaultValue={singleUser.department} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="role">Role</CLabel>
+                                                    <CInput defaultValue={singleUser.role} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="12">
+                                                <CFormGroup>
+                                                    <CLabel htmlFor="reportingPerson">Reporting Person</CLabel>
+                                                    <CInput defaultValue={setReportingPersonNames.map(person => titleCase(person))} readOnly/>
+                                                </CFormGroup>
+                                            </CCol>
 
-                                        <CCol md="1">
-                                            <CLabel>Gender</CLabel>
-                                        </CCol>
-                                        <CCol md="11">
-                                            <CFormGroup variant="custom-radio" inline>
-                                                {singleUser.gender === "Male" ?
-                                                    <>
-                                                        <CInputRadio custom id="male" name="gender" value="Male" checked />
-                                                        <CLabel variant="custom-checkbox" htmlFor="male">Male</CLabel>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        <CInputRadio custom id="male" name="gender" value="Male" />
-                                                        <CLabel variant="custom-checkbox" htmlFor="male">Male</CLabel>
-                                                    </>
-                                                }
-                                            </CFormGroup>
-                                            <CFormGroup variant="custom-radio" inline>
-                                                {singleUser.gender === "Female" ?
-                                                    <>
-                                                        <CInputRadio custom id="female" name="gender" value="Female" checked />
-                                                        <CLabel variant="custom-checkbox" htmlFor="female">Female</CLabel>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        <CInputRadio custom id="female" name="gender" value="Female" />
-                                                        <CLabel variant="custom-checkbox" htmlFor="female">Female</CLabel>
-                                                    </>
-                                                }
-                                            </CFormGroup>
-                                            <CFormGroup variant="custom-radio" inline>
-                                                {singleUser.gender === "Other" ?
-                                                    <>
-                                                        <CInputRadio custom id="others" name="gender" value="Other" checked />
-                                                        <CLabel variant="custom-checkbox" htmlFor="others">Others</CLabel>
-                                                    </>
-                                                    :
-                                                    <>
-                                                        <CInputRadio custom id="others" name="gender" value="Other" />
-                                                        <CLabel variant="custom-checkbox" htmlFor="others">Others</CLabel>
-                                                    </>
-                                                }
-                                            </CFormGroup>
-                                        </CCol>
-                                    </CRow>
-                                </fieldset>
-                            </CForm>
-                        </CCardBody>
-                    </CCard>
-                </CCol>
-            </CRow>
+                                            {/* <CCol md="1">
+                                                <CLabel>Gender</CLabel>
+                                            </CCol>
+                                            <CCol md="11">
+                                                <CFormGroup variant="custom-radio" inline >
+                                                    {singleUser.gender === "Male" ?
+                                                        <>
+                                                            <CInputRadio custom id="male" name="gender" value="Male" checked />
+                                                            <CLabel variant="custom-checkbox" htmlFor="male">Male</CLabel>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <CInputRadio custom id="male" name="gender" value="Male" />
+                                                            <CLabel variant="custom-checkbox" htmlFor="male">Male</CLabel>
+                                                        </>
+                                                    }
+                                                </CFormGroup>
+                                                <CFormGroup variant="custom-radio" inline>
+                                                    {singleUser.gender === "Female" ?
+                                                        <>
+                                                            <CInputRadio custom id="female" name="gender" value="Female" checked />
+                                                            <CLabel variant="custom-checkbox" htmlFor="female">Female</CLabel>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <CInputRadio custom id="female" name="gender" value="Female" />
+                                                            <CLabel variant="custom-checkbox" htmlFor="female">Female</CLabel>
+                                                        </>
+                                                    }
+                                                </CFormGroup>
+                                                <CFormGroup variant="custom-radio" inline>
+                                                    {singleUser.gender === "Other" ?
+                                                        <>
+                                                            <CInputRadio custom id="others" name="gender" value="Other" checked />
+                                                            <CLabel variant="custom-checkbox" htmlFor="others">Others</CLabel>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <CInputRadio custom id="others" name="gender" value="Other" />
+                                                            <CLabel variant="custom-checkbox" htmlFor="others">Others</CLabel>
+                                                        </>
+                                                    }
+                                                </CFormGroup>
+                                            </CCol> */}
+                                        </CRow>
+                                    </fieldset>
+                                </CForm>
+                            </CCardBody>
+                        </CCard>
+                    </CCol>
+                </CRow>
+            }
         </>
     )
 }

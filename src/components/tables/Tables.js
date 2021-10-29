@@ -9,7 +9,7 @@ import {
   CBadge,
   CFormGroup,
   CInput,
-  CSelect
+  CSelect,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import axios from 'axios'
@@ -21,7 +21,6 @@ import DeleteUser from '../deleteuser/DeleteUser'
 import { useHistory } from 'react-router'
 import ReactPaginate from "react-paginate";
 import { getDateTime } from '../../common/constant'
-// import Loader from "../../containers/Loader/Loader"
 
 const fields = ['name', 'department', 'email', 'createdAt', 'role', 'status', 'actions']
 
@@ -209,6 +208,9 @@ const Tables = () => {
           <CDataTable
             items={items}
             fields={fields}
+            hover
+            border
+            outlined
             loading={isLoading}
             // itemsPerPage={5}
             // pagination
@@ -272,27 +274,25 @@ const Tables = () => {
             }
             }
           />
-          {items.length >= 10 ?
-            <ReactPaginate
-              previousLabel={"Previous"}
-              nextLabel={"Next"}
-              breakLabel={"..."}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={3}
-              onPageChange={handlePageClick}
-              containerClassName={"pagination justify-content-start"}
-              pageClassName={"page-item"}
-              pageLinkClassName={"page-link"}
-              previousClassName={"page-item"}
-              previousLinkClassName={"page-link"}
-              nextClassName={"page-item"}
-              nextLinkClassName={"page-link"}
-              breakClassName={"page-item"}
-              breakLinkClassName={"page-link"}
-              activeClassName={"active"}
-            />
-            : null}
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={2}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination justify-content-start"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
         </CCardBody>
       </CCard>
 

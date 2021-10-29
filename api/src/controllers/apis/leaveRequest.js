@@ -154,7 +154,7 @@ const leaveRequestList = async (req, res, next) => {
     const limit = query.limit ? parseInt(query.limit, 10) : 10;
     const page = query.page ? parseInt(query.page, 10) : 1;
     const skip = (page - 1) * limit;
-    const { search, status, fromDate, toDate } = query;
+    const { search, status, fromDate, toDate, userId } = query;
 
     let dateCondition = {};
     if (fromDate != null && toDate != null) {
@@ -196,6 +196,12 @@ const leaveRequestList = async (req, res, next) => {
       condition = {
         ...condition,
         status,
+      };
+    }
+    if (userId) {
+      condition = {
+        ...condition,
+        userId: Types.ObjectId(userId),
       };
     }
 

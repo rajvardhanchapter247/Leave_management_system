@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     CModal,
     CModalBody,
@@ -8,11 +8,13 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
+import Loader from '../../containers/Loader/Loader'
 const DeleteUser = (props) => {
     const token = getToken();
+    const [isLoading, setIsLoading] = useState(false);
 
     const deleteUserApi = async () => {
-        console.log(props.deleteId);
+        setIsLoading(true);
         try {
             const response = await axios.delete(`/api/auth/delete-user/${props.deleteId}`, {
                 headers: {
@@ -24,6 +26,7 @@ const DeleteUser = (props) => {
             console.log(error);
         }
         props.toggleModel();
+        setIsLoading(false);
     }
 
     const deleteUser = () => {
@@ -42,11 +45,19 @@ const DeleteUser = (props) => {
                     <CModalTitle>Delete user</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-                    <h5 className="text-center">You want to delete this user?</h5>
+                    {
+                        isLoading ?
+                            <div style={{ height: "7vh" }}>
+                                <Loader />
+                            </div>
+                            :
+                            <h5 className="text-center">You want to delete this user?</h5>
+
+                    }
                 </CModalBody>
                 <CModalFooter>
-                    <button className="btn btn-danger" onClick={deleteUser}>Yes</button>
-                    <button className="btn btn-success" onClick={props.toggleModel}>No</button>
+                    <button className="btn btn-danger" onClick={deleteUser} disabled={(isLoading ? true : false)}>Yes</button>
+                    <button className="btn btn-success" onClick={props.toggleModel} disabled={(isLoading ? true : false)}>No</button>
                 </CModalFooter>
             </CModal>
 

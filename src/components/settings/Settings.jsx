@@ -67,6 +67,7 @@ const Settings = () => {
     const updateSettingsApi = async (values) => {
         setIsLoading(true);
         try {
+            console.log(settingsData._id);
             const response = await axios.put(
                 `/api/setting/${settingsData._id}`,
                 {
@@ -75,8 +76,7 @@ const Settings = () => {
                     linkedinUrl: values.linkedinUrl,
                     twitterUrl: values.twitterUrl,
                     orgName: values.orgName,
-                    createdAt: getDateTime(values.createdAt),
-                    email: values.email
+                    email: values.email,
                 },
                 {
                     headers: {
@@ -145,7 +145,7 @@ const Settings = () => {
                                                     </CCol>
                                                     <CCol md="6">
                                                         <CFormGroup>
-                                                            <TextField label="Created At" name="createdAt" type="text" />
+                                                            <TextField label="Created At" name="createdAt" type="text" readOnly/>
                                                         </CFormGroup>
                                                     </CCol>
                                                 </CRow>
