@@ -118,7 +118,7 @@ const User_profile = props => {
   }, [])
 
   const changePassword = () => {
-    history.push('/Forgot_password')
+    history.push('/Change_password')
   }
 
   return (

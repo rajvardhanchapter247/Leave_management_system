@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
-import { TextField } from '../../Components/text_field/TextField'
+import { TextField } from '../text_field/TextField'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { setUserSession, getToken } from '../../storage/Local_Storage'
@@ -14,7 +14,7 @@ import {
   CRow
 } from '@coreui/react'
 
-const Forgot_password = () => {
+const Change_password = () => {
   const history = useHistory();
   const [error, setError] = useState(null)
   const token = getToken()
@@ -127,4 +127,4 @@ const Forgot_password = () => {
   )
 }
 
-export default Forgot_password
+export default Change_password
