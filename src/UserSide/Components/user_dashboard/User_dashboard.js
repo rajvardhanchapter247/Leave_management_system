@@ -26,7 +26,7 @@ const User_dashboard = () => {
 
   useEffect(() => {
     fetchUsers()
-  })
+  },[])
 
   const fetchUsers = async () => {
     const response = await axios.get(`/api/leave-request/me`, {
@@ -64,7 +64,7 @@ const User_dashboard = () => {
       </CRow>
 
       <CRow>
-        <CCol xs='12'>
+        <CCol md='12'>
           <CCard>
             <CCardHeader>My Leaves</CCardHeader>
             <CCardBody>

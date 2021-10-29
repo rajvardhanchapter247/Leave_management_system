@@ -25,8 +25,6 @@ const User_profile = props => {
 
   const [id, setId] = useState()
 
-  
-
   const updateUserApi = async values => {
     try {
       const response = await axios.put(
@@ -107,9 +105,8 @@ const User_profile = props => {
         authorization: token
       }
     })
-    
-    setId(idResponse.data.data._id);
-    
+
+    setId(idResponse.data.data._id)
   }
 
   useEffect(() => {
@@ -272,7 +269,7 @@ const User_profile = props => {
                               onChange={handleChange}
                               options={reportingPersons}
                             />
-                          </CCol>                      <CLabel>Gender</CLabel>
+                          </CCol>                   
            
 
                           <CCol md='12' className='mt-2'>
@@ -284,7 +281,7 @@ const User_profile = props => {
                                 <Field
                                   name='gender'
                                   render={({ field }) => {
-           /api/auth/user-list                             <CFormGroup
+                                        <CFormGroup
                                           variant='custom-radio'
                                           inline
                                         >
