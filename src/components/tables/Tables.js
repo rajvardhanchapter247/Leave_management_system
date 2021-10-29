@@ -156,9 +156,12 @@ const Tables = () => {
       <CCard>
         <CCardHeader>
           Users List
-          <div className="card-header-actions">
-            <button className="btn btn-primary" onClick={changeState} type="submit">Add user</button>
-          </div>
+          {
+            localStorage.getItem("role") === "Admin" && <div className="card-header-actions">
+              <button className="btn btn-primary" onClick={changeState} type="submit">Add user</button>
+            </div>
+          }
+
         </CCardHeader>
         <CCardHeader>
           <CRow className="justify-content-center">
@@ -231,9 +234,9 @@ const Tables = () => {
                 (item) => (
                   <td>
                     <div className="d-flex">
-                      <CBadge color="primary" className="pointer">
+                      {localStorage.getItem('role') === "Admin" && <CBadge color="primary" className="pointer">
                         <CIcon name="cil-pen" onClick={() => updateUser(item._id)} />
-                      </CBadge>
+                      </CBadge>}
                       <CBadge color="success" className="pointer mx-1">
                         <CIcon name="cil-mood-very-good" onClick={() => userDetails(item._id)} />
                       </CBadge>

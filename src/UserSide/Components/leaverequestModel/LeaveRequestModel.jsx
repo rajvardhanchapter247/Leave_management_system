@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import {
-    CCol,
-    CRow,
     CModal,
     CModalBody,
     CModalHeader,
@@ -11,15 +9,41 @@ import {
 import axios from 'axios';
 import { getToken } from '../../../components/storage/LocalStorage';
 import Loader from '../../../containers/Loader/Loader';
+
 const LeaveRequestModel = (props) => {
     const [isLoading, setIsLoading] = useState(false);
+    const token = getToken();
 
-    const approve = () => {
+    const updateLeaveStatus = async (updatedStatus) => {
+        setIsLoading(true);
+        try {
+            const response = await axios.patch(`/api/leave-request/update-status/${props.statusId}`, {
+                status: updatedStatus
+            }, {
+                headers: {
+                    'authorization': token
+                }
+            });
+            console.log("Successfully", response);
+        } catch (error) {
+            console.log("Something went wrong!", error)
+        }
+        props.reloadPage();
+        setIsLoading(false);
+    }
+
+    const approve = (updateStatus) => {
         console.log("approve");
+        if (props.statusId !== null && props.statusId !== undefined) {
+            updateLeaveStatus(updateStatus);
+        }
         props.toggleModel();
     }
-    const reject = () => {
+    const reject = (updateStatus) => {
         console.log("reject");
+        if (props.statusId !== null && props.statusId !== undefined) {
+            updateLeaveStatus(updateStatus);
+        }
         props.toggleModel();
     }
 
@@ -33,7 +57,6 @@ const LeaveRequestModel = (props) => {
                 tabIndex="-1"
             >
                 <CModalHeader closeButton>
-                    {/*  {props.toggleModel} {props.showHide} {props.statusId} {props.status} */}
                     <CModalTitle>Leave Request</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
@@ -48,8 +71,8 @@ const LeaveRequestModel = (props) => {
                 {
                     !isLoading &&
                     <CModalFooter>
-                        <button className="btn btn-success" onClick={approve} disabled={(isLoading ? true : false)} > Approve</button>
-                        <button className="btn btn-danger" onClick={reject} disabled={(isLoading ? true : false)}> Reject</button>
+                        <button className="btn btn-success" onClick={() => approve("Approved")} disabled={(isLoading ? true : false)} > Approve</button>
+                        <button className="btn btn-danger" onClick={() => reject("Disapproved")} disabled={(isLoading ? true : false)}> Reject</button>
                     </CModalFooter>
                 }
             </CModal>

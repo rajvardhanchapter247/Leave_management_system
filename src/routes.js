@@ -2,7 +2,7 @@ import React from 'react';
 
 const Dashboard = React.lazy(() => import('./components/dashboard/Dashboard'));
 const User_dashboard = React.lazy(() => import('./UserSide/Components/user_dashboard/User_dashboard'));
-const Holidays = React.lazy(() => import('./components/holidays/Holidays'));
+// const Holidays = React.lazy(() => import('./components/holidays/Holidays'));
 const Users = React.lazy(() => import('./components/tables/Tables'));
 const Settings = React.lazy(() => import('./components/settings/Settings'))
 const UserDetails = React.lazy(() => import("./components/userdetails/UserDetails"))
@@ -17,7 +17,7 @@ const routes = [
   { path: '/User_profile', exact: true, name: 'User_profile', component: User_profile },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/settings', exact: true, name: 'Settings', component: Settings },
-  { path: '/holidays', exact: true, name: 'Holidays', component: Holidays },
+  // { path: '/holidays', exact: true, name: 'Holidays', component: Holidays },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/user-details/:UserId', name: 'UserDetails', component: UserDetails },
   { path: '/Forgot_password', exact: true, name: 'Forgot_password', component: Forgot_password },

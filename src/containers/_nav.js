@@ -10,13 +10,13 @@ const _nav = [
     icon: <CIcon name='cil-speedometer' customClasses='c-sidebar-nav-icon' />
   },
 
-  // ! Holidays sidebar
-  {
-    _tag: 'CSidebarNavItem',
-    name: 'Holidays',
-    to: '/holidays',
-    icon: <CIcon name='cil-object-group' customClasses='c-sidebar-nav-icon' />
-  },
+  // // ! Holidays sidebar
+  // {
+  //   _tag: 'CSidebarNavItem',
+  //   name: 'Holidays',
+  //   to: '/holidays',
+  //   icon: <CIcon name='cil-object-group' customClasses='c-sidebar-nav-icon' />
+  // },
 
   // ! Users sidebar
   {

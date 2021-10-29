@@ -50,7 +50,7 @@ const UpdateUser = (props) => {
 
     // ! update user api
     const updateUserApi = async (values) => {
-        console.log(values);
+        // console.log(values);
         try {
             const response = await axios.put(`/api/auth/update-user/${props.updateId}`, {
                 firstName: values.fname,

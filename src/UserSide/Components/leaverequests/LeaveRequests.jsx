@@ -6,15 +6,20 @@ import {
   CCol,
   CDataTable,
   CRow,
-  CBadge
+  CBadge,
+  CSelect,
+  CFormGroup,
+  CInput
 } from '@coreui/react'
 import axios from 'axios'
-import moment from 'moment'
+// import moment from 'moment'
 // import dateformat from 'dateformat'
 import { getToken } from '../../storage/Local_Storage'
 import { getDateTime } from '../../../common/constant'
 import Select from 'react-select';
 import LeaveRequestModel from '../leaverequestModel/LeaveRequestModel'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const fields = ['name', 'datesToRequest', 'reason', 'status']
@@ -24,26 +29,18 @@ const LeaveRequests = () => {
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [reportingPersonsList, setReportingPersonsList] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
-  const token = getToken()
+  const [selectedOptionValue, setSelectedOptionValue] = useState("");
+  const token = getToken();
 
-  const handleChange = (selectedOptionByUser) => {
-    setSelectedOption(selectedOptionByUser.value);
-  };
+  const [startDate, setStartDate] = useState("");
+  const [startDateSearch, setStartDateSearch] = useState("");
 
-  useEffect(() => {
-    //! fetch Leave Requests users list from api
-    const fetchLeaveRequestUsers = async () => {
-      setIsLoading(true);
-      const response = await axios.get(`/api/leave-request/list?limit=100&userId=${selectedOption}`, {
-        headers: {
-          authorization: token
-        }
-      })
-      setLeaveRequests(response.data.data)
-      setIsLoading(false);
-    }
-    fetchLeaveRequestUsers()
-  }, [selectedOption])
+  const [endDate, setEndDate] = useState("");
+  const [endDateSearch, setEndDateSearch] = useState("");
+
+
+  console.log("Start Date", startDate);
+  console.log("End Date", endDate);
 
   useEffect(() => {
     //! fetch Reporting Persons from api
@@ -61,28 +58,112 @@ const LeaveRequests = () => {
   // ! status model
   const [statusModelToggle, setStatusModelToggle] = useState(false);
   const [statusId, setStatusId] = useState();
-  const [status, setStatus] = useState();
-  const leaveStatus = (statusId, buttonStatus) => {
+  const leaveStatus = (statusId) => {
     setStatusId(statusId);
     setStatusModelToggle(!statusModelToggle);
-    setStatus(buttonStatus);
+  }
+
+  const handleChange = (selectedOptionByUser) => {
+    setSelectedOption(selectedOptionByUser.value);
+    setSelectedOptionValue(selectedOptionByUser);
+  };
+
+  // ! searching functionality
+  const [filterToggle, setFilterToggle] = useState(true);
+  const [search, setSearch] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+  useEffect(() => {
+    const getSearchApi = async () => {
+      setIsLoading(true);
+      const response = await axios.get(`/api/leave-request/list?limit=100&userId=${selectedOption}&search=${search}&status=${searchStatus}&fromDate=${startDateSearch}&toDate=${endDateSearch}`, {
+        headers: {
+          'authorization': token
+        }
+      });
+      const data = response.data.data;
+      setLeaveRequests(data);
+      setIsLoading(false);
+    };
+    getSearchApi();
+    // }
+  }, [search, searchStatus, selectedOption, startDateSearch, endDateSearch]);
+
+  // ! user select option by searching
+  const statusChange = (e) => {
+    setSearchStatus(e.target.value);
+  }
+
+  // ! For clearing all filters
+  const clearFilter = () => {
+    setFilterToggle(!filterToggle);
+    setSearchStatus("");
+    setSelectedOptionValue("");
+    setSelectedOption("");
+    setStartDate("");
+    setStartDateSearch("");
+    setEndDate("");
+    setEndDateSearch("");
+  }
+
+
+  // new Date()
+  const changeDate = (date) => {
+    setStartDate(date);
+    setStartDateSearch(new Date(date).toISOString());
+  }
+
+
+  const changeEndDate = (date) => {
+    setEndDate(date);
+    setEndDateSearch(new Date(date).toISOString());
   }
 
   return (
     <>
       <CCard>
         <CCardHeader>Leave Requests</CCardHeader>
+
         <CCardHeader>
-          <CRow>
-            <CCol md="12">
-              <Select
-                isSearchable={true}
-                value={selectedOption}
-                onChange={handleChange}
-                options={reportingPersonsList}
-              />
+          <CRow className="justify-content-center">
+            <CCol md="8">
+              <CFormGroup>
+                <CInput id="search" value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search" autoComplete="off" />
+              </CFormGroup>
+            </CCol>
+            <CCol md="4">
+              {
+                filterToggle === false ? <button className="btn btn-primary btn-block" onClick={() => setFilterToggle(!filterToggle)}>Add Filter</button> :
+                  <button className="btn btn-primary btn-block" onClick={clearFilter}>Clear Filter</button>
+              }
             </CCol>
           </CRow>
+          {
+            filterToggle &&
+            <CRow className="justify-content-start">
+              <CCol md="3">
+                <Select
+                  isSearchable={true}
+                  value={selectedOptionValue}
+                  onChange={handleChange}
+                  options={reportingPersonsList}
+                />
+              </CCol>
+              <CCol md="3">
+                <CSelect className="form-control" value={searchStatus} name="status" id="status" onChange={statusChange}>
+                  <option value="">Select Status</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Disapproved">Disapproved</option>
+                  <option value="Pending">Pending</option>
+                </CSelect>
+              </CCol>
+              <CCol md="3">
+                <DatePicker className="form-control" placeholderText="Start Date" selected={startDate} onChange={changeDate} />
+              </CCol>
+              <CCol md="3">
+                <DatePicker className="form-control" placeholderText="End Date" selected={endDate} onChange={changeEndDate} />
+              </CCol>
+            </CRow>
+          }
         </CCardHeader>
         <CCardBody>
           <CDataTable
@@ -111,9 +192,9 @@ const LeaveRequests = () => {
                   {
                     localStorage.getItem('role') === "Admin"
                       ?
-                      item.status === "Approved" ? <CBadge color="success" className="pointer" onClick={() => leaveStatus(item._id, item.status)}>
+                      item.status === "Approved" ? <CBadge color="success">
                         {item.status}
-                      </CBadge> : item.status === "Disapproved" ? <CBadge color="danger" className="pointer" onClick={() => leaveStatus(item._id, item.status)}>
+                      </CBadge> : item.status === "Disapproved" ? <CBadge color="danger">
                         {item.status}
                       </CBadge> : <CBadge color="primary" className="pointer" onClick={() => leaveStatus(item._id, item.status)}>
                         {item.status}
@@ -133,7 +214,7 @@ const LeaveRequests = () => {
           />
         </CCardBody>
       </CCard>
-      <LeaveRequestModel toggleModel={leaveStatus} showHide={statusModelToggle} statusId={statusId} status={status} />
+      <LeaveRequestModel toggleModel={leaveStatus} showHide={statusModelToggle} statusId={statusId} />
     </>
   )
 }

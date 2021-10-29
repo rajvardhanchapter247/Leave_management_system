@@ -1,18 +1,11 @@
-import React, { lazy } from 'react'
+import React, { lazy, useEffect } from 'react'
 import { CCard, CCardBody, CCardHeader } from '@coreui/react'
 import { CChartPie } from '@coreui/react-chartjs'
-
-
 const Widgets = lazy(() => import('../widgets/Widgets'))
 
 const Dashboard = () => {
-
   return (
     <>
-      {/* Dashboard Admin Header Part */}
-      <h1>Welcome Admin!</h1>
-      <h3 className="my-3">Dashboard</h3>
-      {/* Dashboard Admin Leaves section */}
       <Widgets />
       {/* Dashboard Admin Leaves Chart Status */}
       <CCard>
