@@ -7,7 +7,7 @@ const Users = React.lazy(() => import('./components/tables/Tables'));
 const Settings = React.lazy(() => import('./components/settings/Settings'))
 const UserDetails = React.lazy(() => import("./components/userdetails/UserDetails"))
 const User_profile = React.lazy(() => import('./UserSide/Components/User_profile/User_profile'))
-const Forgot_password = React.lazy(() => import('./UserSide/Components/forget_password/Forgot_password'))
+const Change_password = React.lazy(() => import('./UserSide/Components/change_password/Change_password'))
 const LeaveRequests = React.lazy(() => import('./UserSide/Components/leaverequests/LeaveRequests'))
 
 const routes = [
@@ -20,7 +20,7 @@ const routes = [
   // { path: '/holidays', exact: true, name: 'Holidays', component: Holidays },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/user-details/:UserId', name: 'UserDetails', component: UserDetails },
-  { path: '/Forgot_password', exact: true, name: 'Forgot_password', component: Forgot_password },
+  { path: '/Change_password', exact: true, name: 'Change_password', component: Change_password },
 ];
 
 export default routes;
