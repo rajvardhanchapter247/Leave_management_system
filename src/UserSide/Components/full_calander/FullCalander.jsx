@@ -1,5 +1,5 @@
 import React from 'react'
-import FullCalendar, { formatDate } from '@fullcalendar/react'
+import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -21,12 +21,10 @@ import {
   CTextarea
 } from '@coreui/react'
 import axios from 'axios'
-import { getToken } from '..//../storage/Local_Storage';
-
+import { getToken } from '../../storage/Local_Storage';
 
 
 export default class DemoApp extends React.Component {
-
   state = {
     weekendsVisible: true,
     currentEvents: [],
@@ -49,32 +47,18 @@ export default class DemoApp extends React.Component {
     });
   }
 
-
-
   onSubmitForm(e) {
-
     e.preventDefault();
-
-
     var start = new Date(this.state.startdate);
     var end = new Date(this.state.enddate);
 
     var dateArry = [];
     // loop for every day
     for (var day = start; day <= end; day.setDate(day.getDate() + 1)) {
-
       // console.log(day);
       var todayDate = new Date(day).toISOString().slice(0, 10);
-      console.log(todayDate);
-
       dateArry.push(todayDate);
-
-
-
     }
-    console.log(dateArry);
-
-
 
     const token = getToken();
     axios
@@ -94,11 +78,9 @@ export default class DemoApp extends React.Component {
         console.log(error);
       })
 
-
     this.setState(prevState => ({
       primary: !prevState.primary
     }))
-
   }
 
 
@@ -107,22 +89,11 @@ export default class DemoApp extends React.Component {
       primary: !prevState.primary
     }))
   }
-
-
-
-
-
   render() {
-
-    
-
     const { date, reason } = this.state
-
     return (
       <>
-
         {/* Full calander start here */}
-
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
@@ -141,17 +112,7 @@ export default class DemoApp extends React.Component {
           eventContent={renderEventContent} // custom render function
           eventClick={this.handleEventClick}
           eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
-          
         />
-
-
-        {/* Full calander end here */}
-
-
-
-
-        {/* modal start here */}
-
         <CContainer>
           <CModal
             show={this.state.primary}
@@ -174,7 +135,7 @@ export default class DemoApp extends React.Component {
                   <CCol md="12">
                     <CFormGroup>
                       <CLabel>Leave start date - to end date</CLabel>
-                      <CInput id="" type="text" value={`${this.state.startdate} to ${this.state.enddate}`} placeholder="" disabled/>
+                      <CInput id="" type="text" value={`${this.state.startdate} to ${this.state.enddate}`} placeholder="" disabled />
                     </CFormGroup>
                   </CCol>
                 </CRow>
@@ -194,16 +155,9 @@ export default class DemoApp extends React.Component {
             </CForm>
           </CModal>
         </CContainer>
-
-        {/* modal end here */}
-
       </>
     )
   }
-  
-  
-
-
 
   handleDateSelect = (selectInfo) => {
     this.setState(
@@ -228,33 +182,21 @@ export default class DemoApp extends React.Component {
       })
     }
 
-
-    
-
-
     const start_date = selectInfo.startStr;
     const end_date = selectInfo.endStr;
     var date_arry = [start_date, end_date]
     // console.log('date_arry: ', date_arry);
 
-    
-
-
     this.setState(prevState => ({
       startdate: `${start_date}`,
       enddate: `${end_date}`
     }))
-
   }
-
-
-
   handleEvents = (events) => {
     this.setState({
       currentEvents: events
     })
   }
-
 }
 
 function renderEventContent(eventInfo) {

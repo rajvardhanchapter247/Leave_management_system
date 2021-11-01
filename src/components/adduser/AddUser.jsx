@@ -13,16 +13,17 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
-import { Formik, Form, Field, FieldArray } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
 
 const AddUser = (props) => {
     const [reportingPersonsList, setReportingPersonsList] = useState([]);
-    const token = getToken();
 
     useEffect(() => {
+        const token = getToken();
+
         //! fetch Reporting Persons from api
         const ReportingPersons = async () => {
             const response = await axios.get('/api/auth/reporting-person-list', {
@@ -67,6 +68,8 @@ const AddUser = (props) => {
 
     //! add user in api
     const addUser = async (data) => {
+        const token = getToken();
+        
         try {
             await axios.post('/api/auth/add-user', {
                 firstName: data.fname,

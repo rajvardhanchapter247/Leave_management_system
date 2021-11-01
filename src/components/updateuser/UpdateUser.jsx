@@ -20,29 +20,31 @@ import Select from 'react-select';
 import Loader from "../../containers/Loader/Loader"
 
 const UpdateUser = (props) => {
-    const token = getToken();
     const [isLoading, setIsLoading] = useState(false);
     const [reportingPersons, setReportingPersons] = useState([]);
 
     const [singleUser, setSingleUser] = useState([]);
-    //! fetch users list from api
-    const fetchUser = async () => {
-        setIsLoading(true);
-        try {
-            const response = await axios.get(`/api/auth/user-view/${props.updateId}`, {
-                headers: {
-                    'authorization': token
-                }
-            });
-            setSingleUser(response.data.data[0]);
-            console.log("Single user data", singleUser);
-        } catch (error) {
-            console.log(error)
-        }
-        setIsLoading(false);
-    }
 
     useEffect(() => {
+        const token = getToken();
+
+        //! fetch users list from api
+        const fetchUser = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/auth/user-view/${props.updateId}`, {
+                    headers: {
+                        'authorization': token
+                    }
+                });
+                setSingleUser(response.data.data[0]);
+                // console.log("Single user data", singleUser);
+            } catch (error) {
+                console.log(error)
+            }
+            setIsLoading(false);
+        }
+
         if (props.updateId !== null && props.updateId !== undefined) {
             fetchUser();
         }
@@ -50,6 +52,8 @@ const UpdateUser = (props) => {
 
     // ! update user api
     const updateUserApi = async (values) => {
+        const token = getToken();
+
         // console.log(values);
         try {
             const response = await axios.put(`/api/auth/update-user/${props.updateId}`, {
@@ -113,17 +117,19 @@ const UpdateUser = (props) => {
         setSelectedReportingPersons(Array.isArray(selectedOptionByUser) ? selectedOptionByUser.map(option => option.value) : []);
     };
 
-    //! fetch Reporting Persons from api
-    const ReportingPersons = async () => {
-        const response = await axios.get('/api/auth/reporting-person-list', {
-            headers: {
-                'authorization': token
-            }
-        })
-        setReportingPersons(response.data.data);
-    }
 
     useEffect(() => {
+        const token = getToken();
+
+        //! fetch Reporting Persons from api
+        const ReportingPersons = async () => {
+            const response = await axios.get('/api/auth/reporting-person-list', {
+                headers: {
+                    'authorization': token
+                }
+            })
+            setReportingPersons(response.data.data);
+        }
         ReportingPersons();
     }, []);
 

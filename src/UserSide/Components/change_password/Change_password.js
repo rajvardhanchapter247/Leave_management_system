@@ -1,30 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { TextField } from '../text_field/TextField'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import { setUserSession, getToken } from '../../storage/Local_Storage'
+import { getToken } from '../../storage/Local_Storage'
 import {
   CCard,
   CCardBody,
   CCardGroup,
-  CCol,
-  CContainer,
-  CRow
+  CCardHeader
 } from '@coreui/react'
 
 const Change_password = () => {
   const history = useHistory();
   const [error, setError] = useState(null)
   const token = getToken()
-  useEffect(() => {
-    // if (token === null) {
-    //   history.push("/login")
-    // } else {
-    //   history.push("/dashboard")
-    // }
-  }, [])
 
   const validate = Yup.object({
     oldPassword: Yup.string()
@@ -35,8 +26,8 @@ const Change_password = () => {
       .trim()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
-      passwordConfirmation: Yup.string()
-     .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+    passwordConfirmation: Yup.string()
+      .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
   })
 
   const sendGetRequest = async data => {
@@ -72,57 +63,51 @@ const Change_password = () => {
 
   return (
     <>
-      <div className='flex-row align-items-center'>
-        <CContainer>
-          <CRow className='justify-content-center'>
-            <CCol md='12'>
-              <CCardGroup>
-                <CCard>
-                  <CCardBody>
-                    <p className='text-muted'>Change your password</p>
-                    <Formik
-                      initialValues={{
-                        oldPassword: '',
-                        newPassword: ''
-                      }}
-                      validationSchema={validate}
-                      onSubmit={onSubmitEvent}
-                    >
-                      {formik => (
-                        <Form id='form'>
-                          <TextField
-                            label='Old Password'
-                            name='oldPassword'
-                            type='password'
-                          />
-                          <TextField
-                            label='New Password'
-                            name='newPassword'
-                            type='password'
-                          />
-                          <TextField
-                            label='Confirm Password'
-                            name='passwordConfirmation'
-                            type='password'
-                          />
-                          {error && <div className='error-1'>{error}</div>}
-                          <button
-                            className='btn btn-primary mt-3'
-                            type='submit'
-                            disabled={!(formik.isValid && formik.dirty)}
-                          >
-                            Change Password
-                          </button>
-                        </Form>
-                      )}
-                    </Formik>
-                  </CCardBody>
-                </CCard>
-              </CCardGroup>
-            </CCol>
-          </CRow>
-        </CContainer>
-      </div>
+      <CCardGroup>
+        <CCard>
+          <CCardHeader>
+            Change your password
+          </CCardHeader>
+          <CCardBody>
+            <Formik
+              initialValues={{
+                oldPassword: '',
+                newPassword: ''
+              }}
+              validationSchema={validate}
+              onSubmit={onSubmitEvent}
+            >
+              {formik => (
+                <Form id='form'>
+                  <TextField
+                    label='Old Password'
+                    name='oldPassword'
+                    type='password'
+                  />
+                  <TextField
+                    label='New Password'
+                    name='newPassword'
+                    type='password'
+                  />
+                  <TextField
+                    label='Confirm Password'
+                    name='passwordConfirmation'
+                    type='password'
+                  />
+                  {error && <div className='error-1'>{error}</div>}
+                  <button
+                    className='btn btn-primary mt-3'
+                    type='submit'
+                    disabled={!(formik.isValid && formik.dirty)}
+                  >
+                    Change Password
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          </CCardBody>
+        </CCard>
+      </CCardGroup>
     </>
   )
 }

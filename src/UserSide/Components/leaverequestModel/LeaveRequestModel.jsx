@@ -57,7 +57,7 @@ const LeaveRequestModel = (props) => {
                 tabIndex="-1"
             >
                 <CModalHeader closeButton>
-                    <CModalTitle>Leave Request</CModalTitle>
+                    <CModalTitle>Leave Requests</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
                     {

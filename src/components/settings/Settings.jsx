@@ -10,39 +10,46 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import { getDateTime } from '../../common/constant';
 import Loader from "../../containers/Loader/Loader"
+import { useHistory } from 'react-router';
 
 const Settings = () => {
 
-    const token = getToken();
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    const history = useHistory();
+    useEffect(() => {
+        localStorage.getItem("role") !== "Admin" && history.push("/dashboard")
+    })
 
     useEffect(() => {
+        const token = getToken();
+        //! fetch settings api
+        const fetchSettingsApi = async () => {
+            setIsLoading(true);
+            try {
+                const response = await axios.get(`/api/setting`, {
+                    headers: {
+                        'authorization': token
+                    }
+                });
+                setSettingsData(response.data.data[0]);
+                console.log("data", response.data.data[0]);
+            } catch (error) {
+                console.log("Something went wrong!", error)
+            }
+            setIsLoading(false);
+        }
         fetchSettingsApi();
     }, []);
 
     const [settingsData, setSettingsData] = useState([])
 
-    //! fetch settings api
-    const fetchSettingsApi = async () => {
-        setIsLoading(true);
-        try {
-            const response = await axios.get(`/api/setting`, {
-                headers: {
-                    'authorization': token
-                }
-            });
-            setSettingsData(response.data.data[0]);
-            console.log("data", response.data.data[0]);
-        } catch (error) {
-            console.log("Something went wrong!", error)
-        }
-        setIsLoading(false);
-    }
 
     // ! yup validation
     const validate = Yup.object({
@@ -65,6 +72,7 @@ const Settings = () => {
     }
 
     const updateSettingsApi = async (values) => {
+        const token = getToken();
         setIsLoading(true);
         try {
             console.log(settingsData._id);
@@ -99,7 +107,6 @@ const Settings = () => {
 
     return (
         <>
-
             {
                 isLoading ? <Loader /> :
                     <CCard>
@@ -145,7 +152,7 @@ const Settings = () => {
                                                     </CCol>
                                                     <CCol md="6">
                                                         <CFormGroup>
-                                                            <TextField label="Created At" name="createdAt" type="text" readOnly/>
+                                                            <TextField label="Created At" name="createdAt" type="text" readOnly />
                                                         </CFormGroup>
                                                     </CCol>
                                                 </CRow>

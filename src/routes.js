@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Dashboard = React.lazy(() => import('./components/dashboard/Dashboard'));
-const User_dashboard = React.lazy(() => import('./UserSide/Components/user_dashboard/User_dashboard'));
+// const UserDashboard = React.lazy(() => import('./UserSide/Components/UserDashboard/UserDashboard'));
 // const Holidays = React.lazy(() => import('./components/holidays/Holidays'));
 const Users = React.lazy(() => import('./components/tables/Tables'));
 const Settings = React.lazy(() => import('./components/settings/Settings'))
@@ -12,8 +12,8 @@ const LeaveRequests = React.lazy(() => import('./UserSide/Components/leavereques
 
 const routes = [
 
-  { path: '/leave-requests', exact: true, name: 'Leave_list', component: LeaveRequests },
-  { path: '/user_dashboard', exact: true, name: 'User_dashboard', component: User_dashboard },
+  { path: '/leave-requests', exact: true, name: 'LeaveRequest', component: LeaveRequests },
+  // { path: '/UserDashboard', exact: true, name: 'UserDashboard', component: UserDashboard },
   { path: '/User_profile', exact: true, name: 'User_profile', component: User_profile },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/settings', exact: true, name: 'Settings', component: Settings },

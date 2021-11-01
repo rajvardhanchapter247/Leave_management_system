@@ -30,8 +30,6 @@ const LeaveRequests = () => {
   const [reportingPersonsList, setReportingPersonsList] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedOptionValue, setSelectedOptionValue] = useState("");
-  const token = getToken();
-
   const [startDate, setStartDate] = useState("");
   const [startDateSearch, setStartDateSearch] = useState("");
 
@@ -43,6 +41,8 @@ const LeaveRequests = () => {
   console.log("End Date", endDate);
 
   useEffect(() => {
+    const token = getToken();
+
     //! fetch Reporting Persons from api
     const ReportingPersons = async () => {
       const response = await axios.get('/api/auth/reporting-person-list', {
@@ -73,6 +73,8 @@ const LeaveRequests = () => {
   const [search, setSearch] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   useEffect(() => {
+    const token = getToken();
+
     const getSearchApi = async () => {
       setIsLoading(true);
       const response = await axios.get(`/api/leave-request/list?limit=100&userId=${selectedOption}&search=${search}&status=${searchStatus}&fromDate=${startDateSearch}&toDate=${endDateSearch}`, {

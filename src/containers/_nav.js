@@ -25,25 +25,14 @@ const _nav = [
     to: '/users',
     icon: <CIcon name='cil-people' customClasses='c-sidebar-nav-icon' />
   },
-  {
-    _tag: 'CSidebarNavDropdown',
-    name: 'User_side',
-    route: '',
-    icon: 'cil-puzzle',
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Users_dashboard',
-        to: '/User_dashboard',
-        icon: <CIcon name='cil-contact' customClasses='c-sidebar-nav-icon' />
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Leave_list',
-        to: '/leave-requests'
-      }
-    ]
-  }
+
+    // ! Dashboard sidebar
+    {
+      _tag: 'CSidebarNavItem',
+      name: 'Leave Requests',
+      to: '/leave-requests',
+      icon: <CIcon name='cil-puzzle' customClasses='c-sidebar-nav-icon' />
+    },
 
   // // ! Department sidebar
   // {
