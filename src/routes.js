@@ -14,10 +14,10 @@ const routes = [
 
   { path: '/leave-requests', exact: true, name: 'LeaveRequest', component: LeaveRequests },
   // { path: '/UserDashboard', exact: true, name: 'UserDashboard', component: UserDashboard },
+  // { path: '/holidays', exact: true, name: 'Holidays', component: Holidays },
   { path: '/User_profile', exact: true, name: 'User_profile', component: User_profile },
   { path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard },
   { path: '/settings', exact: true, name: 'Settings', component: Settings },
-  // { path: '/holidays', exact: true, name: 'Holidays', component: Holidays },
   { path: '/users', exact: true, name: 'Users', component: Users },
   { path: '/users/user-details/:UserId', name: 'UserDetails', component: UserDetails },
   { path: '/Change_password', exact: true, name: 'Change_password', component: Change_password },

@@ -22,7 +22,7 @@ const AddUser = (props) => {
     const [reportingPersonsList, setReportingPersonsList] = useState([]);
 
     useEffect(() => {
-        const token = getToken();
+        var token = getToken();
 
         //! fetch Reporting Persons from api
         const ReportingPersons = async () => {
@@ -68,8 +68,8 @@ const AddUser = (props) => {
 
     //! add user in api
     const addUser = async (data) => {
-        const token = getToken();
-        
+        var token = getToken();
+
         try {
             await axios.post('/api/auth/add-user', {
                 firstName: data.fname,

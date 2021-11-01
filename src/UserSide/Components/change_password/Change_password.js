@@ -15,7 +15,7 @@ import {
 const Change_password = () => {
   const history = useHistory();
   const [error, setError] = useState(null)
-  const token = getToken()
+  var token = getToken()
 
   const validate = Yup.object({
     oldPassword: Yup.string()

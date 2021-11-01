@@ -27,7 +27,7 @@ const fields = ['name', 'department', 'email', 'createdAt', 'role', 'status', 'a
 const Tables = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const token = getToken();
+  var token = getToken();
   const history = useHistory();
 
   // ! change model add use state
@@ -73,7 +73,7 @@ const Tables = () => {
 
   const fetchUserListWithLimit = async () => {
     setIsLoading(true);
-    const response = await axios.get(`/api/auth/user-list?search=${search}&page=1&limit=${limit}`, {
+    const response = await axios.get(`/api/auth/user-list?search=${search}&limit=${limit}`, {
       headers: {
         'authorization': token
       }

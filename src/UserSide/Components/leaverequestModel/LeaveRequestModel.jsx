@@ -12,7 +12,7 @@ import Loader from '../../../containers/Loader/Loader';
 
 const LeaveRequestModel = (props) => {
     const [isLoading, setIsLoading] = useState(false);
-    const token = getToken();
+    var token = getToken();
 
     const updateLeaveStatus = async (updatedStatus) => {
         setIsLoading(true);

@@ -10,7 +10,7 @@ import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
 import Loader from '../../containers/Loader/Loader'
 const DeleteUser = (props) => {
-    const token = getToken();
+    var token = getToken();
     const [isLoading, setIsLoading] = useState(false);
 
     const deleteUserApi = async () => {

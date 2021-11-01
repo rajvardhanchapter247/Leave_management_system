@@ -15,7 +15,7 @@ import { TextField } from '../text_field/TextField'
 import { useHistory } from 'react-router-dom'
 
 const User_profile = props => {
-  const token = getToken()
+  var token = getToken()
   const history = useHistory()
 
   const [id, setId] = useState()

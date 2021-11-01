@@ -26,7 +26,7 @@ const UpdateUser = (props) => {
     const [singleUser, setSingleUser] = useState([]);
 
     useEffect(() => {
-        const token = getToken();
+        var token = getToken();
 
         //! fetch users list from api
         const fetchUser = async () => {
@@ -52,7 +52,7 @@ const UpdateUser = (props) => {
 
     // ! update user api
     const updateUserApi = async (values) => {
-        const token = getToken();
+        var token = getToken();
 
         // console.log(values);
         try {
@@ -119,7 +119,7 @@ const UpdateUser = (props) => {
 
 
     useEffect(() => {
-        const token = getToken();
+        var token = getToken();
 
         //! fetch Reporting Persons from api
         const ReportingPersons = async () => {

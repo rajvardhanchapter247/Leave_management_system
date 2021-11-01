@@ -28,7 +28,7 @@ const Settings = () => {
     })
 
     useEffect(() => {
-        const token = getToken();
+        var token = getToken();
         //! fetch settings api
         const fetchSettingsApi = async () => {
             setIsLoading(true);
@@ -72,7 +72,7 @@ const Settings = () => {
     }
 
     const updateSettingsApi = async (values) => {
-        const token = getToken();
+        var token = getToken();
         setIsLoading(true);
         try {
             console.log(settingsData._id);

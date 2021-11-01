@@ -37,11 +37,11 @@ const LeaveRequests = () => {
   const [endDateSearch, setEndDateSearch] = useState("");
 
 
-  console.log("Start Date", startDate);
-  console.log("End Date", endDate);
+  // console.log("Start Date", startDate);
+  // console.log("End Date", endDate);
 
   useEffect(() => {
-    const token = getToken();
+    var token = getToken();
 
     //! fetch Reporting Persons from api
     const ReportingPersons = async () => {
@@ -73,7 +73,7 @@ const LeaveRequests = () => {
   const [search, setSearch] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   useEffect(() => {
-    const token = getToken();
+    var token = getToken();
 
     const getSearchApi = async () => {
       setIsLoading(true);

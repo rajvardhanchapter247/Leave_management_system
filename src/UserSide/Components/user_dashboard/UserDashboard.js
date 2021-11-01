@@ -21,7 +21,7 @@ const fields = ['datesToRequest', 'reason', 'status']
 const UserDashboard = () => {
     const [usersList, setUsersList] = useState([])
     useEffect(() => {
-        const token = getToken();
+        var token = getToken();
         const fetchUsers = async () => {
             const response = await axios.get(`/api/leave-request/me`, {
                 headers: {

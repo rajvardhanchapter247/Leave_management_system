@@ -60,7 +60,7 @@ export default class DemoApp extends React.Component {
       dateArry.push(todayDate);
     }
 
-    const token = getToken();
+    var token = getToken();
     axios
       .post('/api/leave-request/add', {
         datesToRequest: dateArry,

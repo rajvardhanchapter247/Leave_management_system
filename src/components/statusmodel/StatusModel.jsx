@@ -15,7 +15,7 @@ import Loader from '../../containers/Loader/Loader'
 const StatusModel = (props) => {
     const status = props.status === "Active";
     const [isLoading, setIsLoading] = useState(false);
-    const token = getToken();
+    var token = getToken();
     const updateStatus = async () => {
         setIsLoading(true);
         try {

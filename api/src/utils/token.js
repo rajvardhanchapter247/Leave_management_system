@@ -4,7 +4,7 @@ import { Message } from '../common';
 const config = process.env;
 
 const verifyToken = async (req, res, next) => {
-  const token =
+  var token =
     req.body.authorization ||
     req.query.authorization ||
     req.headers['authorization'];

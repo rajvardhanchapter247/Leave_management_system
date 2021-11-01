@@ -19,7 +19,7 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = getToken();
+    var token = getToken();
     if (token === null) {
       history.push("/login")
     } else {
