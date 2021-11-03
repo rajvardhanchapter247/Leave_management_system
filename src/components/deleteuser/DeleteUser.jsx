@@ -5,6 +5,7 @@ import {
     CModalFooter,
     CModalHeader,
     CModalTitle,
+    CSpinner
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
@@ -25,8 +26,9 @@ const DeleteUser = (props) => {
         } catch (error) {
             console.log(error);
         }
-        props.toggleModel();
+        props.reloadPage();
         setIsLoading(false);
+        props.toggleModel();
     }
 
     const deleteUser = () => {
@@ -56,8 +58,24 @@ const DeleteUser = (props) => {
                     }
                 </CModalBody>
                 <CModalFooter>
-                    <button className="btn btn-danger" onClick={deleteUser} disabled={(isLoading ? true : false)}>Yes</button>
-                    <button className="btn btn-success" onClick={props.toggleModel} disabled={(isLoading ? true : false)}>No</button>
+                    {
+                        isLoading ?
+                            <button className="btn btn-danger btn-block " disabled>
+                                <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                Loading...
+                            </button>
+                            :
+                            <button className="btn btn-danger btn-block" onClick={deleteUser} disabled={(isLoading ? true : false)}> Yes</button>
+                    }
+                    {
+                        isLoading ?
+                            <button className="btn btn-success btn-block " disabled>
+                                <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                Loading...
+                            </button>
+                            :
+                            <button className="btn btn-success btn-block" onClick={props.toggleModel} disabled={(isLoading ? true : false)}> No</button>
+                    }
                 </CModalFooter>
             </CModal>
 

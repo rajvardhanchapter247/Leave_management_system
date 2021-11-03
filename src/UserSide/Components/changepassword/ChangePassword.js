@@ -9,13 +9,15 @@ import {
   CCard,
   CCardBody,
   CCardGroup,
-  CCardHeader
+  CCardHeader,
+  CSpinner
 } from '@coreui/react'
 
-const Change_password = () => {
+const ChangePassword = () => {
   const history = useHistory();
   const [error, setError] = useState(null)
-  var token = getToken()
+  var token = getToken();
+  const [isLoading, setIsLoading] = useState(false);
 
   const validate = Yup.object({
     oldPassword: Yup.string()
@@ -32,9 +34,9 @@ const Change_password = () => {
 
   const sendGetRequest = async data => {
     // setError(null)
+    setIsLoading(true);
     try {
-      const response = await axios.put(
-        '/api/auth/change-password',
+      const response = await axios.put('/api/auth/change-password',
         {
           oldPassword: data.oldPassword,
           newPassword: data.newPassword
@@ -45,14 +47,11 @@ const Change_password = () => {
           }
         }
       )
-      alert(response.data.message)
-      // setUserSession(response.data.token, response.data.data.role)
-      history.push('/User_profile');
+      history.push('/user-profile');
     } catch (error) {
-      // Handle Error Here
       setError('Something went wrong Please try again !')
-      // alert(error)
     }
+    setIsLoading(false);
   }
 
   const onSubmitEvent = values => {
@@ -95,13 +94,19 @@ const Change_password = () => {
                     type='password'
                   />
                   {error && <div className='error-1'>{error}</div>}
-                  <button
-                    className='btn btn-primary mt-3'
-                    type='submit'
-                    disabled={!(formik.isValid && formik.dirty)}
-                  >
-                    Change Password
-                  </button>
+
+                  {
+                    isLoading ?
+                      <button className="btn btn-primary btn-block mt-3" disabled>
+                        <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                        Loading...
+                      </button>
+                      :
+                      <button
+                        className="btn btn-primary btn-block mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>
+                        Change Password
+                      </button>
+                  }
                 </Form>
               )}
             </Formik>
@@ -112,4 +117,4 @@ const Change_password = () => {
   )
 }
 
-export default Change_password
+export default ChangePassword;

@@ -5,22 +5,24 @@ import {
   CCol,
   CRow,
   CFormGroup,
+  CSpinner
 } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { getToken } from '..//../storage/Local_Storage'
+import { getToken } from '../../storage/Local_Storage'
 import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { TextField } from '../text_field/TextField'
 import { useHistory } from 'react-router-dom'
 
 const User_profile = props => {
-  var token = getToken()
   const history = useHistory()
-
-  const [id, setId] = useState()
+  const [isLoading, setIsLoading] = useState(false);
+  const [id, setId] = useState();
 
   const updateUserApi = async values => {
+    var token = getToken();
+    setIsLoading(true);
     try {
       const response = await axios.put(`/api/auth/update-user/${id}`, {
         firstName: values.fname,
@@ -34,11 +36,12 @@ const User_profile = props => {
           }
         }
       )
-      console.log('Update user Successfully', response)
-      alert('Update user Successfully')
+      // console.log('Update user Successfully', response);
+      // alert('Update user Successfully');
     } catch (error) {
       console.log('Something went wrong!', error)
     }
+    setIsLoading(false);
   }
 
   const validate = Yup.object({
@@ -59,24 +62,24 @@ const User_profile = props => {
   const onSubmitEvent = values => {
     updateUserApi(values)
     document.getElementById('form').reset()
-    props.toggleModel()
   }
 
-  const Get_id = async () => {
-    const response = await axios.get('/api/auth/me', {
-      headers: {
-        authorization: token
-      }
-    })
-    setId(response.data.data._id);
-  }
 
   useEffect(() => {
+    var token = getToken();
+    const Get_id = async () => {
+      const response = await axios.get('/api/auth/me', {
+        headers: {
+          authorization: token
+        }
+      })
+      setId(response.data.data._id);
+    }
     Get_id()
   }, [])
 
   const changePassword = () => {
-    history.push('/Change_password')
+    history.push('/change-password')
   }
 
   return (
@@ -113,51 +116,44 @@ const User_profile = props => {
                     {formik => (
                       <Form id='form'>
                         <CRow>
-                          <CCol md='6'>
+                          <CCol md='12'>
                             <CFormGroup>
-                              <TextField
-                                label='First Name'
-                                name='fname'
-                                type='text'
-                              />
-                            </CFormGroup>
-                          </CCol>
-                          <CCol md='6'>
-                            <CFormGroup>
-                              <TextField
-                                label='Middle Name'
-                                name='mname'
-                                type='text'
+                              <TextField label='First Name' name='fname' type='text'
                               />
                             </CFormGroup>
                           </CCol>
                           <CCol md='12'>
                             <CFormGroup>
-                              <TextField
-                                label='Last Name'
-                                name='lname'
-                                type='text'
+                              <TextField label='Middle Name' name='mname' type='text'
                               />
                             </CFormGroup>
                           </CCol>
                           <CCol md='12'>
                             <CFormGroup>
-                              <TextField
-                                label='Email'
-                                name='email'
-                                type='email'
+                              <TextField label='Last Name' name='lname' type='text'
+                              />
+                            </CFormGroup>
+                          </CCol>
+                          <CCol md='12'>
+                            <CFormGroup>
+                              <TextField label='Email' name='email' type='email'
                               />
                             </CFormGroup>
                           </CCol>
 
                           <CCol md='12'>
-                            <button
-                              className='btn btn-primary'
-                              type='submit'
-                              disabled={!(formik.isValid && formik.dirty)}
-                            >
-                              Update Profile
-                            </button>
+                            {
+                              isLoading ?
+                                <button className="btn btn-primary btn-block mt-3" disabled>
+                                  <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                  Loading...
+                                </button>
+                                :
+                                <button
+                                  className='btn btn-primary btn-block mt-3' type='submit' disabled={!(formik.isValid && formik.dirty)}>
+                                  Update Profile
+                                </button>
+                            }
                           </CCol>
                         </CRow>
                       </Form>

@@ -19,16 +19,17 @@ import StatusModel from '../statusmodel/StatusModel'
 import UpdateUser from '../updateuser/UpdateUser'
 import DeleteUser from '../deleteuser/DeleteUser'
 import { useHistory } from 'react-router'
-import ReactPaginate from "react-paginate";
+// import ReactPaginate from "react-paginate";
 import { getDateTime } from '../../common/constant'
 
 const fields = ['name', 'department', 'email', 'createdAt', 'role', 'status', 'actions']
 
 const Tables = () => {
+  const history = useHistory();
+  var token = getToken();
   const [isLoading, setIsLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
-  var token = getToken();
-  const history = useHistory();
+  const [reload, setReload] = useState(false);
 
   // ! change model add use state
   const changeState = () => {
@@ -68,69 +69,32 @@ const Tables = () => {
 
   // ! pagination code
   const [items, setItems] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
-  let limit = 10;
+  const [limit, setLimit] = useState(10);
 
-  const fetchUserListWithLimit = async () => {
-    setIsLoading(true);
-    const response = await axios.get(`/api/auth/user-list?search=${search}&limit=${limit}`, {
-      headers: {
-        'authorization': token
-      }
-    });
-    const total = response.data.totalRecords;
-    const data = response.data.data;
-    setPageCount(Math.ceil(total / limit));
-    setItems(data);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchUserListWithLimit();
-  }, []);
-
-  const fetchUserListWithLimitCurrentPage = async (currentPage) => {
-    setIsLoading(true);
-    const response = await axios.get(`/api/auth/user-list?search=${search}&status=${searchStatus}&role=${searchRole}&department=${searchDepartment}&page=${currentPage}&limit=${limit}`, {
-      headers: {
-        'authorization': token
-      }
-    });
-    setIsLoading(false);
-    const data = response.data.data;
-    return data;
-  };
-
-  const handlePageClick = async (data) => {
-    let currentPage = data.selected + 1;
-    const userList = await fetchUserListWithLimitCurrentPage(currentPage);
-    setItems(userList);
-  };
-
-  // ! searching functionality
   const [filterToggle, setFilterToggle] = useState(false);
   const [search, setSearch] = useState("");
   const [searchDepartment, setSearchDepartment] = useState("");
   const [searchRole, setSearchRole] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
+  const currentPage = 1;
+
   useEffect(() => {
-    const getSearchApi = async () => {
+    const fetchUserListWithLimit = async () => {
       setIsLoading(true);
-      const response = await axios.get(`/api/auth/user-list?search=${search}&status=${searchStatus}&role=${searchRole}&department=${searchDepartment}`, {
+      const response = await axios.get(`/api/auth/user-list?search=${search}&status=${searchStatus}&role=${searchRole}&department=${searchDepartment}&page=${currentPage}&limit=${limit}`, {
         headers: {
           'authorization': token
         }
       });
       const data = response.data.data;
+      setLimit(response.data.totalRecords);
       setItems(data);
       setIsLoading(false);
     };
-    if (search !== "" || searchStatus !== "" || searchRole !== "" || searchDepartment !== "") {
-      getSearchApi();
-    } else {
-      fetchUserListWithLimit();
-    }
-  }, [search, searchStatus, searchRole, searchDepartment]);
+
+    fetchUserListWithLimit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, searchStatus, searchRole, searchDepartment, limit, reload]);
 
   // ! user select option by searching
   const departmentChange = (e) => {
@@ -149,6 +113,11 @@ const Tables = () => {
     setSearchDepartment("");
     setSearchRole("");
     setSearchStatus("");
+  }
+
+  // for reloading page
+  const reloadPage = () => {
+    setReload(!reload);
   }
 
   return (
@@ -178,33 +147,33 @@ const Tables = () => {
             </CCol>
           </CRow>
           {
-            filterToggle ?
-              <CRow className="justify-content-center">
-                <CCol md="4">
-                  <CSelect value={searchDepartment} name="department" id="department" onChange={departmentChange}>
-                    <option value="">Select Department</option>
-                    <option value="Engineering">Engineering</option>
-                    <option value="HR">HR</option>
-                    <option value="Business Development">Business Development</option>
-                  </CSelect>
-                </CCol>
+            filterToggle &&
+            <CRow className="justify-content-center">
+              <CCol md="4">
+                <CSelect value={searchDepartment} name="department" id="department" onChange={departmentChange}>
+                  <option value="">Select Department</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="HR">HR</option>
+                  <option value="Business Development">Business Development</option>
+                </CSelect>
+              </CCol>
 
-                <CCol md="4">
-                  <CSelect value={searchRole} name="role" id="role" onChange={roleChange}>
-                    <option value="">Select Role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Employee">Employee</option>
-                  </CSelect>
-                </CCol>
+              <CCol md="4">
+                <CSelect value={searchRole} name="role" id="role" onChange={roleChange}>
+                  <option value="">Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Employee">Employee</option>
+                </CSelect>
+              </CCol>
 
-                <CCol md="4">
-                  <CSelect value={searchStatus} name="status" id="status" onChange={statusChange}>
-                    <option value="">Select Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </CSelect>
-                </CCol>
-              </CRow> : null
+              <CCol md="4">
+                <CSelect value={searchStatus} name="status" id="status" onChange={statusChange}>
+                  <option value="">Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </CSelect>
+              </CCol>
+            </CRow>
           }
         </CCardHeader>
         <CCardBody>
@@ -215,8 +184,8 @@ const Tables = () => {
             border
             outlined
             loading={isLoading}
-            // itemsPerPage={5}
-            // pagination
+            itemsPerPage={10}
+            pagination
             scopedSlots={{
               'name':
                 (item) => (
@@ -241,11 +210,10 @@ const Tables = () => {
                         <CIcon name="cil-mood-very-good" onClick={() => userDetails(item._id)} />
                       </CBadge>
                       {
-                        localStorage.getItem('role') === "Admin" ?
-                          <CBadge color="danger" className="pointer">
-                            <CIcon name="cil-trash" onClick={() => deleteUser(item._id)} />
-                          </CBadge>
-                          : null
+                        localStorage.getItem('role') === "Admin" &&
+                        <CBadge color="danger" className="pointer">
+                          <CIcon name="cil-trash" onClick={() => deleteUser(item._id)} />
+                        </CBadge>
                       }
                     </div>
                   </td>
@@ -277,7 +245,7 @@ const Tables = () => {
             }
             }
           />
-          <ReactPaginate
+          {/* <ReactPaginate
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}
@@ -295,14 +263,14 @@ const Tables = () => {
             breakClassName={"page-item"}
             breakLinkClassName={"page-link"}
             activeClassName={"active"}
-          />
+          /> */}
         </CCardBody>
       </CCard>
 
-      <AddUser toggleModel={changeState} showHide={toggle} />
-      <StatusModel toggleModel={changeModelState} showHide={statusModelToggle} statusId={statusId} status={status} />
-      <UpdateUser toggleModel={updateUser} showHide={updateUserModelToggle} updateId={updateId} />
-      <DeleteUser toggleModel={deleteUser} showHide={deleteUserModelToggle} deleteId={deleteId} />
+      <AddUser toggleModel={changeState} showHide={toggle} reloadPage={reloadPage}/>
+      <StatusModel toggleModel={changeModelState} showHide={statusModelToggle} statusId={statusId} status={status} reloadPage={reloadPage} />
+      <UpdateUser toggleModel={updateUser} showHide={updateUserModelToggle} updateId={updateId} reloadPage={reloadPage}/>
+      <DeleteUser toggleModel={deleteUser} showHide={deleteUserModelToggle} deleteId={deleteId} reloadPage={reloadPage}/>
     </>
   )
 }

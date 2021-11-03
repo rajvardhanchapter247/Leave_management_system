@@ -15,9 +15,9 @@ import {
 } from '@coreui/react'
 
 const Login = () => {
-  const history = useHistory();
   const [error, setError] = useState(null);
 
+  const history = useHistory();
   useEffect(() => {
     var token = getToken();
     if (token === null) {

@@ -4,11 +4,11 @@ import {
     CModalBody,
     CModalHeader,
     CModalTitle,
-    CModalFooter
+    CModalFooter,
+    CSpinner
 } from '@coreui/react'
 import axios from 'axios';
 import { getToken } from '../../../components/storage/LocalStorage';
-import Loader from '../../../containers/Loader/Loader';
 
 const LeaveRequestModel = (props) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -30,21 +30,18 @@ const LeaveRequestModel = (props) => {
         }
         props.reloadPage();
         setIsLoading(false);
+        props.toggleModel();
     }
 
     const approve = (updateStatus) => {
-        console.log("approve");
         if (props.statusId !== null && props.statusId !== undefined) {
             updateLeaveStatus(updateStatus);
         }
-        props.toggleModel();
     }
     const reject = (updateStatus) => {
-        console.log("reject");
         if (props.statusId !== null && props.statusId !== undefined) {
             updateLeaveStatus(updateStatus);
         }
-        props.toggleModel();
     }
 
     return (
@@ -60,21 +57,28 @@ const LeaveRequestModel = (props) => {
                     <CModalTitle>Leave Requests</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
+                    <h5 className="text-center">Change leave request.</h5>
+                </CModalBody>
+                <CModalFooter>
                     {
                         isLoading ?
-                            <div style={{ height: "20vh" }}>
-                                <Loader />
-                            </div>
-                            : <h5 className="text-center">Change leave request.</h5>
+                            <button className="btn btn-success btn-block " disabled>
+                                <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                Loading...
+                            </button>
+                            :
+                            <button className="btn btn-success btn-block" onClick={() => approve("Approved")} disabled={(isLoading ? true : false)}> Approve</button>
                     }
-                </CModalBody>
-                {
-                    !isLoading &&
-                    <CModalFooter>
-                        <button className="btn btn-success" onClick={() => approve("Approved")} disabled={(isLoading ? true : false)} > Approve</button>
-                        <button className="btn btn-danger" onClick={() => reject("Disapproved")} disabled={(isLoading ? true : false)}> Reject</button>
-                    </CModalFooter>
-                }
+                    {
+                        isLoading ?
+                            <button className="btn btn-danger btn-block " disabled>
+                                <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                Loading...
+                            </button>
+                            :
+                            <button className="btn btn-danger btn-block" onClick={() => reject("Disapproved")} disabled={(isLoading ? true : false)}> Reject</button>
+                    }
+                </CModalFooter>
             </CModal>
         </>
     )

@@ -25,6 +25,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const fields = ['name', 'datesToRequest', 'reason', 'status']
 
 const LeaveRequests = () => {
+  const [reload, setReload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [reportingPersonsList, setReportingPersonsList] = useState([]);
@@ -35,10 +36,6 @@ const LeaveRequests = () => {
 
   const [endDate, setEndDate] = useState("");
   const [endDateSearch, setEndDateSearch] = useState("");
-
-
-  // console.log("Start Date", startDate);
-  // console.log("End Date", endDate);
 
   useEffect(() => {
     var token = getToken();
@@ -69,7 +66,7 @@ const LeaveRequests = () => {
   };
 
   // ! searching functionality
-  const [filterToggle, setFilterToggle] = useState(true);
+  const [filterToggle, setFilterToggle] = useState(false);
   const [search, setSearch] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   useEffect(() => {
@@ -88,7 +85,7 @@ const LeaveRequests = () => {
     };
     getSearchApi();
     // }
-  }, [search, searchStatus, selectedOption, startDateSearch, endDateSearch]);
+  }, [search, searchStatus, selectedOption, startDateSearch, endDateSearch, reload]);
 
   // ! user select option by searching
   const statusChange = (e) => {
@@ -107,24 +104,26 @@ const LeaveRequests = () => {
     setEndDateSearch("");
   }
 
-
   // new Date()
   const changeDate = (date) => {
     setStartDate(date);
     setStartDateSearch(new Date(date).toISOString());
   }
 
-
   const changeEndDate = (date) => {
     setEndDate(date);
     setEndDateSearch(new Date(date).toISOString());
+  }
+
+  // for reloading page
+  const reloadPage = () => {
+    setReload(!reload);
   }
 
   return (
     <>
       <CCard>
         <CCardHeader>Leave Requests</CCardHeader>
-
         <CCardHeader>
           <CRow className="justify-content-center">
             <CCol md="8">
@@ -216,7 +215,7 @@ const LeaveRequests = () => {
           />
         </CCardBody>
       </CCard>
-      <LeaveRequestModel toggleModel={leaveStatus} showHide={statusModelToggle} statusId={statusId} />
+      <LeaveRequestModel toggleModel={leaveStatus} showHide={statusModelToggle} statusId={statusId} reloadPage={reloadPage} />
     </>
   )
 }

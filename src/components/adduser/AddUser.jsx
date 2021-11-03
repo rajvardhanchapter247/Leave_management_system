@@ -10,6 +10,7 @@ import {
     CLabel,
     CSelect,
     CInputRadio,
+    CSpinner
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
@@ -20,6 +21,7 @@ import Select from 'react-select';
 
 const AddUser = (props) => {
     const [reportingPersonsList, setReportingPersonsList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         var token = getToken();
@@ -69,7 +71,7 @@ const AddUser = (props) => {
     //! add user in api
     const addUser = async (data) => {
         var token = getToken();
-
+        setIsLoading(true);
         try {
             await axios.post('/api/auth/add-user', {
                 firstName: data.fname,
@@ -91,10 +93,12 @@ const AddUser = (props) => {
             console.log("Something went wrong Please try again !");
             console.log("error ==>" + error);
         }
+        props.reloadPage();
+        setIsLoading(false);
+        props.toggleModel();
     };
 
     const onSubmitEvent = (values, onSubmitProps) => {
-        props.toggleModel();
         addUser(values);
         onSubmitProps.resetForm();
     }
@@ -193,13 +197,6 @@ const AddUser = (props) => {
                                                 />
                                             </CCol>
 
-
-                                            {/* <FieldArray name="friends" render={({ field }) => (
-                                                    return
-                                                    <>  </>
-                                                )}
-                                            /> */}
-
                                             <CCol md="12" className="mt-2">
                                                 <CFormGroup row>
                                                     <CCol md="2">
@@ -225,11 +222,20 @@ const AddUser = (props) => {
                                                     </CCol>
                                                 </CFormGroup>
                                             </CCol>
-
-                                            <CCol md="12">
-                                                <button className="btn btn-primary btn-block" type="submit"
-                                                    disabled={!(formik.isValid && formik.dirty)}> Submit</button>
-                                            </CCol>
+                                            {
+                                                isLoading ?
+                                                    <CCol md="12">
+                                                        <button className="btn btn-primary btn-block " disabled>
+                                                            <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                                            Loading...
+                                                        </button>
+                                                    </CCol>
+                                                    :
+                                                    <CCol md="12">
+                                                        <button className="btn btn-primary btn-block" type="submit"
+                                                            disabled={!(formik.isValid && formik.dirty)}> Submit</button>
+                                                    </CCol>
+                                            }
                                         </CRow>
                                     </Form>
                                 )}
@@ -237,8 +243,6 @@ const AddUser = (props) => {
                         </CCol>
                     </CRow>
                 </CModalBody>
-
-                {/* <App1 /> */}
             </CModal>
         </>
     )

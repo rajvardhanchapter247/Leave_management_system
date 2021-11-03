@@ -7,6 +7,7 @@ import {
     CModalHeader,
     CModalTitle,
     CModalFooter,
+    CSpinner
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
@@ -27,8 +28,9 @@ const StatusModel = (props) => {
         } catch (error) {
             console.log(error);
         }
-        props.toggleModel();
+        props.reloadPage();
         setIsLoading(false);
+        props.toggleModel();
     }
 
     return (
@@ -46,25 +48,33 @@ const StatusModel = (props) => {
                 <CModalBody>
                     <CRow>
                         <CCol>
-                            {
-                                isLoading ?
-                                    <div style={{ height: "20vh" }}>
-                                        <Loader />
-                                    </div>
-                                    : <h5 className="text-center ">Are you sure you want to change status
-                                        <span className={`font-weight-bold ${status ? "text-success" : "text-primary"}`}>{status ? " Active" : " Inactive"}</span> to <span className={`font-weight-bold ${status ? "text-primary" : "text-success"}`}>{status ? " Inactive" : " Active"}</span> ?</h5>
-                            }
+                            <h5 className="text-center ">Are you sure you want to change status
+                                <span className={`font-weight-bold ${status ? "text-success" : "text-primary"}`}>{status ? " Active" : " Inactive"}</span> to <span className={`font-weight-bold ${status ? "text-primary" : "text-success"}`}>{status ? " Inactive" : " Active"}</span> ?</h5>
                         </CCol>
                     </CRow>
                 </CModalBody>
-
-                {
-                    !isLoading &&
-                    <CModalFooter>
-                        <button className="btn btn-success" onClick={updateStatus} disabled={(isLoading ? true : false)} > Yes</button>
-                        <button className="btn btn-primary" onClick={props.toggleModel} disabled={(isLoading ? true : false)}> No</button>
-                    </CModalFooter>
-                }
+                <CModalFooter>
+                    {
+                        isLoading ?
+                            <button className="btn btn-primary btn-block " disabled>
+                                <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                Loading...
+                            </button>
+                            :
+                            <button className="btn btn-primary btn-block" onClick={updateStatus}
+                                disabled={(isLoading ? true : false)}> Yes</button>
+                    }
+                    {
+                        isLoading ?
+                            <button className="btn btn-danger btn-block " disabled>
+                                <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                Loading...
+                            </button>
+                            :
+                            <button className="btn btn-danger btn-block" onClick={props.toggleModel}
+                                disabled={(isLoading ? true : false)}> No</button>
+                    }
+                </CModalFooter>
             </CModal>
         </>
     )

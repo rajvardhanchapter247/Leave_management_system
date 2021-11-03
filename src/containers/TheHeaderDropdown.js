@@ -20,7 +20,7 @@ const TheHeaderDropdown = () => {
   }
 
   const User_profile = () => {
-    history.push("/User_profile");
+    history.push("/user-profile");
   }
 
   const Settings = () => {
@@ -47,12 +47,12 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-user" className="mfe-2" />Profile
         </CDropdownItem>
         {
-          localStorage.getItem("role") === "Admin" ? <CDropdownItem onClick={Settings}>
+          localStorage.getItem("role") === "Admin" && <CDropdownItem onClick={Settings}>
             <CIcon name="cil-settings" className="mfe-2" />
             Settings
-          </CDropdownItem> : null
+          </CDropdownItem>
         }
-        
+
         <CDropdownItem divider />
         <CDropdownItem onClick={Logout}>
           <CIcon name="cil-lock-locked" className="mfe-2" />

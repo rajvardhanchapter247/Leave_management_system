@@ -1,7 +1,7 @@
 import React, { lazy } from 'react'
 import { CCard, CCardBody, CCardHeader } from '@coreui/react'
 import { CChartPie } from '@coreui/react-chartjs'
-import UserDashboard from '../../UserSide/Components/user_dashboard/UserDashboard'
+import UserDashboard from '../../UserSide/Components/userdashboard/UserDashboard'
 const Widgets = lazy(() => import('../widgets/Widgets'))
 
 const Dashboard = () => {

@@ -6,7 +6,8 @@ import {
     CCard,
     CCardHeader,
     CCardBody,
-    CCardFooter
+    CCardFooter,
+    CSpinner
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
@@ -14,19 +15,17 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import { getDateTime } from '../../common/constant';
-import Loader from "../../containers/Loader/Loader"
 import { useHistory } from 'react-router';
 
 const Settings = () => {
-
+    const [reload, setReload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-
     const history = useHistory();
     useEffect(() => {
         localStorage.getItem("role") !== "Admin" && history.push("/dashboard")
     })
 
+    const [settingsData, setSettingsData] = useState([])
     useEffect(() => {
         var token = getToken();
         //! fetch settings api
@@ -46,9 +45,8 @@ const Settings = () => {
             setIsLoading(false);
         }
         fetchSettingsApi();
-    }, []);
+    }, [reload]);
 
-    const [settingsData, setSettingsData] = useState([])
 
 
     // ! yup validation
@@ -75,7 +73,6 @@ const Settings = () => {
         var token = getToken();
         setIsLoading(true);
         try {
-            console.log(settingsData._id);
             const response = await axios.put(
                 `/api/setting/${settingsData._id}`,
                 {
@@ -96,77 +93,87 @@ const Settings = () => {
         } catch (error) {
             console.log('Something went wrong!', error)
         }
+        setReload(!reload);
         setIsLoading(false);
     }
 
     const onSubmitEvent = (values, onSubmitProps) => {
         updateSettingsApi(values);
-        console.log(values);
         onSubmitProps.resetForm();
     }
 
     return (
         <>
-            {
-                isLoading ? <Loader /> :
-                    <CCard>
-                        <CCardHeader>
-                            Settings
-                        </CCardHeader>
-                        <Formik initialValues={initialValues} validationSchema={validate} onSubmit={onSubmitEvent} enableReinitialize >
-                            {formik => (
-                                <Form id="form">
-                                    <CCardBody>
+            {/* {
+                isLoading ? <Loader /> : */}
+            <CCard>
+                <CCardHeader>
+                    Settings
+                </CCardHeader>
+                <Formik initialValues={initialValues} validationSchema={validate} onSubmit={onSubmitEvent} enableReinitialize >
+                    {formik => (
+                        <Form id="form">
+                            <CCardBody>
+                                <CRow>
+                                    <CCol md="12">
                                         <CRow>
-                                            <CCol md="12">
-                                                <CRow>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Organization Name" name="orgName" type="text" />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Website Url" name="websiteUrl" type="text" />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Youtube Url" name="youtubeUrl" type="text" />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Linkedin Url" name="linkedinUrl" type="text" />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Twitter Url" name="twitterUrl" type="text" />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Email" name="email" type="email" />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                    <CCol md="6">
-                                                        <CFormGroup>
-                                                            <TextField label="Created At" name="createdAt" type="text" readOnly />
-                                                        </CFormGroup>
-                                                    </CCol>
-                                                </CRow>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Organization Name" name="orgName" type="text" />
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Website Url" name="websiteUrl" type="text" />
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Youtube Url" name="youtubeUrl" type="text" />
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Linkedin Url" name="linkedinUrl" type="text" />
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Twitter Url" name="twitterUrl" type="text" />
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Email" name="email" type="email" />
+                                                </CFormGroup>
+                                            </CCol>
+                                            <CCol md="6">
+                                                <CFormGroup>
+                                                    <TextField label="Created At" name="createdAt" type="text" readOnly />
+                                                </CFormGroup>
                                             </CCol>
                                         </CRow>
-                                    </CCardBody>
-                                    <CCardFooter>
-                                        <button className="btn btn-primary" type="submit" disabled={!(formik.isValid && formik.dirty)}> Update </button>
-                                    </CCardFooter>
-                                </Form>
-                            )}
-                        </Formik>
-                    </CCard>
-            }
+                                    </CCol>
+                                </CRow>
+                            </CCardBody>
+                            <CCardFooter>
+
+                                {
+                                    isLoading ?
+                                        <button className="btn btn-primary btn-block" disabled>
+                                            <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
+                                            Loading...
+                                        </button>
+                                        :
+                                        <button className="btn btn-primary btn-block" type="submit" disabled={!(formik.isValid && formik.dirty)}> Update </button>
+                                }
+
+                            </CCardFooter>
+                        </Form>
+                    )}
+                </Formik>
+            </CCard>
+            {/* } */}
         </>
     )
 }
