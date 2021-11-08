@@ -108,7 +108,7 @@ export default class DemoApp extends React.Component {
           selectMirror={true}
           dayMaxEvents={true}
           selectAllow={this.dateAllow}
-          weekends={this.state.weekendsVisible}
+          weekends={this.weekendsVisible}
           initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           select={this.handleDateSelect}
           eventContent={renderEventContent} // custom render function
@@ -162,7 +162,11 @@ export default class DemoApp extends React.Component {
     )
   }
   dateAllow=(selectInfo)=>{
-    return moment().diff(selectInfo.startStr) <=0
+    var date = moment(selectInfo.startStr).add(1,"day");
+    
+    return(
+      moment().diff(date) <=0
+    )
   }
 
   handleDateSelect = (selectInfo) => {
@@ -189,7 +193,8 @@ export default class DemoApp extends React.Component {
     }
 
     const start_date = selectInfo.startStr;
-    const end_date = selectInfo.endStr;
+    const End_date = moment(selectInfo.endStr).subtract(5,"hours");
+    const end_date = moment(End_date).format("YYYY-MM-DD")
     var date_arry = [start_date, end_date]
     // console.log('date_arry: ', date_arry);
 
