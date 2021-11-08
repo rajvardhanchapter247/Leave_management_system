@@ -47,6 +47,7 @@ const ChangePassword = () => {
           }
         }
       )
+      alert("Password changed successfully")
       history.push('/user-profile');
     } catch (error) {
       setError('Something went wrong Please try again !')

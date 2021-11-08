@@ -22,6 +22,7 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../../storage/Local_Storage';
+import moment from 'moment'
 
 
 export default class DemoApp extends React.Component {
@@ -106,12 +107,14 @@ export default class DemoApp extends React.Component {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
+          selectAllow={this.dateAllow}
           weekends={this.state.weekendsVisible}
           initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           select={this.handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={this.handleEventClick}
           eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+          
         />
         <CContainer>
           <CModal
@@ -157,6 +160,9 @@ export default class DemoApp extends React.Component {
         </CContainer>
       </>
     )
+  }
+  dateAllow=(selectInfo)=>{
+    return moment().diff(selectInfo.startStr) <=0
   }
 
   handleDateSelect = (selectInfo) => {
