@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Open+Sans:wght@300&family=Roboto:wght@300&display=swap');
 // If you want to override variables do it here
 @import "variables";
 
@@ -14,6 +15,9 @@
 // label {
 //     font-size: .7rem;
 //   }
+  body{
+    font-family: 'Open Sans', sans-serif;
+  }
 
   input.form-control, input.form-control:focus {
     background: #F0F0FF;
@@ -32,4 +36,29 @@
   }
   .fc-day-sun{
     background-color: #ebedf3;
+  }
+  .c-sidebar .c-sidebar-brand {
+    color: #fff;
+    background: #5bdb93;
+  }
+  .c-sidebar {
+    color: #fff;
+    background: #316879;
+  }
+  .c-sidebar-nav-item {
+    width: inherit;
+    background-color: #316879;
+  }
+  .c-sidebar-nav.ps {
+    margin-top: 10px;
+  }
+  .btn{
+    cursor: pointer;
+    color: black;
+  }
+  .btn-primary:disabled{
+    color: black;
+  }
+  .fc-direction-ltr .fc-button-group > .fc-button{
+    background-color: #316879;
   }

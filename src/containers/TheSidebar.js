@@ -27,16 +27,7 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CIcon
-          className="c-sidebar-brand-full"
-          name="logo-negative"
-          height={35}
-        />
-        <CIcon
-          className="c-sidebar-brand-minimized"
-          name="sygnet"
-          height={35}
-        />
+        <img src="https://www.chapter247.com/wp-content/uploads/2020/04/last-updated-sticky-logo.png" alt="logo-negative" width="180px"/>
       </CSidebarBrand>
       <CSidebarNav>
 
@@ -50,7 +41,7 @@ const TheSidebar = () => {
           }}
         />
       </CSidebarNav>
-      <CSidebarMinimizer className="c-d-md-down-none"/>
+      {/* <CSidebarMinimizer className="c-d-md-down-none"/> */}
     </CSidebar>
   )
 }

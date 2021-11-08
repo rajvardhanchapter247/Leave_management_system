@@ -10,14 +10,16 @@ import {
   CCardBody,
   CCardGroup,
   CCardHeader,
-  CSpinner
+  CSpinner,
+  CTooltip,
+  CButton
 } from '@coreui/react'
 
 const ChangePassword = () => {
-  const history = useHistory();
+  const history = useHistory()
   const [error, setError] = useState(null)
-  var token = getToken();
-  const [isLoading, setIsLoading] = useState(false);
+  var token = getToken()
+  const [isLoading, setIsLoading] = useState(false)
 
   const validate = Yup.object({
     oldPassword: Yup.string()
@@ -28,15 +30,18 @@ const ChangePassword = () => {
       .trim()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
-    passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+    passwordConfirmation: Yup.string().oneOf(
+      [Yup.ref('newPassword'), null],
+      'Passwords must match'
+    )
   })
 
   const sendGetRequest = async data => {
     // setError(null)
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const response = await axios.put('/api/auth/change-password',
+      const response = await axios.put(
+        '/api/auth/change-password',
         {
           oldPassword: data.oldPassword,
           newPassword: data.newPassword
@@ -47,12 +52,12 @@ const ChangePassword = () => {
           }
         }
       )
-      alert("Password changed successfully")
-      history.push('/user-profile');
+      alert('Password changed successfully')
+      history.push('/user-profile')
     } catch (error) {
       setError('Something went wrong Please try again !')
     }
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
   const onSubmitEvent = values => {
@@ -65,9 +70,7 @@ const ChangePassword = () => {
     <>
       <CCardGroup>
         <CCard>
-          <CCardHeader>
-            Change your password
-          </CCardHeader>
+          <CCardHeader>Change your password</CCardHeader>
           <CCardBody>
             <Formik
               initialValues={{
@@ -96,18 +99,25 @@ const ChangePassword = () => {
                   />
                   {error && <div className='error-1'>{error}</div>}
 
-                  {
-                    isLoading ?
-                      <button className="btn btn-primary btn-block mt-3" disabled>
-                        <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
-                        Loading...
-                      </button>
-                      :
-                      <button
-                        className="btn btn-primary btn-block mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>
+                  {isLoading ? (
+                    <CButton className='btn btn-primary btn-block mt-3' disabled>
+                      <CSpinner
+                        component='span'
+                        size='sm'
+                        aria-hidden='true'
+                        className='mr-2'
+                      />
+                      Loading...
+                    </CButton>
+                  ) : (
+                      <CButton
+                        className='btn btn-primary btn-block mt-3'
+                        type='submit'
+                        disabled={!(formik.isValid && formik.dirty)}
+                      >
                         Change Password
-                      </button>
-                  }
+                      </CButton>
+                  )}
                 </Form>
               )}
             </Formik>
@@ -118,4 +128,4 @@ const ChangePassword = () => {
   )
 }
 
-export default ChangePassword;
+export default ChangePassword

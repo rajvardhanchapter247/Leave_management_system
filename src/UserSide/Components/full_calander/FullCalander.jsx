@@ -114,7 +114,7 @@ export default class DemoApp extends React.Component {
           eventContent={renderEventContent} // custom render function
           eventClick={this.handleEventClick}
           eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
-          
+
         />
         <CContainer>
           <CModal
@@ -161,11 +161,11 @@ export default class DemoApp extends React.Component {
       </>
     )
   }
-  dateAllow=(selectInfo)=>{
-    var date = moment(selectInfo.startStr).add(1,"day");
-    
-    return(
-      moment().diff(date) <=0
+  dateAllow = (selectInfo) => {
+    var date = moment(selectInfo.startStr).add(1, "day");
+
+    return (
+      moment().diff(date) <= 0
     )
   }
 
@@ -193,7 +193,7 @@ export default class DemoApp extends React.Component {
     }
 
     const start_date = selectInfo.startStr;
-    const End_date = moment(selectInfo.endStr).subtract(5,"hours");
+    const End_date = moment(selectInfo.endStr).subtract(5, "hours");
     const end_date = moment(End_date).format("YYYY-MM-DD")
     var date_arry = [start_date, end_date]
     // console.log('date_arry: ', date_arry);
