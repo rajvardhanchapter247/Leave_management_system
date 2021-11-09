@@ -90,6 +90,9 @@ export default class DemoApp extends React.Component {
       primary: !prevState.primary
     }))
   }
+
+
+
   render() {
     const { date, reason } = this.state
     return (
@@ -108,7 +111,7 @@ export default class DemoApp extends React.Component {
           selectMirror={true}
           dayMaxEvents={true}
           selectAllow={this.dateAllow}
-          weekends={this.weekendsVisible}
+          weekends={this.sunday}
           initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           select={this.handleDateSelect}
           eventContent={renderEventContent} // custom render function
@@ -132,7 +135,7 @@ export default class DemoApp extends React.Component {
                     <CFormGroup>
                       <CLabel>Leave reason</CLabel>
                       <CTextarea id="leave" type="text" name="reason" value={reason}
-                        onChange={this.onInputchange} placeholder="" required />
+                        onChange={this.onInputchange} placeholder="" required="required" />
                     </CFormGroup>
                   </CCol>
                   <CCol md="12">
@@ -161,9 +164,12 @@ export default class DemoApp extends React.Component {
       </>
     )
   }
+
+  
+  
+
   dateAllow = (selectInfo) => {
     var date = moment(selectInfo.startStr).add(1, "day");
-
     return (
       moment().diff(date) <= 0
     )
