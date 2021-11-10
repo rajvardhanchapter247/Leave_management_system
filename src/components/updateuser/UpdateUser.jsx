@@ -270,6 +270,7 @@ const UpdateUser = (props) => {
                     </CModalBody>
                 </CModal>
             }
+
         </>
     )
 }
