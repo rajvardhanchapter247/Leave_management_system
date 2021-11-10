@@ -6,9 +6,12 @@ import UserDashboard from '../../UserSide/Components/userdashboard/UserDashboard
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
 
-const Dashboard = () => {
-  const [data, setData] = useState()
-  console.log('data: ', data);
+const Dashboard = (props) => {
+
+  const [userdata, setUserdata] = useState("");
+  
+  
+  
 
   const token = getToken()
 
@@ -19,7 +22,9 @@ const Dashboard = () => {
           authorization: token
         }
       })
-      setData(response.data.data)
+      setUserdata(response.data.data)
+      
+      
     } catch (error) {
       console.log('Somethong went wrong!', error)
     }
@@ -34,29 +39,54 @@ const Dashboard = () => {
       {localStorage.getItem('role') === 'Admin' ? (
         <>
           <CRow>
-            <CCol xs='12' sm='6' lg='4'>
-              <CWidgetIcon text='Employees' header={data.totalUsers} color='primary'>
+            <CCol md="4">
+              <CWidgetIcon text='Employees' header={userdata.totalEmployees}  color='primary'>
                 <CIcon width={24} name='cil-user' />
               </CWidgetIcon>
             </CCol>
-            <CCol xs='12' sm='6' lg='4'>
-              <CWidgetIcon text='Leaves' header='100' color='info'>
+            <CCol md="4">
+              <CWidgetIcon text='TOTAL ADMIN' header={userdata.totalAdmin} color='info'>
                 <CIcon width={24} name='cil-moon' />
               </CWidgetIcon>
             </CCol>
-            <CCol xs='12' sm='6' lg='4'>
-              <CWidgetIcon text='Approved' header={data.approvedLeaves} color='success'>
-                <CIcon width={24} name='cil-check-alt' />
+            <CCol md="4">
+              <CWidgetIcon text='TOTAL USER' header={userdata.totalUsers} color='success'>
+                <CIcon width={24} name='cil-user' />
               </CWidgetIcon>
             </CCol>
-            <CCol xs='12' sm='6' lg='6'>
-              <CWidgetIcon text='Pending' header={data.pendingLeaves} color='warning'>
-                <CIcon width={24} name='cil-grain' />
+            <CCol md="4">
+              <CWidgetIcon text='ACTIVE USERS' header={userdata.totalActiveUser} color='success'>
+                <CIcon width={24} name='cil-user' />
               </CWidgetIcon>
             </CCol>
-            <CCol xs='12' sm='12' lg='6'>
-              <CWidgetIcon text='Canceled' header={data.totalEmployees  } color='danger'>
-                <CIcon width={24} name='cil-x' />
+            <CCol md="4">
+              <CWidgetIcon text='UNACTIVER USERS' header={userdata.totalUnActiveUser} color='danger'>
+                <CIcon width={24} name='cil-user' />
+              </CWidgetIcon>
+            </CCol>
+            <CCol md="4">
+              <CWidgetIcon text='LEAVE REQUEST' header={userdata.totalRequestedLeaves} color='info'>
+                <CIcon width={24} name='cil-moon' />
+              </CWidgetIcon>
+            </CCol>
+            <CCol md="4">
+              <CWidgetIcon text='PENDING LEAVES' header={userdata.pendingLeaves} color='warning'>
+                <CIcon width={24} name='cil-moon' />
+              </CWidgetIcon>
+            </CCol>
+            <CCol md="4">
+              <CWidgetIcon text='APPROVED LEAVES' header={userdata.approvedLeaves} color='success'>
+                <CIcon width={24} name='cil-moon' />
+              </CWidgetIcon>
+            </CCol>
+            <CCol md="4">
+              <CWidgetIcon text='DISAPPROVED LEAVES' header={userdata.disapprovedLeaves} color='danger'>
+                <CIcon width={24} name='cil-moon' />
+              </CWidgetIcon>
+            </CCol>
+            <CCol md="12">
+              <CWidgetIcon text='PAID LEAVES' header={userdata.paidLeaves} color='primary'>
+                <CIcon width={24} name='cil-moon' />
               </CWidgetIcon>
             </CCol>
           </CRow>
@@ -67,21 +97,35 @@ const Dashboard = () => {
                 datasets={[
                   {
                     backgroundColor: [
-                      '#39f',
-                      '#7254f3',
-                      '#2eb85c',
-                      '#f9b115',
-                      '#e55353'
+                      '#55efc4',
+                      '#fab1a0',
+                      '#74b9ff',
+                      '#6c5ce7',
+                      '#ff7675',
+                      '#74b9ff',
+                      '#fdcb6e',
+                      '#55efc4',
+                      '#d63031',
+                      '#00cec9'
                     ],
-                    data: [70, 100, 45, 25, 30]
+                    data: [userdata.totalEmployees, userdata.totalAdmin,
+                       userdata.totalUsers, userdata.totalActiveUser,
+                        userdata.totalUnActiveUser,userdata.totalRequestedLeaves,
+                        userdata.pendingLeaves,userdata.approvedLeaves,userdata.disapprovedLeaves,
+                        userdata.paidLeaves]
                   }
                 ]}
                 labels={[
                   'Employees',
-                  'Leaves',
-                  'Approved',
-                  'Pending',
-                  'Canceled'
+                  'Admin',
+                  'User',
+                  'Active User',
+                  'UnActive User',
+                  'Leave Requeste',
+                  'Pending Requeste',
+                  'Approved Requeste',
+                  'Disapproved Requeste',
+                  'Paid Leaves'
                 ]}
                 options={{ tooltips: { enabled: true } }}
               />
