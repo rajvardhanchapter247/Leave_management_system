@@ -1,4 +1,4 @@
-import React, { lazy, useState, useEffect } from 'react'
+import React, {useState, useEffect } from 'react'
 import { CCard, CCardBody, CCardHeader,CCol,CRow,CWidgetIcon } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { CChartPie } from '@coreui/react-chartjs'
@@ -6,7 +6,7 @@ import UserDashboard from '../../UserSide/Components/userdashboard/UserDashboard
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
 
-const Dashboard = (props) => {
+const Dashboard = () => {
 
   const [userdata, setUserdata] = useState("");
   
@@ -31,8 +31,8 @@ const Dashboard = (props) => {
   }
 
   useEffect(() => {
-    dashboardData()
-  }, [])
+    dashboardData();
+  }, []);
 
   return (
     <>

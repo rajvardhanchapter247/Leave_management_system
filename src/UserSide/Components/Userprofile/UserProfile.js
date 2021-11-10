@@ -36,7 +36,7 @@ const User_profile = props => {
           }
         }
       )
-      // console.log('Update user Successfully', response);
+      console.log('Update user Successfully', response);
       // alert('Update user Successfully');
     } catch (error) {
       console.log('Something went wrong!', error)

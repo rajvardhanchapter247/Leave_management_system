@@ -95,6 +95,7 @@ export default class DemoApp extends React.Component {
 
   render() {
     const { date, reason } = this.state
+    console.log('date: ', date);
     return (
       <>
         {/* Full calander start here */}
@@ -201,7 +202,6 @@ export default class DemoApp extends React.Component {
     const start_date = selectInfo.startStr;
     const End_date = moment(selectInfo.endStr).subtract(5, "hours");
     const end_date = moment(End_date).format("YYYY-MM-DD")
-    var date_arry = [start_date, end_date]
     // console.log('date_arry: ', date_arry);
 
     this.setState(prevState => ({

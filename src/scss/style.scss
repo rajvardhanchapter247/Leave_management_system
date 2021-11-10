@@ -16,8 +16,32 @@
 //     font-size: .7rem;
 //   }
   body{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
+    font-weight: bold;
   }
+
+  /* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #316879; 
+  border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
 
   input.form-control, input.form-control:focus {
     background: #F0F0FF;

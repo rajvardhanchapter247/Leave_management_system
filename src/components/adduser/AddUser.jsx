@@ -88,6 +88,7 @@ const AddUser = (props) => {
                     'authorization': token
                 },
             });
+            alert("User added successfully")
         } catch (error) {
             // Handle Error Here
             console.log("Something went wrong Please try again !");

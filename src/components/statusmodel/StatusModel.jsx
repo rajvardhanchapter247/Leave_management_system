@@ -11,7 +11,6 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
-import Loader from '../../containers/Loader/Loader'
 
 const StatusModel = (props) => {
     const status = props.status === "Active";

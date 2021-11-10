@@ -11,7 +11,6 @@ import {
   CCardGroup,
   CCardHeader,
   CSpinner,
-  CTooltip,
   CButton
 } from '@coreui/react'
 
@@ -54,6 +53,7 @@ const ChangePassword = () => {
       )
       alert('Password changed successfully')
       history.push('/user-profile')
+      console.log('response: ', response);
     } catch (error) {
       setError('Something went wrong Please try again !')
     }
