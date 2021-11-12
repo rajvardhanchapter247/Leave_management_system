@@ -1,26 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Open+Sans:wght@300&family=Roboto:wght@300&display=swap');
 // If you want to override variables do it here
-@import "variables";
+@import 'variables';
 
 // Import CoreUI styles
-@import "~@coreui/coreui/scss/coreui.scss";
+@import '~@coreui/coreui/scss/coreui.scss';
 
 // Some temp fixes
-@import "fixes";
+@import 'fixes';
 
 // If you want to add something do it here
-@import "custom";
-
+@import 'custom';
 
 // label {
 //     font-size: .7rem;
 //   }
-  body{
-    font-family: 'Nunito', sans-serif;
-    font-weight: bold;
-  }
+body {
+  font-family: 'Nunito', sans-serif;
+  font-weight: bold;
+}
 
-  /* width */
+/* width */
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
@@ -28,23 +27,23 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #316879; 
+  background: #316879;
   border-radius: 20px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
-
-input.form-control, input.form-control:focus {
-  background: #F0F0FF;
+input.form-control,
+input.form-control:focus {
+  background: #f0f0ff;
 }
 
 .error {
@@ -54,11 +53,10 @@ input.form-control, input.form-control:focus {
 .error-1 {
   color: red;
 }
-
 .pointer {
   cursor: pointer;
 }
-.fc-day-sun{
+.fc-day-sun {
   background-color: #ebedf3;
 }
 .c-sidebar .c-sidebar-brand {
@@ -76,13 +74,13 @@ input.form-control, input.form-control:focus {
 .c-sidebar-nav.ps {
   margin-top: 10px;
 }
-.btn{
+.btn {
   cursor: pointer;
   color: black;
 }
-.btn-primary:disabled{
+.btn-primary:disabled {
   color: black;
 }
-.fc-direction-ltr .fc-button-group > .fc-button{
+.fc-direction-ltr .fc-button-group > .fc-button {
   background-color: #316879;
 }
