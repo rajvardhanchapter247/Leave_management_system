@@ -99,7 +99,7 @@ export default class DemoApp extends React.Component {
   }
 
   // api code end here
-  
+
   setCalenderState = () => {
     this.setState(prevState => ({
       primary: !prevState.primary
@@ -110,7 +110,7 @@ export default class DemoApp extends React.Component {
 
 
   render() {
-    const {   reason } = this.state
+    const { reason } = this.state
     return (
       <>
         {/* Full calander start here */}

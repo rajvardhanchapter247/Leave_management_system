@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom'
 const User_profile = props => {
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(false)
+  const [singleUser, setSingleUser] = useState([]);
   const [id, setId] = useState()
 
   const updateUserApi = async values => {
@@ -46,6 +47,24 @@ const User_profile = props => {
     }
     setIsLoading(false)
   }
+
+  const fetchUser = async () => {
+    
+    const token = getToken();
+
+    try {
+        const response = await axios.get(`/api/auth/user-view/${id}`, {
+            headers: {
+                'authorization': token
+            }
+        });
+        setSingleUser(response.data.data[0]);
+        console.log(singleUser);
+    } catch (error) {
+        console.log("Something went wrong!", error)
+    }
+    setIsLoading(false);
+}
 
   const validate = Yup.object({
     email: Yup.string()
@@ -79,6 +98,8 @@ const User_profile = props => {
     }
     Get_id()
   }, [])
+
+  fetchUser()
 
   const changePassword = () => {
     history.push('/change-password')
@@ -124,6 +145,7 @@ const User_profile = props => {
                                 label='First Name'
                                 name='fname'
                                 type='text'
+                                placeholder={singleUser.firstName}
                               />
                             </CFormGroup>
                           </CCol>
@@ -133,6 +155,7 @@ const User_profile = props => {
                                 label='Middle Name'
                                 name='mname'
                                 type='text'
+                                placeholder={singleUser.middleName}
                               />
                             </CFormGroup>
                           </CCol>
@@ -142,6 +165,7 @@ const User_profile = props => {
                                 label='Last Name'
                                 name='lname'
                                 type='text'
+                                placeholder={singleUser.lastName}
                               />
                             </CFormGroup>
                           </CCol>
@@ -151,6 +175,7 @@ const User_profile = props => {
                                 label='Email'
                                 name='email'
                                 type='email'
+                                placeholder={singleUser.email}
                               />
                             </CFormGroup>
                           </CCol>
