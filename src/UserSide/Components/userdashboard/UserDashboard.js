@@ -78,7 +78,7 @@ const UserDashboard = () => {
                       scopedSlots={{
                         datesToRequest: item => (
                           <td className='text-capitalize'>
-                            {item.datesToRequest.map(date => getDateTime(date))}
+                            {item.datesToRequest.map(date => getDateTime(date))[0] + "to " +item.datesToRequest.map(date => getDateTime(date)).slice(-1)}
                           </td>
                         ),
                         reason: item => (

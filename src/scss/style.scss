@@ -76,11 +76,19 @@ input.form-control:focus {
 }
 .btn {
   cursor: pointer;
-  color: black;
+  color: white;
+  font-weight: bold;
 }
 .btn-primary:disabled {
-  color: black;
+  color: white;
+  font-weight: bold;
 }
 .fc-direction-ltr .fc-button-group > .fc-button {
   background-color: #316879;
 }
+.c-icon {
+  color: white !important;
+  // margin: 1px 0px 1px 9px !important;
+}
+
+

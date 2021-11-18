@@ -24,7 +24,7 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <img src="https://www.chapter247.com/wp-content/uploads/2020/04/last-updated-sticky-logo.png" alt="logo-negative" width="180px"/>
+        <img src="https://www.chapter247.com/wp-content/uploads/2020/04/last-updated-sticky-logo.png" alt="logo-negative" width="120px"/>
       </CSidebarBrand>
       <CSidebarNav>
 
