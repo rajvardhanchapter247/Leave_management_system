@@ -530,6 +530,7 @@ const myLeaveRequest = async (req, res) => {
           fullName: 1,
         },
       },
+      { $sort: { _id: -1 } }
     ]);
     return res.status(200).json({
       success: true,
