@@ -233,11 +233,11 @@ const addUser = async (req, res) => {
     try {
       const emailSend = new Email();
       await emailSend.setTemplate(AvailableTemplates.EMPLOYEE_REGISTRATION, {
-        fullName: `${userData.firstName} ${userData.lastName} `,
+        fullName: `${firstName} ${lastName} `,
         email,
         password,
       });
-      await emailSend.sendEmail(userData.email);
+      await emailSend.sendEmail(email);
     } catch (error) {
       return res.status(201).json({
         message: error.message,
