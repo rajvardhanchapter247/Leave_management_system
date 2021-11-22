@@ -18,6 +18,9 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const AddUser = (props) => {
     const [reportingPersonsList, setReportingPersonsList] = useState([]);
@@ -88,7 +91,15 @@ const AddUser = (props) => {
                     'authorization': token
                 },
             });
-            alert("User added successfully")
+            toast.success('Add user Successfully', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         } catch (error) {
             // Handle Error Here
             console.log("Something went wrong Please try again !");
@@ -113,6 +124,18 @@ const AddUser = (props) => {
 
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+            />
+
             <CModal
                 show={props.showHide}
                 onClose={props.toggleModel}

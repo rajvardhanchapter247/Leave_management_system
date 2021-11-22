@@ -24,6 +24,8 @@ import {
 import axios from 'axios'
 import { getToken } from '../../storage/Local_Storage';
 import moment from 'moment'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default class DemoApp extends React.Component {
@@ -84,7 +86,15 @@ export default class DemoApp extends React.Component {
       })
       .then(response => {
         console.log(response);
-        alert("Submit leave request")
+        toast.success('Submitted', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         this.setState({
           reason: ""
         });
@@ -113,6 +123,17 @@ export default class DemoApp extends React.Component {
     const { reason } = this.state
     return (
       <>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover
+        />
         {/* Full calander start here */}
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

@@ -14,12 +14,27 @@ import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import { TextField } from '../text_field/TextField'
 import { useHistory } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const User_profile = props => {
   const history = useHistory()
   const [isLoading, setIsLoading] = useState(false)
-  const [singleUser, setSingleUser] = useState([]);
+  const [singleUser, setSingleUser] = useState([])
   const [id, setId] = useState()
+
+
+  const initialValues = {
+    fname: singleUser.firstName,
+    mname: singleUser.middleName,
+    lname: singleUser.lastName,
+    email: singleUser.email,
+    designation: singleUser.designation,
+    role: singleUser.role,
+    department: singleUser.department,
+    gender: singleUser.gender,
+    reportingPerson: [],
+}
 
   const updateUserApi = async values => {
     var token = getToken()
@@ -40,31 +55,46 @@ const User_profile = props => {
         }
       )
       console.log('Update user Successfully', response)
-      alert('Update user Successfully')
-      history.push('/UserProfile')
+      toast.success(' successfully', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     } catch (error) {
       console.log('Something went wrong!', error)
+      toast.error('Something went wrong Please try again !', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     }
     setIsLoading(false)
   }
 
   const fetchUser = async () => {
-    
-    const token = getToken();
+    const token = getToken()
 
     try {
-        const response = await axios.get(`/api/auth/user-view/${id}`, {
-            headers: {
-                'authorization': token
-            }
-        });
-        setSingleUser(response.data.data[0]);
-        console.log(singleUser);
+      const response = await axios.get(`/api/auth/user-view/${id}`, {
+        headers: {
+          authorization: token
+        }
+      })
+      setSingleUser(response.data.data[0])
+      console.log(singleUser)
     } catch (error) {
-        console.log("Something went wrong!", error)
+      console.log('Something went wrong!', error)
     }
-    setIsLoading(false);
-}
+    setIsLoading(false)
+  }
 
   const validate = Yup.object({
     email: Yup.string()
@@ -107,6 +137,17 @@ const User_profile = props => {
 
   return (
     <>
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+      />
       <CRow>
         <CCol md='12'>
           <CCard>
@@ -127,14 +168,10 @@ const User_profile = props => {
               <CRow>
                 <CCol md='12'>
                   <Formik
-                    initialValues={{
-                      fname: '',
-                      mname: '',
-                      lname: '',
-                      email: ''
-                    }}
+                    initialValues={initialValues}
                     validationSchema={validate}
                     onSubmit={onSubmitEvent}
+                    enableReinitialize
                   >
                     {formik => (
                       <Form id='form'>
@@ -145,7 +182,6 @@ const User_profile = props => {
                                 label='First Name'
                                 name='fname'
                                 type='text'
-                                placeholder={singleUser.firstName}
                               />
                             </CFormGroup>
                           </CCol>
@@ -155,7 +191,6 @@ const User_profile = props => {
                                 label='Middle Name'
                                 name='mname'
                                 type='text'
-                                placeholder={singleUser.middleName}
                               />
                             </CFormGroup>
                           </CCol>
@@ -165,7 +200,6 @@ const User_profile = props => {
                                 label='Last Name'
                                 name='lname'
                                 type='text'
-                                placeholder={singleUser.lastName}
                               />
                             </CFormGroup>
                           </CCol>
@@ -175,15 +209,14 @@ const User_profile = props => {
                                 label='Email'
                                 name='email'
                                 type='email'
-                                placeholder={singleUser.email}
                               />
                             </CFormGroup>
                           </CCol>
-
-                          <CCol md='12'>
-                            {isLoading ? (
+                          
+                          {isLoading ? (
+                            <CCol md='12'>
                               <button
-                                className='btn btn-primary btn-block mt-3'
+                                className='btn btn-primary btn-block '
                                 disabled
                               >
                                 <CSpinner
@@ -194,16 +227,19 @@ const User_profile = props => {
                                 />
                                 Loading...
                               </button>
-                            ) : (
+                            </CCol>
+                          ) : (
+                            <CCol md='12'>
                               <button
-                                className='btn btn-primary btn-block mt-3'
+                                className='btn btn-primary btn-block'
                                 type='submit'
                                 disabled={!(formik.isValid && formik.dirty)}
                               >
-                                Update Profile
+                                {' '}
+                                Submit
                               </button>
-                            )}
-                          </CCol>
+                            </CCol>
+                          )}
                         </CRow>
                       </Form>
                     )}

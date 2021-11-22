@@ -299,7 +299,7 @@ const Tables = () => {
               )
             }}
           />
-          {/* <ReactPaginate
+          {/* <ReactPaginateg
             previousLabel={"Previous"}
             nextLabel={"Next"}
             breakLabel={"..."}

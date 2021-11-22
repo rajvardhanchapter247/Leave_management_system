@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { TextField } from "../../../components/textfield/TextField"
-import { useHistory } from 'react-router-dom';
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+import { TextField } from '../../../components/textfield/TextField'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
-import { setUserSession, getToken } from '../../storage/LocalStorage';
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { setUserSession, getToken } from '../../storage/LocalStorage'
 import {
   CCard,
   CCardBody,
@@ -15,73 +17,88 @@ import {
 } from '@coreui/react'
 
 const Login = () => {
-  const [error, setError] = useState(null);
+ 
+  const [error, setError] = useState(null)
 
-  const history = useHistory();
+  const history = useHistory()
   useEffect(() => {
-    var token = getToken();
+    var token = getToken()
     if (token === null) {
-      history.push("/login")
+      history.push('/login')
     } else {
-      history.push("/dashboard")
+      history.push('/dashboard')
     }
   }, [])
 
   const validate = Yup.object({
-    email: Yup.string().trim()
+    email: Yup.string()
+      .trim()
       .email('Email is invalid')
       .required('Email is required'),
-    password: Yup.string().trim()
+    password: Yup.string()
+      .trim()
       .min(6, 'Password must be at least 6 characters')
-      .required('Password is required'),
+      .required('Password is required')
   })
 
-  const sendGetRequest = async (data) => {
-    setError(null);
+  const sendGetRequest = async data => {
+    setError(null)
     try {
-      const response = await axios.post("/api/auth/login", {
+      const response = await axios.post('/api/auth/login', {
         email: data.email,
         password: data.password
-      });
-      setUserSession(response.data.token, response.data.data.role);
-      history.push('/dashboard');
+      })
+      setUserSession(response.data.token, response.data.data.role)
+      alert("Login Successfully")
+      history.push('/dashboard')
     } catch (error) {
       // Handle Error Here
-      setError("Something went wrong Please try again !");
+      setError('Something went wrong Please try again !')
     }
-  };
+    
+  }
 
-  const onSubmitEvent = (values) => {
-    console.log("submit data", values);
-    sendGetRequest(values);
-    document.getElementById("form").reset();
+  const onSubmitEvent = values => {
+    console.log('submit data', values)
+    sendGetRequest(values)
+    document.getElementById('form').reset()
   }
 
   return (
     <>
-      <div className="c-app c-default-layout flex-row align-items-center">
+      <div className='c-app c-default-layout flex-row align-items-center'>
         <CContainer>
-          <CRow className="justify-content-center">
-            <CCol md="6">
+          <CRow className='justify-content-center'>
+            <CCol md='6'>
               <CCardGroup>
-                <CCard className="p-4">
+                <CCard className='p-4'>
                   <CCardBody>
                     <h1>Login</h1>
-                    <p className="text-muted">Sign In to your account</p>
+                    <p className='text-muted'>Sign In to your account</p>
                     <Formik
                       initialValues={{
                         email: '',
-                        password: '',
+                        password: ''
                       }}
                       validationSchema={validate}
                       onSubmit={onSubmitEvent}
                     >
                       {formik => (
-                        <Form id="form">
-                          <TextField label="Email" name="email" type="email" />
-                          <TextField label="password" name="password" type="password" />
-                          {error && <div className="error-1">{error}</div>}
-                          <button className="btn btn-primary mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>Login</button>
+                        <Form id='form'>
+                          <TextField label='Email' name='email' type='email' />
+                          <TextField
+                            label='password'
+                            name='password'
+                            type='password'
+                          />
+                          {error && <div className='error-1'>{error}</div>}
+                          <button
+                            className='btn btn-primary mt-3'
+                            type='submit'
+                            disabled={!(formik.isValid && formik.dirty)}
+                          >
+                            Login
+                          </button>
                         </Form>
                       )}
                     </Formik>
@@ -90,12 +107,11 @@ const Login = () => {
               </CCardGroup>
             </CCol>
           </CRow>
+          <ToastContainer />
         </CContainer>
       </div>
-
     </>
   )
 }
 
 export default Login
-
