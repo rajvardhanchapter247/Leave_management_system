@@ -37,9 +37,17 @@ const LeaveRequests = () => {
 
   const [endDate, setEndDate] = useState("");
   const [endDateSearch, setEndDateSearch] = useState("");
+  const [status, setStatus] = useState(null)
+
+
+  const changeModelState = (statusId, buttonStatus) => {
+    setStatusId(statusId)
+    setStatusModelToggle(!statusModelToggle)
+    setStatus(buttonStatus)
+  }
 
   useEffect(() => {
-    
+
     var token = getToken();
 
     //! fetch Reporting Persons from api
@@ -185,7 +193,7 @@ const LeaveRequests = () => {
               ),
               datesToRequest: item => (
                 <td className='text-capitalize'>
-                  {item.datesToRequest.map(date => getDateTime(date))[0] + "to " +item.datesToRequest.map(date => getDateTime(date)).slice(-1)}
+                  {item.datesToRequest.map(date => getDateTime(date))[0] + "to " + item.datesToRequest.map(date => getDateTime(date)).slice(-1)}
                 </td>
               ),
               reason: item => (
@@ -196,15 +204,21 @@ const LeaveRequests = () => {
                   {
                     localStorage.getItem('role') === "Admin"
                       ?
-                      item.status === "Inactive" ? <CBadge color="warning">
+                      item.status === "Inactive" ? <CBadge color="danger">
                         {item.status}
                       </CBadge>
-                        : item.status === "Pending" ? <CBadge color="warning">
+                        : item.status === "Pending" ? <CBadge color="warning"
+                          className='pointer'
+                          onClick={() => changeModelState(item._id, item.status)}>
                           {item.status}
                         </CBadge>
-                          : item.status === "Approved" ? <CBadge color="success">
+                          : item.status === "Approved" ? <CBadge color="success"
+                            className='pointer'
+                            onClick={() => changeModelState(item._id, item.status)}>
                             {item.status}
-                          </CBadge> : item.status === "Disapproved" ? <CBadge color="danger">
+                          </CBadge> : item.status === "Disapproved" ? <CBadge color="danger"
+                            className='pointer'
+                            onClick={() => changeModelState(item._id, item.status)}>
                             {item.status}
                           </CBadge> : <CBadge color="primary" className="pointer" onClick={() => leaveStatus(item._id, item.status)}>
                             {item.status}

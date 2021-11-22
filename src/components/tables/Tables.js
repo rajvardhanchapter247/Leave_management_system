@@ -283,7 +283,7 @@ const Tables = () => {
                       </CBadge>
                     ) : (
                       <CBadge
-                        color='primary'
+                        color='danger'
                         className='pointer'
                         onClick={() => changeModelState(item._id, item.status)}
                       >
@@ -349,4 +349,4 @@ const Tables = () => {
   )
 }
 
-export default Tables;
+export default Tables
