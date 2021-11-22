@@ -62,21 +62,21 @@ const LeaveRequestModel = (props) => {
                 <CModalFooter>
                     {
                         isLoading ?
-                            <button className="btn btn-success btn-block " disabled>
+                            <button className="btn btn-success btn " disabled>
                                 <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
                                 Loading...
                             </button>
                             :
-                            <button className="btn btn-success btn-block" onClick={() => approve("Approved")} disabled={(isLoading ? true : false)}> Approve</button>
+                            <button className="btn btn-success btn" onClick={() => approve("Approved")} disabled={(isLoading ? true : false)}> Approve</button>
                     }
                     {
                         isLoading ?
-                            <button className="btn btn-danger btn-block " disabled>
+                            <button className="btn btn-danger btn " disabled>
                                 <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
                                 Loading...
                             </button>
                             :
-                            <button className="btn btn-danger btn-block" onClick={() => reject("Disapproved")} disabled={(isLoading ? true : false)}> Reject</button>
+                            <button className="btn btn-danger btn" onClick={() => reject("Disapproved")} disabled={(isLoading ? true : false)}> Reject</button>
                     }
                 </CModalFooter>
             </CModal>

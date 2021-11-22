@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { getDateTime } from '../../../common/constant'
 import {
   CButton,
   CForm,
@@ -54,17 +55,27 @@ export default class DemoApp extends React.Component {
     var end = new Date(this.state.enddate);
 
     var dateArry = [];
-    // loop for every day
+    // loop for every day start here
     for (var day = start; day <= end; day.setDate(day.getDate() + 1)) {
-      // console.log(day);
       var todayDate = new Date(day).toISOString().slice(0, 10);
       dateArry.push(todayDate);
     }
+    // loop for every day end here
+
+    // sunday muted code start here
+
+    const dates = dateArry.map(dateArry => new Date(dateArry))
+    const filteredDates = dates.filter(date => date.getDay() !== 0)
+    const filteredDays = filteredDates.map(date => getDateTime(date))
+
+    // sunday muted code end here
+
+    // api code start here
 
     var token = getToken();
     axios
       .post('/api/leave-request/add', {
-        datesToRequest: dateArry,
+        datesToRequest: filteredDays,
         reason: this.state.reason
       }, {
         headers: {
@@ -74,6 +85,9 @@ export default class DemoApp extends React.Component {
       .then(response => {
         console.log(response);
         alert("Submit leave request")
+        this.setState({
+          reason: ""
+        });
       })
       .catch(error => {
         console.log(error);
@@ -84,6 +98,7 @@ export default class DemoApp extends React.Component {
     }))
   }
 
+  // api code end here
 
   setCalenderState = () => {
     this.setState(prevState => ({
@@ -93,8 +108,9 @@ export default class DemoApp extends React.Component {
 
 
 
+
   render() {
-    const { date, reason } = this.state
+    const { reason } = this.state
     return (
       <>
         {/* Full calander start here */}
@@ -110,6 +126,7 @@ export default class DemoApp extends React.Component {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
+          hiddenDays={[0]}
           selectAllow={this.dateAllow}
           weekends={this.sunday}
           initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
@@ -120,6 +137,9 @@ export default class DemoApp extends React.Component {
 
         />
         <CContainer>
+
+          {/* Modal start here */}
+
           <CModal
             show={this.state.primary}
             onClose={this.setCalenderState}
@@ -160,16 +180,16 @@ export default class DemoApp extends React.Component {
               </CModalFooter>
             </CForm>
           </CModal>
+
+          {/* Modal end here */}
         </CContainer>
       </>
     )
   }
 
-  
-  
-
   dateAllow = (selectInfo) => {
     var date = moment(selectInfo.startStr).add(1, "day");
+
     return (
       moment().diff(date) <= 0
     )
@@ -198,11 +218,10 @@ export default class DemoApp extends React.Component {
       })
     }
 
+
     const start_date = selectInfo.startStr;
     const End_date = moment(selectInfo.endStr).subtract(5, "hours");
     const end_date = moment(End_date).format("YYYY-MM-DD")
-    var date_arry = [start_date, end_date]
-    // console.log('date_arry: ', date_arry);
 
     this.setState(prevState => ({
       startdate: `${start_date}`,

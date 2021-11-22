@@ -19,7 +19,6 @@ const getBadge = status => {
     case 'Inactive': return 'secondary'
     case 'Pending': return 'warning'
     case 'Banned': return 'danger'
-    default: return 'primary'
   }
 }
 

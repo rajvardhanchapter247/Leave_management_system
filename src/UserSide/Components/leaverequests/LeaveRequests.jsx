@@ -20,6 +20,7 @@ import Select from 'react-select';
 import LeaveRequestModel from '../leaverequestModel/LeaveRequestModel'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import CIcon from '@coreui/icons-react'
 
 
 const fields = ['name', 'datesToRequest', 'reason', 'status']
@@ -38,6 +39,7 @@ const LeaveRequests = () => {
   const [endDateSearch, setEndDateSearch] = useState("");
 
   useEffect(() => {
+    
     var token = getToken();
 
     //! fetch Reporting Persons from api
@@ -126,15 +128,16 @@ const LeaveRequests = () => {
         <CCardHeader>Leave Requests</CCardHeader>
         <CCardHeader>
           <CRow className="justify-content-center">
-            <CCol md="8">
+            <CCol md="10">
               <CFormGroup>
                 <CInput id="search" value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search" autoComplete="off" />
               </CFormGroup>
             </CCol>
-            <CCol md="4">
+            <CCol md="2">
               {
-                filterToggle === false ? <button className="btn btn-primary btn-block" onClick={() => setFilterToggle(!filterToggle)}>Add Filter</button> :
-                  <button className="btn btn-primary btn-block" onClick={clearFilter}>Clear Filter</button>
+                filterToggle === false ? <button className="btn btn-primary btn-block" onClick={() => setFilterToggle(!filterToggle)}>Advance Filter <CIcon width={24} name='cil-chevron-bottom' /></button> :
+                  <button className="btn btn-primary btn-block" onClick={clearFilter}>Clear Filter
+                    <CIcon width={24} name='cil-chevron-top' /></button>
               }
             </CCol>
           </CRow>
@@ -182,7 +185,7 @@ const LeaveRequests = () => {
               ),
               datesToRequest: item => (
                 <td className='text-capitalize'>
-                  {item.datesToRequest.map(date => getDateTime(date))}
+                  {item.datesToRequest.map(date => getDateTime(date))[0] + "to " +item.datesToRequest.map(date => getDateTime(date)).slice(-1)}
                 </td>
               ),
               reason: item => (
@@ -193,21 +196,30 @@ const LeaveRequests = () => {
                   {
                     localStorage.getItem('role') === "Admin"
                       ?
-                      item.status === "Approved" ? <CBadge color="success">
-                        {item.status}
-                      </CBadge> : item.status === "Disapproved" ? <CBadge color="danger">
-                        {item.status}
-                      </CBadge> : <CBadge color="primary" className="pointer" onClick={() => leaveStatus(item._id, item.status)}>
+                      item.status === "Inactive" ? <CBadge color="warning">
                         {item.status}
                       </CBadge>
+                        : item.status === "Pending" ? <CBadge color="warning">
+                          {item.status}
+                        </CBadge>
+                          : item.status === "Approved" ? <CBadge color="success">
+                            {item.status}
+                          </CBadge> : item.status === "Disapproved" ? <CBadge color="danger">
+                            {item.status}
+                          </CBadge> : <CBadge color="primary" className="pointer" onClick={() => leaveStatus(item._id, item.status)}>
+                            {item.status}
+                          </CBadge>
                       :
-                      item.status === "Approved" ? <CBadge color="success" >
-                        {item.status}
-                      </CBadge> : item.status === "Disapproved" ? <CBadge color="danger" >
-                        {item.status}
-                      </CBadge> : <CBadge color="primary" >
+                      item.status === "Pending" ? <CBadge color="warning">
                         {item.status}
                       </CBadge>
+                        : item.status === "Approved" ? <CBadge color="success" >
+                          {item.status}
+                        </CBadge> : item.status === "Disapproved" ? <CBadge color="danger" >
+                          {item.status}
+                        </CBadge> : <CBadge color="primary" >
+                          {item.status}
+                        </CBadge>
                   }
                 </td>
               )

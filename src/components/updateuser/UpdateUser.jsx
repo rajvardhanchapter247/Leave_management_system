@@ -18,7 +18,6 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
-import Loader from "../../containers/Loader/Loader"
 
 const UpdateUser = (props) => {
     const [isLoading, setIsLoading] = useState(false);
