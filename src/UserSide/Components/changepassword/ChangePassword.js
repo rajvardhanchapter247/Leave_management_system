@@ -53,7 +53,7 @@ const ChangePassword = () => {
           }
         }
       )
-      toast.success('Password changed successfully', {
+      toast.success(response.data.message, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -66,7 +66,7 @@ const ChangePassword = () => {
       console.log('response: ', response)
     } catch (error) {
       setError('Something went wrong Please try again !')
-      toast.error('Something went wrong Please try again !', {
+      toast.error(error.response.data.message, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -127,7 +127,7 @@ const ChangePassword = () => {
                     label='Confirm Password'
                     name='passwordConfirmation'
                     type='password'
-                    id="confirm"
+                    id='confirm'
                   />
                   {error && <div className='error-1'>{error}</div>}
 

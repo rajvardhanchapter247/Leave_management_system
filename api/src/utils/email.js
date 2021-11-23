@@ -21,6 +21,7 @@ const AvailableTemplates = {
 };
 
 console.log(process.env.EMAIL_USER);
+console.log(process.env.EMAIL_PASSWORD);
 class Email {
   cc;
   subject;

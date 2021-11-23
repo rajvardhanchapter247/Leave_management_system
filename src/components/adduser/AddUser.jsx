@@ -76,7 +76,7 @@ const AddUser = (props) => {
         var token = getToken();
         setIsLoading(true);
         try {
-            await axios.post('/api/auth/add-user', {
+            const response = await axios.post('/api/auth/add-user', {
                 firstName: data.fname,
                 middleName: data.mname,
                 lastName: data.lname,
@@ -91,7 +91,7 @@ const AddUser = (props) => {
                     'authorization': token
                 },
             });
-            toast.success('Add user Successfully', {
+            toast.success('Add user successfully', {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -101,9 +101,15 @@ const AddUser = (props) => {
                 progress: undefined,
             });
         } catch (error) {
-            // Handle Error Here
-            console.log("Something went wrong Please try again !");
-            console.log("error ==>" + error);
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
         props.reloadPage();
         setIsLoading(false);

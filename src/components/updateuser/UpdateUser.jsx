@@ -100,6 +100,8 @@ const UpdateUser = (props) => {
                     'authorization': token
                 }
             });
+            
+            console.log('response: ', response);
             toast.success('Update user Successfully', {
                 position: "top-right",
                 autoClose: 3000,
@@ -260,11 +262,11 @@ const UpdateUser = (props) => {
                                                             <Field name="gender" render={({ field }) => {
                                                                 return <>
                                                                     <CFormGroup variant="custom-radio" inline>
-                                                                        <CInputRadio {...field} custom id="update-male" name="gender" value="Male" />
+                                                                        <CInputRadio {...field} custom id="update-male" checked={singleUser} name="gender" value="Male" />
                                                                         <CLabel variant="custom-checkbox" htmlFor="update-male">Male</CLabel>
                                                                     </CFormGroup>
                                                                     <CFormGroup variant="custom-radio" inline>
-                                                                        <CInputRadio {...field} custom id="update-female" name="gender" value="Female" />
+                                                                        <CInputRadio {...field} custom id="update-female" checked={singleUser} name="gender" value="Female" />
                                                                         <CLabel variant="custom-checkbox" htmlFor="update-female">Female</CLabel>
                                                                     </CFormGroup>
                                                                     <CFormGroup variant="custom-radio" inline>

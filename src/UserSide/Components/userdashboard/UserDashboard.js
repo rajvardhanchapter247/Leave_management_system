@@ -18,7 +18,7 @@ import FullCalander from '../full_calander/FullCalander'
 
 const fields = ['datesToRequest', 'reason', 'status']
 
-const UserDashboard = (props) => {
+const UserDashboard = props => {
   const [usersList, setUsersList] = useState([])
 
   const fetchUsers = async () => {
@@ -39,7 +39,7 @@ const UserDashboard = (props) => {
   useEffect(() => {
     fetchUsers()
   }, [])
-  return ( 
+  return (
     <>
       <CRow>
         <CCol xs='12'>
@@ -98,14 +98,14 @@ const UserDashboard = (props) => {
                         ),
                         status: item => (
                           <td>
-                            {item.status === 'Active' ? (
-                              <CBadge color='success' className='pointer'>
-                                {item.status}
-                              </CBadge>
+                            {item.status === 'Pending' ? (
+                              <CBadge color='warning'>{item.status}</CBadge>
+                            ) : item.status === 'Approved' ? (
+                              <CBadge color='success'>{item.status}</CBadge>
+                            ) : item.status === 'Disapproved' ? (
+                              <CBadge color='danger'>{item.status}</CBadge>
                             ) : (
-                              <CBadge color='primary' className='pointer'>
-                                {item.status}
-                              </CBadge>
+                              <CBadge color='primary'>{item.status}</CBadge>
                             )}
                           </td>
                         )

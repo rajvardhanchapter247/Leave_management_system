@@ -168,15 +168,15 @@ export default class DemoApp extends React.Component {
           >
             <CForm >
               <CModalHeader closeButton>
-                <CModalTitle>Modal title</CModalTitle>
+                <CModalTitle>Leave request</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 <CRow>
                   <CCol md="12">
                     <CFormGroup>
                       <CLabel>Leave reason</CLabel>
-                      <CTextarea id="leave" type="text" name="reason" value={reason}
-                        onChange={this.onInputchange} placeholder="" required="required" />
+                      <CTextarea id="leave" type="text" name="reason" value={reason} rows="1"
+                        onChange={this.onInputchange} placeholder="" />
                     </CFormGroup>
                   </CCol>
                   <CCol md="12">

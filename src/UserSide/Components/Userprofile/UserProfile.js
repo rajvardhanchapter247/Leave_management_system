@@ -55,7 +55,7 @@ const User_profile = props => {
         }
       )
       console.log('Update user Successfully', response)
-      toast.success(' successfully', {
+      toast.success(response.data.message, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -65,8 +65,8 @@ const User_profile = props => {
         progress: undefined
       })
     } catch (error) {
-      console.log('Something went wrong!', error)
-      toast.error('Something went wrong Please try again !', {
+      // console.log('Something went wrong!', error)
+      toast.error(error.response.data.message, {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -89,7 +89,8 @@ const User_profile = props => {
         }
       })
       setSingleUser(response.data.data[0])
-      console.log(singleUser)
+      
+      // console.log(singleUser)
     } catch (error) {
       console.log('Something went wrong!', error)
     }

@@ -7,6 +7,7 @@ import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { setUserSession, getToken } from '../../storage/LocalStorage'
+
 import {
   CCard,
   CCardBody,
@@ -17,7 +18,6 @@ import {
 } from '@coreui/react'
 
 const Login = () => {
- 
   const [error, setError] = useState(null)
 
   const history = useHistory()
@@ -49,13 +49,31 @@ const Login = () => {
         password: data.password
       })
       setUserSession(response.data.token, response.data.data.role)
-      alert("Login Successfully")
+      toast.success(response.data.message, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+      // alert(response.data.message)
       history.push('/dashboard')
     } catch (error) {
       // Handle Error Here
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+      // alert(error.response.data.message)
       setError('Something went wrong Please try again !')
     }
-    
   }
 
   const onSubmitEvent = values => {
