@@ -21,9 +21,33 @@ const Settings = () => {
     const [reload, setReload] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const history = useHistory();
+
+    const [items, setItems] = useState([]);
+    const token = getToken();
+    const [limit, setLimit] = useState(10);
+
+    useEffect(() => {
+        const fetchUserListWithLimit = async () => {
+            setIsLoading(true);
+            const response = await axios.get(`/api/auth/user-list?limit=${limit}`, {
+                headers: {
+                    'authorization': token
+                }
+            });
+            setItems(response.data.data);
+            setLimit(response.data.totalRecords);
+            setIsLoading(false);
+        };
+
+        fetchUserListWithLimit();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [limit]);
+
+
+
     useEffect(() => {
         localStorage.getItem("role") !== "Admin" && history.push("/dashboard")
-    })
+    });
 
     const [settingsData, setSettingsData] = useState([])
     useEffect(() => {
@@ -47,8 +71,6 @@ const Settings = () => {
         fetchSettingsApi();
     }, [reload]);
 
-
-
     // ! yup validation
     const validate = Yup.object({
         orgName: Yup.string().required('Organization is required'),
@@ -58,7 +80,7 @@ const Settings = () => {
         twitterUrl: Yup.string().required('Twitter url is required'),
     })
 
-    // ! form inital values
+    // ! form initial values
     const initialValues = {
         websiteUrl: settingsData.websiteUrl,
         youtubeUrl: settingsData.youtubeUrl,
@@ -144,7 +166,7 @@ const Settings = () => {
                                             </CCol>
                                             <CCol md="6">
                                                 <CFormGroup>
-                                                    <TextField label="Email" name="email" type="email" />
+                                                    <TextField label="Email" name="email" />
                                                 </CFormGroup>
                                             </CCol>
                                             <CCol md="6">
@@ -157,7 +179,6 @@ const Settings = () => {
                                 </CRow>
                             </CCardBody>
                             <CCardFooter>
-
                                 {
                                     isLoading ?
                                         <button className="btn btn-primary btn-block" disabled>

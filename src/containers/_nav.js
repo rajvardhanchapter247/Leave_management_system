@@ -26,21 +26,20 @@ const _nav = [
     icon: <CIcon name='cil-people' customClasses='c-sidebar-nav-icon' />
   },
 
-    // ! Dashboard sidebar
-    {
-      _tag: 'CSidebarNavItem',
-      name: 'Leave Requests',
-      to: '/leave-requests',
-      icon: <CIcon name='cil-puzzle' customClasses='c-sidebar-nav-icon' />
-    },
+  // ! Dashboard sidebar
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Leave Requests',
+    to: '/leave-requests',
+    icon: <CIcon name='cil-puzzle' customClasses='c-sidebar-nav-icon' />
+  },
 
-  // // ! Department sidebar
-  // {
-  //   _tag: 'CSidebarNavItem',
-  //   name: 'Departments',
-  //   to: '/departments',
-  //   icon: <CIcon name="cil-object-group" customClasses="c-sidebar-nav-icon" />,
-  // },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Add Leave',
+    to: '/add-leave',
+    icon: <CIcon name="cil-object-group" customClasses="c-sidebar-nav-icon" />,
+  }
 
   // // ! Designation sidebar
   // {

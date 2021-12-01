@@ -33,10 +33,9 @@ const ChangePassword = () => {
   })
 
   const sendGetRequest = async data => {
-    // setError(null)
     setIsLoading(true);
     try {
-      const response = await axios.put('/api/auth/change-password',
+      await axios.put('/api/auth/change-password',
         {
           oldPassword: data.oldPassword,
           newPassword: data.newPassword

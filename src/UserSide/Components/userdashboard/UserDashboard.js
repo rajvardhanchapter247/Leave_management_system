@@ -34,8 +34,6 @@ const UserDashboard = () => {
     }, [])
     return (
         <>
-            <CRow>
-                <CCol xs='12'>
                     <CCard>
                         <CCardHeader>Add leave</CCardHeader>
                         <CCardBody>
@@ -55,11 +53,6 @@ const UserDashboard = () => {
                             </CForm>
                         </CCardBody>
                     </CCard>
-                </CCol>
-            </CRow>
-
-            <CRow>
-                <CCol md='12'>
                     <CCard>
                         <CCardHeader>My Leaves</CCardHeader>
                         <CCardBody>
@@ -101,8 +94,6 @@ const UserDashboard = () => {
                             </CForm>
                         </CCardBody>
                     </CCard>
-                </CCol>
-            </CRow>
         </>
     )
 }

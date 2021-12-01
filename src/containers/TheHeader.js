@@ -51,6 +51,11 @@ const TheHeader = () => {
         <CHeaderNavItem className="px-3">
           <CHeaderNavLink to="/leave-requests">Leave Requests</CHeaderNavLink>
         </CHeaderNavItem>
+
+        {localStorage.getItem("role") === "Admin" && <CHeaderNavItem className="px-3">
+          <CHeaderNavLink to="/add-leave">Add Leave Requests</CHeaderNavLink>
+        </CHeaderNavItem>}
+
       </CHeaderNav>
 
       <CHeaderNav className="px-3">
