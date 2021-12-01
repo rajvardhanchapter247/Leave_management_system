@@ -11,7 +11,6 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../storage/LocalStorage'
-import Loader from '../../containers/Loader/Loader'
 
 const StatusModel = (props) => {
     const status = props.status === "Active";
@@ -56,22 +55,22 @@ const StatusModel = (props) => {
                 <CModalFooter>
                     {
                         isLoading ?
-                            <button className="btn btn-primary btn-block " disabled>
+                            <button className="btn btn-primary " disabled>
                                 <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
                                 Loading...
                             </button>
                             :
-                            <button className="btn btn-primary btn-block" onClick={updateStatus}
+                            <button className="btn btn-primary" onClick={updateStatus}
                                 disabled={(isLoading ? true : false)}> Yes</button>
                     }
                     {
                         isLoading ?
-                            <button className="btn btn-danger btn-block " disabled>
+                            <button className="btn btn-danger " disabled>
                                 <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
                                 Loading...
                             </button>
                             :
-                            <button className="btn btn-danger btn-block" onClick={props.toggleModel}
+                            <button className="btn btn-danger" onClick={props.toggleModel}
                                 disabled={(isLoading ? true : false)}> No</button>
                     }
                 </CModalFooter>

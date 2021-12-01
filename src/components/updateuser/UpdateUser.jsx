@@ -18,7 +18,8 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from "../../components/textfield/TextField"
 import Select from 'react-select';
-import Loader from "../../containers/Loader/Loader"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateUser = (props) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -99,10 +100,29 @@ const UpdateUser = (props) => {
                     'authorization': token
                 }
             });
-            console.log("Update user Successfully", response);
+            
+            console.log('response: ', response);
+            toast.success('Update user Successfully', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
 
         } catch (error) {
             console.log("Something went wrong!", error);
+            toast.error('Something went wrong!', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
         }
         props.reloadPage();
         setIsLoading(false);
@@ -139,6 +159,17 @@ const UpdateUser = (props) => {
 
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable
+                pauseOnHover
+            />
             {singleUser &&
                 <CModal
                     show={props.showHide}
@@ -231,11 +262,11 @@ const UpdateUser = (props) => {
                                                             <Field name="gender" render={({ field }) => {
                                                                 return <>
                                                                     <CFormGroup variant="custom-radio" inline>
-                                                                        <CInputRadio {...field} custom id="update-male" name="gender" value="Male" />
+                                                                        <CInputRadio {...field} custom id="update-male" checked={singleUser.gender==='Male'} name="gender" value="Male" />
                                                                         <CLabel variant="custom-checkbox" htmlFor="update-male">Male</CLabel>
                                                                     </CFormGroup>
                                                                     <CFormGroup variant="custom-radio" inline>
-                                                                        <CInputRadio {...field} custom id="update-female" name="gender" value="Female" />
+                                                                        <CInputRadio {...field} custom id="update-female" checked={singleUser.gender==='Female'} name="gender" value="Female" />
                                                                         <CLabel variant="custom-checkbox" htmlFor="update-female">Female</CLabel>
                                                                     </CFormGroup>
                                                                     <CFormGroup variant="custom-radio" inline>

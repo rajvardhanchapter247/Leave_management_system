@@ -233,11 +233,11 @@ const addUser = async (req, res) => {
     try {
       const emailSend = new Email();
       await emailSend.setTemplate(AvailableTemplates.EMPLOYEE_REGISTRATION, {
-        fullName: `${userData.firstName} ${userData.lastName} `,
+        fullName: `${firstName} ${lastName} `,
         email,
         password,
       });
-      await emailSend.sendEmail(userData.email);
+      await emailSend.sendEmail(email);
     } catch (error) {
       return res.status(201).json({
         message: error.message,
@@ -735,10 +735,10 @@ const updateUser = async (req, res) => {
       gender,
       designation,
     } = body;
-    let { removeReportingPerson = [] } = body;
-    removeReportingPerson = removeReportingPerson.filter(
-      (item) => !reportingPerson.includes(item)
-    );
+    // let { removeReportingPerson = [] } = body;
+    // removeReportingPerson = removeReportingPerson.filter(
+    //   (item) => !reportingPerson.includes(item)
+    // );
 
     const user = await UserModel.findOne({ _id: id }, { _id: 1 });
     if (!user) {
@@ -767,12 +767,12 @@ const updateUser = async (req, res) => {
       },
       { runValidators: true } // For run enum mongoose validation.
     );
-    const removeReportingPersonData = await UserModel.updateOne(
-      { _id: id },
-      {
-        $pull: { reportingPerson: { $in: removeReportingPerson } },
-      }
-    );
+    // const removeReportingPersonData = await UserModel.updateOne(
+    //   { _id: id },
+    //   {
+    //     $pull: { reportingPerson: { $in: removeReportingPerson } },
+    //   }
+    // );
 
     return res.status(200).json({
       success: true,

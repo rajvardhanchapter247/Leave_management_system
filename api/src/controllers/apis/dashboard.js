@@ -180,7 +180,6 @@ const userAndLeaveCount = async (req, res) => {
         ':item',
         'User and Leave Count'
       ),
-      error: error.message,
     });
   } catch (error) {
     return res.status(500).json({

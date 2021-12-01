@@ -5,19 +5,22 @@ import { TextField } from '../text_field/TextField'
 import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { getToken } from '../../storage/Local_Storage'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import {
   CCard,
   CCardBody,
   CCardGroup,
   CCardHeader,
-  CSpinner
+  CSpinner,
+  CButton
 } from '@coreui/react'
 
 const ChangePassword = () => {
-  const history = useHistory();
+  const history = useHistory()
   const [error, setError] = useState(null)
-  var token = getToken();
-  const [isLoading, setIsLoading] = useState(false);
+  var token = getToken()
+  const [isLoading, setIsLoading] = useState(false)
 
   const validate = Yup.object({
     oldPassword: Yup.string()
@@ -28,14 +31,24 @@ const ChangePassword = () => {
       .trim()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
-    passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+    passwordConfirmation: Yup.string().oneOf(
+      [Yup.ref('newPassword'), null],
+      'Passwords must match'
+    )
   })
 
   const sendGetRequest = async data => {
+<<<<<<< HEAD
     setIsLoading(true);
     try {
       await axios.put('/api/auth/change-password',
+=======
+    // setError(null)
+    setIsLoading(true)
+    try {
+      const response = await axios.put(
+        '/api/auth/change-password',
+>>>>>>> 5f394611b013e7360f5b1cb8c6236e403b4204a6
         {
           oldPassword: data.oldPassword,
           newPassword: data.newPassword
@@ -46,26 +59,55 @@ const ChangePassword = () => {
           }
         }
       )
-      history.push('/user-profile');
+      toast.success(response.data.message, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+
+      console.log('response: ', response)
     } catch (error) {
       setError('Something went wrong Please try again !')
+      toast.error(error.response.data.message, {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     }
-    setIsLoading(false);
+    setIsLoading(false)
   }
 
   const onSubmitEvent = values => {
     console.log('submit data', values)
     sendGetRequest(values)
     document.getElementById('form').reset()
+    document.getElementById('confirm').value = null
   }
 
   return (
     <>
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+      />
       <CCardGroup>
         <CCard>
-          <CCardHeader>
-            Change your password
-          </CCardHeader>
+          <CCardHeader>Change your password</CCardHeader>
           <CCardBody>
             <Formik
               initialValues={{
@@ -91,21 +133,32 @@ const ChangePassword = () => {
                     label='Confirm Password'
                     name='passwordConfirmation'
                     type='password'
+                    id='confirm'
                   />
                   {error && <div className='error-1'>{error}</div>}
 
-                  {
-                    isLoading ?
-                      <button className="btn btn-primary btn-block mt-3" disabled>
-                        <CSpinner component="span" size="sm" aria-hidden="true" className="mr-2" />
-                        Loading...
-                      </button>
-                      :
-                      <button
-                        className="btn btn-primary btn-block mt-3" type="submit" disabled={!(formik.isValid && formik.dirty)}>
-                        Change Password
-                      </button>
-                  }
+                  {isLoading ? (
+                    <CButton
+                      className='btn btn-primary btn-block mt-3'
+                      disabled
+                    >
+                      <CSpinner
+                        component='span'
+                        size='sm'
+                        aria-hidden='true'
+                        className='mr-2'
+                      />
+                      Loading...
+                    </CButton>
+                  ) : (
+                    <CButton
+                      className='btn btn-primary btn-block mt-3'
+                      type='submit'
+                      disabled={!(formik.isValid && formik.dirty)}
+                    >
+                      Change Password
+                    </CButton>
+                  )}
                 </Form>
               )}
             </Formik>
@@ -116,4 +169,4 @@ const ChangePassword = () => {
   )
 }
 
-export default ChangePassword;
+export default ChangePassword

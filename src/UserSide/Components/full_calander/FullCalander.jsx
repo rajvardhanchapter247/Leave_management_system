@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { getDateTime } from '../../../common/constant'
 import {
   CButton,
   CForm,
@@ -22,6 +23,9 @@ import {
 } from '@coreui/react'
 import axios from 'axios'
 import { getToken } from '../../storage/Local_Storage';
+import moment from 'moment'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default class DemoApp extends React.Component {
@@ -53,17 +57,27 @@ export default class DemoApp extends React.Component {
     var end = new Date(this.state.enddate);
 
     var dateArry = [];
-    // loop for every day
+    // loop for every day start here
     for (var day = start; day <= end; day.setDate(day.getDate() + 1)) {
-      // console.log(day);
       var todayDate = new Date(day).toISOString().slice(0, 10);
       dateArry.push(todayDate);
     }
+    // loop for every day end here
+
+    // sunday muted code start here
+
+    const dates = dateArry.map(dateArry => new Date(dateArry))
+    const filteredDates = dates.filter(date => date.getDay() !== 0)
+    const filteredDays = filteredDates.map(date => getDateTime(date))
+
+    // sunday muted code end here
+
+    // api code start here
 
     var token = getToken();
     axios
       .post('/api/leave-request/add', {
-        datesToRequest: dateArry,
+        datesToRequest: filteredDays,
         reason: this.state.reason
       }, {
         headers: {
@@ -72,7 +86,18 @@ export default class DemoApp extends React.Component {
       })
       .then(response => {
         console.log(response);
-        alert("Submit leave request")
+        toast.success('Submitted', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
+        this.setState({
+          reason: ""
+        });
       })
       .catch(error => {
         console.log(error);
@@ -83,16 +108,32 @@ export default class DemoApp extends React.Component {
     }))
   }
 
+  // api code end here
 
   setCalenderState = () => {
     this.setState(prevState => ({
       primary: !prevState.primary
     }))
   }
+
+
+
+
   render() {
-    const { date, reason } = this.state
+    const { reason } = this.state
     return (
       <>
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover
+        />
         {/* Full calander start here */}
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -106,14 +147,20 @@ export default class DemoApp extends React.Component {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          weekends={this.state.weekendsVisible}
+          hiddenDays={[0]}
+          selectAllow={this.dateAllow}
+          weekends={this.sunday}
           initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           select={this.handleDateSelect}
           eventContent={renderEventContent} // custom render function
           eventClick={this.handleEventClick}
           eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+
         />
         <CContainer>
+
+          {/* Modal start here */}
+
           <CModal
             show={this.state.primary}
             onClose={this.setCalenderState}
@@ -121,15 +168,15 @@ export default class DemoApp extends React.Component {
           >
             <CForm >
               <CModalHeader closeButton>
-                <CModalTitle>Modal title</CModalTitle>
+                <CModalTitle>Leave request</CModalTitle>
               </CModalHeader>
               <CModalBody>
                 <CRow>
                   <CCol md="12">
                     <CFormGroup>
                       <CLabel>Leave reason</CLabel>
-                      <CTextarea id="leave" type="text" name="reason" value={reason}
-                        onChange={this.onInputchange} placeholder="" required />
+                      <CTextarea id="leave" type="text" name="reason" value={reason} rows="1"
+                        onChange={this.onInputchange} placeholder="" />
                     </CFormGroup>
                   </CCol>
                   <CCol md="12">
@@ -154,8 +201,18 @@ export default class DemoApp extends React.Component {
               </CModalFooter>
             </CForm>
           </CModal>
+
+          {/* Modal end here */}
         </CContainer>
       </>
+    )
+  }
+
+  dateAllow = (selectInfo) => {
+    var date = moment(selectInfo.startStr).add(1, "day");
+
+    return (
+      moment().diff(date) <= 0
     )
   }
 
@@ -182,10 +239,10 @@ export default class DemoApp extends React.Component {
       })
     }
 
+
     const start_date = selectInfo.startStr;
-    const end_date = selectInfo.endStr;
-    var date_arry = [start_date, end_date]
-    // console.log('date_arry: ', date_arry);
+    const End_date = moment(selectInfo.endStr).subtract(5, "hours");
+    const end_date = moment(End_date).format("YYYY-MM-DD")
 
     this.setState(prevState => ({
       startdate: `${start_date}`,
